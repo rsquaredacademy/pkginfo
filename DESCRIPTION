@@ -9,6 +9,7 @@ Depends:
 Imports:
     glue,
     httr,
+    jsonlite,
     magrittr,
     pingr,
     rvest,

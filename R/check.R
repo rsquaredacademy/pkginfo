@@ -68,3 +68,31 @@ check_travis <- function(repo_name, package_name) {
     extract(1)
 
 }
+
+#' Check appveyor build status
+#'
+#' Return the lates appveyor build status.
+#'
+#' @param repo_name Name of the GitHub repository.
+#' @param package_name Name of the package.
+#'
+#' @examples
+#' check_appveyor("rsquaredacademy", "olsrr")
+#'
+#' @importFrom jsonlite fromJSON
+#'
+#' @export
+#'
+check_appveyor <- function(repo_name, package_name) {
+
+  if (!is_online()) {
+    stop("Please ensure that you are connected to the internet.", call. = FALSE)
+  }
+
+  pkg_name <- glue("/api/projects/", repo_name, "/", package_name)
+  url      <- modify_url("https://ci.appveyor.com", path = pkg_name)
+  resp     <- GET(url)
+  result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  result$build$status
+
+}
