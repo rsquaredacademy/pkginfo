@@ -8,10 +8,11 @@ Depends:
     R(>= 3.3)
 Imports:
     glue,
-    xml2,
+    httr,
     magrittr,
     pingr,
-    rvest
+    rvest,
+    xml2
 Suggest:
     covr,
     knitr,
