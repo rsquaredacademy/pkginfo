@@ -34,7 +34,7 @@ check_cran_results <- function(package_name) {
 
 #' Check travis build status
 #'
-#' Return the lates travis build status.
+#' Return the latest travis build status.
 #'
 #' @param repo_name Name of the GitHub repository.
 #' @param package_name Name of the package.
@@ -71,7 +71,7 @@ check_travis <- function(repo_name, package_name) {
 
 #' Check appveyor build status
 #'
-#' Return the lates appveyor build status.
+#' Return the latest appveyor build status.
 #'
 #' @param repo_name Name of the GitHub repository.
 #' @param package_name Name of the package.
@@ -94,5 +94,31 @@ check_appveyor <- function(repo_name, package_name) {
   resp     <- GET(url)
   result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
   result$build$status
+
+}
+
+#' Check code coverage
+#'
+#' Return the code coverage of the package.
+#'
+#' @param repo_name Name of the GitHub repository.
+#' @param package_name Name of the package.
+#'
+#' @examples
+#' check_coverage("rsquaredacademy", "olsrr")
+#'
+#' @export
+#'
+check_coverage <- function(repo_name, package_name) {
+
+  if (!is_online()) {
+    stop("Please ensure that you are connected to the internet.", call. = FALSE)
+  }
+
+  pkg_name <- glue("/api/gh/", repo_name, "/", package_name)
+  url      <- modify_url("https://codecov.io", path = pkg_name)
+  resp     <- GET(url)
+  result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  result$commit$totals$c
 
 }
