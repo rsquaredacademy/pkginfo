@@ -12,7 +12,7 @@ check_travis(repo_name, package_name)
 \item{package_name}{Name of the package.}
 }
 \description{
-Return the lates travis build status.
+Return the latest travis build status.
 }
 \examples{
 check_travis("rsquaredacademy", "olsrr")

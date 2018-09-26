@@ -12,7 +12,7 @@ check_appveyor(repo_name, package_name)
 \item{package_name}{Name of the package.}
 }
 \description{
-Return the lates appveyor build status.
+Return the latest appveyor build status.
 }
 \examples{
 check_appveyor("rsquaredacademy", "olsrr")
