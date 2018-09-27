@@ -6,11 +6,11 @@
 #' @param package_name Name of the package.
 #'
 #' @examples
-#' show_github_info("tidyverse", "dplyr")
+#' get_github_info("tidyverse", "dplyr")
 #'
 #' @export
 #'
-show_github_info <- function(repo_name, package_name) {
+get_github_info <- function(repo_name, package_name) {
 
   pkg    <- pkg_github(repo_name, package_name)
   stars  <- pkg$stargazers_count

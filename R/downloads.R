@@ -5,7 +5,7 @@
 #' @param package_name Name of the package.
 #'
 #' @examples
-#' show_downloads("dplyr")
+#' get_downloads("dplyr")
 #'
 #' @importFrom cranlogs cran_downloads
 #' @importFrom lubridate today
@@ -14,7 +14,7 @@
 #'
 #' @export
 #'
-show_downloads <- function(package_name) {
+get_downloads <- function(package_name) {
 
   if (!is_online()) {
     stop("Please ensure that you are connected to the internet.", call. = FALSE)
