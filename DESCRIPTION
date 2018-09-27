@@ -6,13 +6,16 @@ Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", rol
 Description: Tools for extracting basic package information from CRAN and GitHub.
 Depends:
     R(>= 3.3)
-Imports:
+Imports: 
+    cranlogs,
     glue,
     httr,
     jsonlite,
+    lubridate,
     magrittr,
     pingr,
     rvest,
+    tibble,
     xml2
 Suggest:
     covr,
