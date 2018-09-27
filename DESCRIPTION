@@ -15,6 +15,7 @@ Imports:
     magrittr,
     pingr,
     rvest,
+    stringr,
     tibble,
     xml2
 Suggest:
