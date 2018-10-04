@@ -18,7 +18,7 @@ devtools::install_github("rsquaredacademy/pkginfo")
 Usage
 -----
 
-### Download Statistics
+#### Download Statistics
 
 ``` r
 get_downloads("olsrr")
@@ -28,7 +28,7 @@ get_downloads("olsrr")
 #> 1    102       902       3216 30340
 ```
 
-### CRAN Results
+#### CRAN Results
 
 ``` r
 check_cran_results("olsrr")
@@ -60,32 +60,28 @@ check_cran_results("olsrr")
 #> 12    NA
 ```
 
-### Build Status
-
-#### Travis
+#### Travis Build Status
 
 ``` r
 check_travis("rsquaredacademy", "olsrr")
 #> [1] "Success"
 ```
 
-#### Appveyor
-
-#### CRAN Results
+#### Appveyor Build Status
 
 ``` r
 check_appveyor("rsquaredacademy", "olsrr")
 #> [1] "success"
 ```
 
-### Code Coverage
+#### Code Coverage
 
 ``` r
 check_coverage("rsquaredacademy", "olsrr")
 #> [1] "84.38919"
 ```
 
-### GitHub Statistics
+#### GitHub Statistics
 
 ``` r
 get_github_info("rsquaredacademy", "olsrr")

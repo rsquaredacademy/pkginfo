@@ -1,0 +1,63 @@
+url: https://pkginfo.rsquaredacademy.com
+
+authors:
+  Aravind Hebbali:
+    href: https://www.aravindhebbali.com
+
+templates:
+  params:
+    bootswatch: cosmo
+    docsearch:
+      api_key:
+      index_name: pkginfo
+
+navbar:
+  title: "pkginfo"
+  type: inverse
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Reference"
+      menu:
+        - text: "Functions"
+          href: reference/index.html
+        - text: "News"
+          href: news/index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/rsquaredacademy/pkginfo
+
+
+home:
+  links:
+  - text: Learn more
+    href: https://www.rsquaredacademy.com
+
+
+reference:
+- title: General Info
+
+  contents:
+  - get_downloads
+  - check_travis
+  - check_appveyor
+  - check_coverage
+  - get_github_info
+
+- title: CRAN Info
+
+  contents:
+  - check_cran_results
+  - get_cran_authors
+  - get_cran_desc
+  - get_cran_imports
+  - get_cran_license
+  - get_cran_maintainer
+  - get_cran_pub_date
+  - get_cran_r_dep
+  - get_cran_suggests
+  - get_cran_title
+  - get_cran_urls
+  - get_cran_version
+
+
