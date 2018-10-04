@@ -2,8 +2,9 @@ Package: pkginfo
 Type: Package
 Title: Retrieve Package Information
 Version: 0.1.0
-Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"))
-Description: Tools for retrieving basic package information from CRAN and GitHub.
+Authors@R: person("Aravind", "Hebbali", email = "hebbali.aravind@gmail.com", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-9220-9669"))
+Description: Tools for retrieving basic package information from CRAN and other package hosting services.
 Depends:
     R(>= 3.3)
 Imports: 
@@ -23,7 +24,7 @@ Suggest:
     knitr,
     rmarkdown,
     testthat
-License: What license is it under?
+License: MIT + file LICENSE
 URL: https://github.com/rsquaredacademy/pkginfo
 BugReports: https://github.com/rsquaredacademy/pkginfo/issues
 Encoding: UTF-8
