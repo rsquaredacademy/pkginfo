@@ -1,0 +1,74 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(pkginfo)
+```
+# pkginfo
+
+> Tools for retrieving package information.
+
+## Installation
+
+You can install the development version from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("rsquaredacademy/pkginfo")
+```
+
+## Usage
+
+### Download Statistics
+
+```{r downloads}
+get_downloads("olsrr")
+```
+
+### CRAN Results
+
+```{r cran_result}
+check_cran_results("olsrr")
+```
+
+### Build Status
+
+#### Travis
+
+```{r travis}
+check_travis("rsquaredacademy", "olsrr")
+```
+
+#### Appveyor
+
+#### CRAN Results
+
+```{r appveyor}
+check_appveyor("rsquaredacademy", "olsrr")
+```
+
+### Code Coverage
+
+```{r coverage}
+check_coverage("rsquaredacademy", "olsrr")
+```
+
+### GitHub Statistics
+
+```{r github}
+get_github_info("rsquaredacademy", "olsrr")
+```
+
+## Community Guidelines
+
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
