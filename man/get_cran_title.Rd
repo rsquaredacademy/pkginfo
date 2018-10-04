@@ -13,6 +13,8 @@ get_cran_title(package_name)
 Retrieve the title of the package from CRAN.
 }
 \examples{
+\dontrun{
 get_cran_title("dplyr")
+}
 
 }

@@ -15,6 +15,8 @@ check_travis(repo_name, package_name)
 Return the latest travis build status.
 }
 \examples{
+\dontrun{
 check_travis("rsquaredacademy", "olsrr")
+}
 
 }

@@ -13,6 +13,8 @@ get_cran_authors(package_name)
 Retrieve the list of authors of the package.
 }
 \examples{
+\dontrun{
 get_cran_authors("dplyr")
+}
 
 }

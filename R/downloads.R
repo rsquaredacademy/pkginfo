@@ -5,7 +5,9 @@
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' get_downloads("dplyr")
+#' }
 #'
 #' @importFrom cranlogs cran_downloads
 #' @importFrom lubridate today

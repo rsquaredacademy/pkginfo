@@ -5,7 +5,9 @@
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_title("dplyr")
+#' }
 #'
 #' @importFrom rvest html_text
 #'
@@ -34,7 +36,9 @@ get_cran_title <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_desc("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -63,7 +67,9 @@ get_cran_desc <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_version("dplyr")
+#' }
 #'
 #' @importFrom dplyr filter
 #'
@@ -89,7 +95,9 @@ get_cran_version <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_r_dep("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -112,7 +120,9 @@ get_cran_r_dep <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_imports("dplyr")
+#' }
 #'
 #' @importFrom stringr str_split
 #' @importFrom magrittr set_colnames
@@ -143,7 +153,9 @@ get_cran_imports <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_suggests("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -171,7 +183,9 @@ get_cran_suggests <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_pub_date("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -194,7 +208,9 @@ get_cran_pub_date <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_license("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -217,7 +233,9 @@ get_cran_license <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_authors("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -244,7 +262,9 @@ get_cran_authors <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_maintainer("dplyr")
+#' }
 #'
 #' @export
 #'
@@ -267,7 +287,9 @@ get_cran_maintainer <- function(package_name) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_cran_urls("dplyr")
+#' }
 #'
 #' @importFrom dplyr mutate case_when
 #' @importFrom stringr str_detect

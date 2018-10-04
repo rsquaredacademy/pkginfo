@@ -15,6 +15,8 @@ get_github_info(repo_name, package_name)
 Displays GitHub related information of a package.
 }
 \examples{
+\dontrun{
 get_github_info("tidyverse", "dplyr")
+}
 
 }

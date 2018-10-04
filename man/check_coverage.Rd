@@ -15,6 +15,8 @@ check_coverage(repo_name, package_name)
 Return the code coverage of the package.
 }
 \examples{
+\dontrun{
 check_coverage("rsquaredacademy", "olsrr")
+}
 
 }

@@ -15,6 +15,8 @@ check_appveyor(repo_name, package_name)
 Return the latest appveyor build status.
 }
 \examples{
+\dontrun{
 check_appveyor("rsquaredacademy", "olsrr")
+}
 
 }

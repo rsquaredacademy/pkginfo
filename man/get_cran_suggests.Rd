@@ -13,6 +13,8 @@ get_cran_suggests(package_name)
 Retrieve the list of packages suggested.
 }
 \examples{
+\dontrun{
 get_cran_suggests("dplyr")
+}
 
 }

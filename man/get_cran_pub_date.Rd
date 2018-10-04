@@ -13,6 +13,8 @@ get_cran_pub_date(package_name)
 Retrieve the latest date on which the package was published to CRAN.
 }
 \examples{
+\dontrun{
 get_cran_pub_date("dplyr")
+}
 
 }

@@ -13,6 +13,8 @@ get_cran_desc(package_name)
 Retrieve the description of the package from CRAN.
 }
 \examples{
+\dontrun{
 get_cran_desc("dplyr")
+}
 
 }

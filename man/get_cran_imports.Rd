@@ -13,6 +13,8 @@ get_cran_imports(package_name)
 Retrieve the list of packages imported.
 }
 \examples{
+\dontrun{
 get_cran_imports("dplyr")
+}
 
 }

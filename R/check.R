@@ -5,7 +5,9 @@
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' check_cran_results("dplyr")
+#' }
 #'
 #' @importFrom pingr is_online
 #' @importFrom glue glue
@@ -40,7 +42,9 @@ check_cran_results <- function(package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' check_travis("rsquaredacademy", "olsrr")
+#' }
 #'
 #' @importFrom httr modify_url GET content
 #' @importFrom magrittr use_series extract
@@ -77,7 +81,9 @@ check_travis <- function(repo_name, package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' check_appveyor("rsquaredacademy", "olsrr")
+#' }
 #'
 #' @importFrom jsonlite fromJSON
 #'
@@ -105,7 +111,9 @@ check_appveyor <- function(repo_name, package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' check_coverage("rsquaredacademy", "olsrr")
+#' }
 #'
 #' @export
 #'

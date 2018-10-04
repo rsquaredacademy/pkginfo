@@ -6,7 +6,9 @@
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' get_github_info("tidyverse", "dplyr")
+#' }
 #'
 #' @export
 #'

@@ -13,6 +13,8 @@ get_cran_version(package_name)
 Retrieve the latest version of the package from CRAN.
 }
 \examples{
+\dontrun{
 get_cran_version("dplyr")
+}
 
 }

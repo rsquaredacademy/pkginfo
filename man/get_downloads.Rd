@@ -13,6 +13,8 @@ get_downloads(package_name)
 Package downloads from cranlogs.
 }
 \examples{
+\dontrun{
 get_downloads("dplyr")
+}
 
 }

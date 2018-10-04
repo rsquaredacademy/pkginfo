@@ -13,6 +13,8 @@ get_cran_r_dep(package_name)
 Retrieve the R version on which the package depends.
 }
 \examples{
+\dontrun{
 get_cran_r_dep("dplyr")
+}
 
 }

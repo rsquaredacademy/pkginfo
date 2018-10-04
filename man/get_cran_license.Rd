@@ -13,6 +13,8 @@ get_cran_license(package_name)
 Retrieve the license type of the package.
 }
 \examples{
+\dontrun{
 get_cran_license("dplyr")
+}
 
 }

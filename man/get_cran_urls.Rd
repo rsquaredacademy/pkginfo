@@ -13,6 +13,8 @@ get_cran_urls(package_name)
 Retrieve the list of URLs associated with the package.
 }
 \examples{
+\dontrun{
 get_cran_urls("dplyr")
+}
 
 }

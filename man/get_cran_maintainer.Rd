@@ -13,6 +13,8 @@ get_cran_maintainer(package_name)
 Retrieve the details of the maintainer of the package.
 }
 \examples{
+\dontrun{
 get_cran_maintainer("dplyr")
+}
 
 }

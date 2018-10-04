@@ -13,6 +13,8 @@ check_cran_results(package_name)
 Return latest CRAN build results.
 }
 \examples{
+\dontrun{
 check_cran_results("dplyr")
+}
 
 }
