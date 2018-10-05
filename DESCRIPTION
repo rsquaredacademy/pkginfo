@@ -9,6 +9,7 @@ Depends:
     R(>= 3.3)
 Imports: 
     cranlogs,
+    curl,
     dplyr,
     glue,
     httr,

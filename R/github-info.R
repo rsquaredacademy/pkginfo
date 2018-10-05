@@ -14,6 +14,8 @@
 #'
 get_github_info <- function(repo_name, package_name) {
 
+  check_repo(repo_name, package_name)
+
   pkg    <- pkg_github(repo_name, package_name)
   stars  <- pkg$stargazers_count
   issues <- pkg$open_issues_count
@@ -31,6 +33,8 @@ get_github_info <- function(repo_name, package_name) {
 #' @importFrom jsonlite fromJSON
 #'
 pkg_github <- function(repo_name, package_name) {
+
+  check_repo(repo_name, package_name)
 
   pkg_name <- glue("/repos/", repo_name, "/", package_name)
   url      <- modify_url("https://api.github.com", path = pkg_name)

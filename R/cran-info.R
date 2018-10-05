@@ -15,13 +15,9 @@
 #'
 get_cran_title <- function(package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_cran()
 
-  url <- glue(
-    "https://cran.r-project.org/package=", package_name
-  )
+  url <- glue("https://cran.r-project.org/package=", package_name)
 
   read_html(url) %>%
     html_nodes("h2") %>%
@@ -44,13 +40,9 @@ get_cran_title <- function(package_name) {
 #'
 get_cran_desc <- function(package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_cran()
 
-  url <- glue(
-    "https://cran.r-project.org/package=", package_name
-  )
+  url <- glue("https://cran.r-project.org/package=", package_name)
 
   read_html(url) %>%
     html_nodes("p") %>%
@@ -331,9 +323,7 @@ get_cran_urls <- function(package_name) {
 
 get_cran_table <- function(package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_cran()
 
   url <- glue(
     "https://cran.r-project.org/package=", package_name
@@ -344,4 +334,26 @@ get_cran_table <- function(package_name) {
     html_table() %>%
     extract2(1)
 
+}
+
+
+check_cran <- function(package_name) {
+  
+  if (has_internet()) {
+    
+    url <- glue("https://cran.r-project.org/package=", package_name)
+    
+    status <-
+      url %>%
+      GET() %>%
+      status_code()
+    
+    if (status != 200) {
+      stop("Please check the package name.", call. = FALSE)
+    }
+    
+  } else {
+    stop("Please check your internet connection.", call. = FALSE)
+  }
+  
 }

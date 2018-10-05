@@ -18,10 +18,7 @@
 #'
 get_downloads <- function(package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
-
+  check_cran()
   count <- NULL
 
   latest <- today() - 2

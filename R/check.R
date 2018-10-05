@@ -19,9 +19,7 @@
 #'
 check_cran_results <- function(package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_result()
 
   url <- glue(
     "https://cran.r-project.org/web/checks/check_results_", package_name, ".html"
@@ -55,9 +53,7 @@ check_cran_results <- function(package_name) {
 #'
 check_travis <- function(repo_name, package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_repo(repo_name, package_name)
 
   pkg_name <- glue("repos/", repo_name, "/", package_name)
   url      <- modify_url("https://api.travis-ci.org", path = pkg_name)
@@ -91,9 +87,7 @@ check_travis <- function(repo_name, package_name) {
 #'
 check_appveyor <- function(repo_name, package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_repo(repo_name, package_name)
 
   pkg_name <- glue("/api/projects/", repo_name, "/", package_name)
   url      <- modify_url("https://ci.appveyor.com", path = pkg_name)
@@ -119,9 +113,7 @@ check_appveyor <- function(repo_name, package_name) {
 #'
 check_coverage <- function(repo_name, package_name) {
 
-  if (!is_online()) {
-    stop("Please ensure that you are connected to the internet.", call. = FALSE)
-  }
+  check_repo(repo_name, package_name)
 
   pkg_name <- glue("/api/gh/", repo_name, "/", package_name)
   url      <- modify_url("https://codecov.io", path = pkg_name)
@@ -129,4 +121,64 @@ check_coverage <- function(repo_name, package_name) {
   result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
   result$commit$totals$c
 
+}
+
+
+#' @importFrom curl has_internet
+#' @importFrom httr GET status_code
+#' 
+check_result <- function(package_name) {
+  
+  if (has_internet()) {
+    
+    url <- glue(
+      "https://cran.r-project.org/web/checks/check_results_", package_name, 
+      ".html"
+    )
+    
+    status <-
+      url %>%
+      GET() %>%
+      status_code()
+    
+    if (status != 200) {
+      stop("Please check the package name.", call. = FALSE)
+    }
+    
+  } else {
+    stop("Please check your internet connection.", call. = FALSE)
+  }
+  
+}
+
+check_repo <- function(repo_name, package_name) {
+  
+  if (has_internet()) {
+    
+    repo_url <- glue("https://github.com/", repo_name)
+    
+    repo_status <-
+      repo_url %>%
+      GET() %>%
+      status_code()
+    
+    if (repo_status != 200) {
+      stop("Please check the repository name.", call. = FALSE)
+    }
+    
+    pkg_url <- glue("https://github.com/", repo_name, "/", package_name)
+    
+    pkg_status <-
+      pkg_url %>%
+      GET() %>%
+      status_code()
+  
+    if (pkg_status != 200) {
+      stop("Please check the package name.", call. = FALSE)
+    }
+    
+  } else {
+    stop("Please check your internet connection.", call. = FALSE)
+  }
+  
 }
