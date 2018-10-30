@@ -21,14 +21,17 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 
 <meta property="og:title" content="Function reference" />
+
 
 
 <!-- mathjax -->
@@ -106,6 +109,7 @@
     <table class="ref-index">
 
     <colgroup>
+      
       <col class="alias" />
       <col class="title" />
     </colgroup>
@@ -113,36 +117,52 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-general-info" class="hasAnchor"><a href="#section-general-info" class="anchor"></a>General Info</h2>
+          <h2 id="section-download-info" class="hasAnchor"><a href="#section-download-info" class="anchor"></a>Download Info</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
       <tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_downloads.html">get_downloads()</a></code> </p>
         </td>
         <td><p>Downloads</p></td>
-      </tr><tr>
-        <!--  -->
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-build-info" class="hasAnchor"><a href="#section-build-info" class="anchor"></a>Build Info</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
         <td>
           <p><code><a href="check_travis.html">check_travis()</a></code> </p>
         </td>
         <td><p>Check travis build status</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="check_appveyor.html">check_appveyor()</a></code> </p>
         </td>
         <td><p>Check appveyor build status</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="check_coverage.html">check_coverage()</a></code> </p>
         </td>
         <td><p>Check code coverage</p></td>
-      </tr><tr>
-        <!--  -->
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-github-info" class="hasAnchor"><a href="#section-github-info" class="anchor"></a>GitHub Info</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
         <td>
           <p><code><a href="get_github_info.html">get_github_info()</a></code> </p>
         </td>
@@ -156,73 +176,73 @@
         </th>
       </tr>
       <tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="check_cran_results.html">check_cran_results()</a></code> </p>
         </td>
         <td><p>Check CRAN results</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_authors.html">get_cran_authors()</a></code> </p>
         </td>
         <td><p>Retrieve authors</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_desc.html">get_cran_desc()</a></code> </p>
         </td>
         <td><p>Retrieve description</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_imports.html">get_cran_imports()</a></code> </p>
         </td>
         <td><p>Retrieve imports</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_license.html">get_cran_license()</a></code> </p>
         </td>
         <td><p>Retrieve license</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_maintainer.html">get_cran_maintainer()</a></code> </p>
         </td>
         <td><p>Retrieve maintainer</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_pub_date.html">get_cran_pub_date()</a></code> </p>
         </td>
         <td><p>Retrieve published date</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_r_dep.html">get_cran_r_dep()</a></code> </p>
         </td>
         <td><p>Retrieve dependency</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_suggests.html">get_cran_suggests()</a></code> </p>
         </td>
         <td><p>Retrieve suggests</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_title.html">get_cran_title()</a></code> </p>
         </td>
         <td><p>Retrieve title</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_urls.html">get_cran_urls()</a></code> </p>
         </td>
         <td><p>Retrieve url</p></td>
       </tr><tr>
-        <!--  -->
+        
         <td>
           <p><code><a href="get_cran_version.html">get_cran_version()</a></code> </p>
         </td>
@@ -235,7 +255,9 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-general-info">General Info</a></li>
+      <li><a href="#section-download-info">Download Info</a></li>
+      <li><a href="#section-build-info">Build Info</a></li>
+      <li><a href="#section-github-info">GitHub Info</a></li>
       <li><a href="#section-cran-info">CRAN Info</a></li>
     </ul>
   </div>

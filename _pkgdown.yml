@@ -35,13 +35,21 @@ home:
 
 
 reference:
-- title: General Info
+- title: Download Info
 
   contents:
   - get_downloads
+
+- title: Build Info
+
+  contents:
   - check_travis
   - check_appveyor
   - check_coverage
+
+- title: GitHub Info
+
+  contents:
   - get_github_info
 
 - title: CRAN Info
