@@ -2,7 +2,7 @@
 #'
 #' Return latest CRAN build results.
 #'
-#' @param package_name Name of the package.
+#' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
@@ -17,12 +17,12 @@
 #'
 #' @export
 #'
-check_cran_results <- function(package_name) {
+check_cran_results <- function(repo_name) {
 
   check_result()
 
   url <- glue(
-    "https://cran.r-project.org/web/checks/check_results_", package_name, ".html"
+    "https://cran.r-project.org/web/checks/check_results_", repo_name, ".html"
   )
 
   read_html(url) %>%
@@ -36,8 +36,8 @@ check_cran_results <- function(package_name) {
 #'
 #' Return the latest travis build status.
 #'
-#' @param repo_name Name of the GitHub repository.
-#' @param package_name Name of the package.
+#' @param user_name Name of the GitHub repository.
+#' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
@@ -51,11 +51,11 @@ check_cran_results <- function(package_name) {
 #'
 #' @export
 #'
-check_travis <- function(repo_name, package_name) {
+check_travis <- function(user_name, repo_name) {
 
-  check_repo(repo_name, package_name)
+  check_repo(user_name, repo_name)
 
-  pkg_name <- glue("repos/", repo_name, "/", package_name)
+  pkg_name <- glue("repos/", user_name, "/", repo_name)
   url      <- modify_url("https://api.travis-ci.org", path = pkg_name)
   resp     <- GET(url)
 
@@ -73,8 +73,8 @@ check_travis <- function(repo_name, package_name) {
 #'
 #' Return the latest appveyor build status.
 #'
-#' @param repo_name Name of the GitHub repository.
-#' @param package_name Name of the package.
+#' @param user_name Name of the GitHub repository.
+#' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
@@ -85,11 +85,11 @@ check_travis <- function(repo_name, package_name) {
 #'
 #' @export
 #'
-check_appveyor <- function(repo_name, package_name) {
+check_appveyor <- function(user_name, repo_name) {
 
-  check_repo(repo_name, package_name)
+  check_repo(user_name, repo_name)
 
-  pkg_name <- glue("/api/projects/", repo_name, "/", package_name)
+  pkg_name <- glue("/api/projects/", user_name, "/", repo_name)
   url      <- modify_url("https://ci.appveyor.com", path = pkg_name)
   resp     <- GET(url)
   result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
@@ -101,8 +101,8 @@ check_appveyor <- function(repo_name, package_name) {
 #'
 #' Return the code coverage of the package.
 #'
-#' @param repo_name Name of the GitHub repository.
-#' @param package_name Name of the package.
+#' @param user_name Name of the GitHub repository.
+#' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
@@ -111,11 +111,11 @@ check_appveyor <- function(repo_name, package_name) {
 #'
 #' @export
 #'
-check_coverage <- function(repo_name, package_name) {
+check_coverage <- function(user_name, repo_name) {
 
-  check_repo(repo_name, package_name)
+  check_repo(user_name, repo_name)
 
-  pkg_name <- glue("/api/gh/", repo_name, "/", package_name)
+  pkg_name <- glue("/api/gh/", user_name, "/", repo_name)
   url      <- modify_url("https://codecov.io", path = pkg_name)
   resp     <- GET(url)
   result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
@@ -127,12 +127,12 @@ check_coverage <- function(repo_name, package_name) {
 #' @importFrom curl has_internet
 #' @importFrom httr GET status_code
 #' 
-check_result <- function(package_name) {
+check_result <- function(repo_name) {
   
   if (has_internet()) {
     
     url <- glue(
-      "https://cran.r-project.org/web/checks/check_results_", package_name, 
+      "https://cran.r-project.org/web/checks/check_results_", repo_name, 
       ".html"
     )
     
@@ -151,11 +151,11 @@ check_result <- function(package_name) {
   
 }
 
-check_repo <- function(repo_name, package_name) {
+check_repo <- function(user_name, repo_name) {
   
   if (has_internet()) {
     
-    repo_url <- glue("https://github.com/", repo_name)
+    repo_url <- glue("https://github.com/", user_name)
     
     repo_status <-
       repo_url %>%
@@ -166,7 +166,7 @@ check_repo <- function(repo_name, package_name) {
       stop("Please check the repository name.", call. = FALSE)
     }
     
-    pkg_url <- glue("https://github.com/", repo_name, "/", package_name)
+    pkg_url <- glue("https://github.com/", user_name, "/", repo_name)
     
     pkg_status <-
       pkg_url %>%
