@@ -51,6 +51,14 @@ reference:
 
   contents:
   - get_github_info
+  - get_gh_branches
+  - get_gh_issues
+  - get_gh_labels
+  - get_gh_milestones
+  - get_gh_coc
+  - get_gh_license
+  - get_gh_pr
+  - get_gh_releases
 
 - title: CRAN Info
 

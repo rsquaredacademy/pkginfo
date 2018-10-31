@@ -4,12 +4,12 @@
 \alias{check_coverage}
 \title{Check code coverage}
 \usage{
-check_coverage(repo_name, package_name)
+check_coverage(user_name, repo_name)
 }
 \arguments{
-\item{repo_name}{Name of the GitHub repository.}
+\item{user_name}{Name of the GitHub repository.}
 
-\item{package_name}{Name of the package.}
+\item{repo_name}{Name of the package.}
 }
 \description{
 Return the code coverage of the package.

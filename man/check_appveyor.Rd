@@ -4,12 +4,12 @@
 \alias{check_appveyor}
 \title{Check appveyor build status}
 \usage{
-check_appveyor(repo_name, package_name)
+check_appveyor(user_name, repo_name)
 }
 \arguments{
-\item{repo_name}{Name of the GitHub repository.}
+\item{user_name}{Name of the GitHub repository.}
 
-\item{package_name}{Name of the package.}
+\item{repo_name}{Name of the package.}
 }
 \description{
 Return the latest appveyor build status.

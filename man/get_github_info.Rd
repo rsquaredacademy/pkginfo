@@ -4,12 +4,12 @@
 \alias{get_github_info}
 \title{GitHub info}
 \usage{
-get_github_info(repo_name, package_name)
+get_github_info(user_name, repo_name)
 }
 \arguments{
-\item{repo_name}{Name of the repository.}
+\item{user_name}{Name of the repository.}
 
-\item{package_name}{Name of the package.}
+\item{repo_name}{Name of the package.}
 }
 \description{
 Displays GitHub related information of a package.
