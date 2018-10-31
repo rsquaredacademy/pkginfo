@@ -61,10 +61,9 @@ pkg_github <- function(user_name, repo_name) {
 #'
 get_gh_branches <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/branches")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
+
+  out <- connect_api("branches")
   map_chr(out, "name")
 
 }
@@ -87,22 +86,20 @@ get_gh_branches <- function(user_name, repo_name) {
 #'
 get_gh_issues <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/issues")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
 
-  issue_date   <- as.Date(map_chr(out, "created_at"))
-  issue_number <- map_int(out, "number")
-  issue_title  <- map_chr(out, "title")
+  out            <- connect_api("issues")
+  issue_date     <- as.Date(map_chr(out, "created_at"))
+  issue_number   <- map_int(out, "number")
+  issue_title    <- map_chr(out, "title")
   issue_assignee <- extract2(out, 1)$assignee$login
-  issue_body <- map_chr(out, "body")
+  issue_body     <- map_chr(out, "body")
 
   tibble(
-    date = issue_date,
-    number = issue_number,
-    title = issue_title,
-    assignee = issue_assignee,
+    date        = issue_date,
+    number      = issue_number,
+    title       = issue_title,
+    assignee    = issue_assignee,
     description = issue_body
   )
 
@@ -125,16 +122,14 @@ get_gh_issues <- function(user_name, repo_name) {
 #'
 get_gh_labels <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/labels")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
 
-  label_name <- map_chr(out, "name")
+  out         <- connect_api("labels")
+  label_name  <- map_chr(out, "name")
   label_color <- map_chr(out, "color")
 
   tibble(
-    name = label_name,
+    name  = label_name,
     color = label_color
   )
 
@@ -156,11 +151,9 @@ get_gh_labels <- function(user_name, repo_name) {
 #'
 get_gh_milestones <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/milestones")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
 
+  out      <- connect_api("milestones")
   m_title  <- map_chr(out, "title")
   m_body   <- map_chr(out, "description")
   m_open   <- map_int(out, "open_issues")
@@ -196,6 +189,8 @@ get_gh_milestones <- function(user_name, repo_name) {
 #'
 get_gh_coc <- function(user_name, repo_name) {
 
+	check_repo(user_name, repo_name)
+
   pkg_name <- glue("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
   url      <- modify_url("https://api.github.com", path = pkg_name)
   resp     <- GET(url, add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
@@ -222,11 +217,9 @@ get_gh_coc <- function(user_name, repo_name) {
 #'
 get_gh_license <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/license")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url, add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
 
+	out <- connect_api("license")
   if (length(out) == 2) {
     cat("This repository does not have a license file.")
   } else {
@@ -255,11 +248,9 @@ get_gh_license <- function(user_name, repo_name) {
 #'
 get_gh_pr <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/pulls")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url, add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
 
+  out         <- connect_api("pulls")
   pull_number <- map_int(out, "number")
   pull_start  <- as.Date(map_chr(out, "created_at"))
   pull_title  <- map_chr(out, "title")
@@ -290,23 +281,30 @@ get_gh_pr <- function(user_name, repo_name) {
 #'
 get_gh_releases <- function(user_name, repo_name) {
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/releases")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	check_repo(user_name, repo_name)
 
-  release_tag <- map_chr(out, "tag_name")
-  release_title <- map_chr(out, "name")
-  pre_release <- map_lgl(out, "prerelease")
+  out               <- connect_api("releases")
+  release_tag       <- map_chr(out, "tag_name")
+  release_title     <- map_chr(out, "name")
+  pre_release       <- map_lgl(out, "prerelease")
   release_published <- as.Date(map_chr(out, "published_at"))
 
 
   tibble(
-    tag = release_tag,
-    date = release_published,
-    title = release_title,
+    tag        = release_tag,
+    date       = release_published,
+    title      = release_title,
     prerelease = pre_release
   )
+
+}
+
+connect_api <- function(node) {
+
+	pkg_name <- glue("/repos/", user_name, "/", repo_name, "/", node)
+  url      <- modify_url("https://api.github.com", path = pkg_name)
+  resp     <- GET(url)
+  fromJSON(content(resp, "text"), simplifyVector = FALSE)
 
 }
 
