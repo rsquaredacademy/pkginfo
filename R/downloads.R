@@ -18,7 +18,7 @@
 #'
 get_downloads <- function(package_name) {
 
-  check_cran()
+  check_cran(package_name)
   count <- NULL
 
   latest <- today() - 2

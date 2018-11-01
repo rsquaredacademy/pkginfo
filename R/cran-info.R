@@ -15,7 +15,7 @@
 #'
 get_cran_title <- function(package_name) {
 
-  check_cran()
+  check_cran(package_name)
 
   url <- glue("https://cran.r-project.org/package=", package_name)
 
@@ -40,7 +40,7 @@ get_cran_title <- function(package_name) {
 #'
 get_cran_desc <- function(package_name) {
 
-  check_cran()
+  check_cran(package_name)
 
   url <- glue("https://cran.r-project.org/package=", package_name)
 
@@ -323,7 +323,7 @@ get_cran_urls <- function(package_name) {
 
 get_cran_table <- function(package_name) {
 
-  check_cran()
+  check_cran(package_name)
 
   url <- glue(
     "https://cran.r-project.org/package=", package_name
