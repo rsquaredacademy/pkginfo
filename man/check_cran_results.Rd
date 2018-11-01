@@ -4,10 +4,10 @@
 \alias{check_cran_results}
 \title{Check CRAN results}
 \usage{
-check_cran_results(repo_name)
+check_cran_results(package_name)
 }
 \arguments{
-\item{repo_name}{Name of the package.}
+\item{package_name}{Name of the package.}
 }
 \description{
 Return latest CRAN build results.

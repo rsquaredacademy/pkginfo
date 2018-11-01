@@ -2,7 +2,7 @@
 #'
 #' Return latest CRAN build results.
 #'
-#' @param repo_name Name of the package.
+#' @param package_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
@@ -17,9 +17,9 @@
 #'
 #' @export
 #'
-check_cran_results <- function(repo_name) {
+check_cran_results <- function(package_name) {
 
-  check_result()
+  check_result(package_name)
 
   url <- glue(
     "https://cran.r-project.org/web/checks/check_results_", repo_name, ".html"
