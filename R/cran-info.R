@@ -42,7 +42,7 @@ get_cran_desc <- function(package_name) {
 
   url <- glue::glue("https://cran.r-project.org/package=", package_name)
 
-  glue::read_html(url) %>%
+  xml2::read_html(url) %>%
     rvest::html_nodes("p") %>%
     rvest::html_text() %>%
     magrittr::extract(1)
@@ -151,7 +151,7 @@ get_cran_suggests <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    dplyrt::filter(X1 == "Suggests:") %>%
+    dplyr::filter(X1 == "Suggests:") %>%
     magrittr::use_series(X2) %>%
     stringr::str_split(pattern = ", ") %>%
     unlist() %>%

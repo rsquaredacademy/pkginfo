@@ -79,7 +79,7 @@ check_appveyor <- function(user_name, repo_name) {
   pkg_name <- glue::glue("/api/projects/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://ci.appveyor.com", path = pkg_name)
   resp     <- httr::GET(url)
-  result   <- jsonlite::fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
   result$build$status
 
 }
@@ -105,7 +105,7 @@ check_coverage <- function(user_name, repo_name) {
   pkg_name <- glue::glue("/api/gh/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://codecov.io", path = pkg_name)
   resp     <- httr::GET(url)
-  result   <- jsonlite::fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
   result$commit$totals$c
 
 }

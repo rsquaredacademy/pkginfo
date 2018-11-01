@@ -186,7 +186,7 @@ get_gh_coc <- function(user_name, repo_name) {
 
   pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
-  resp     <- httr::GET(url, add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
+  resp     <- httr::GET(url, httr::add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
   out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
   cat(out$body)
@@ -217,7 +217,7 @@ get_gh_license <- function(user_name, repo_name) {
     cat("This repository does not have a license file.")
   } else {
     if (pingr::is_online()) {
-      browseURL(out$html_url)
+      utils::browseURL(out$html_url)
     } else {
       cat("Please ensure your internet connection is working.")
     }
