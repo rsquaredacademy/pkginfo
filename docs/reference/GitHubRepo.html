@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Code of conduct — get_gh_coc • pkginfo</title>
+<title>Retrieve GitHub repository information — GitHubRepo • pkginfo</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Code of conduct — get_gh_coc" />
+<meta property="og:title" content="Retrieve GitHub repository information — GitHubRepo" />
 
-<meta property="og:description" content="Returns code of conduct of repository." />
+<meta property="og:description" content="Retrieve GitHub repository information" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,44 +106,89 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Code of conduct</h1>
+    <h1>Retrieve GitHub repository information</h1>
     <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-github.R'><code>R/info-github.R</code></a></small>
-    <div class="hidden name"><code>get_gh_coc.Rd</code></div>
+    <div class="hidden name"><code>GitHubRepo.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Returns code of conduct of repository.</p>
+    <p>Retrieve GitHub repository information</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_gh_coc</span>(<span class='no'>user_name</span>, <span class='no'>repo_name</span>)</pre>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An R6 class.</p>
+    
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+
+    
+    <pre>
+myRepo &lt;- GitHubRepo$new("user_name", "repo_name")
+myRepo$get_stats()
+myRepo$get_branches()
+myRepo$get_issues()
+myRepo$get_labels()
+myRepo$get_milestones()
+myRepo$get_coc()
+myRepo$get_license()
+myRepo$get_pull_requests()
+myRepo$get_releases()
+myRepo$get_travis_status()
+myRepo$get_appveyor_status()
+myRepo$get_coverage()
+</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>user_name</th>
-      <td><p>User or organization name.</p></td>
-    </tr>
-    <tr>
-      <th>repo_name</th>
-      <td><p>Name of the repository.</p></td>
-    </tr>
-    </table>
+
+    
+    <dl class='dl-horizontal'>
+  <dt>user_name</dt><dd><p>Username of the GitHub repository owner.</p></dd>  
+  <dt>repo_name</dt><dd><p>Name of the GitHub repository.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    
+    <p>To create <code>GitHubRepo</code> objects, you need to use <code>GitHubRepo$new("user_name", "repo_name")</code>.</p>
+<p><code>myRepo$get_stats()</code> will return the number of stars, forks and issues of the package.</p>
+<p><code>myRepo$get_branches()</code> will return the name of the branches of the package.</p>
+<p><code>myRepo$get_issues()</code> will return the list of open issues.</p>
+<p><code>myRepo$get_labels()</code> will return the name and color labels used in issues filed in the package.</p>
+<p><code>myRepo$get_milestones()</code> will return the details of milestones associated with the package.</p>
+<p><code>myRepo$get_coc()</code> will return the code of conduct of the package.</p>
+<p><code>myRepo$get_license()</code> will return license of the package.</p>
+<p><code>myRepo$get_pull_requests()</code> will return all the open pull requests.</p>
+<p><code>myRepo$get_releases()</code> will return all the releases of the package on GitHub.</p>
+<p><code>myRepo$get_travis_status()</code> will return the build status of the package from Travis CI.</p>
+<p><code>myRepo$get_appveyor_status()</code> will return the build status of the package from Appveyor.</p>
+<p><code>myRepo$get_coverage()</code> will return code coverage of the package from Codecov.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_gh_coc</span>(<span class='st'>"tidyverse"</span>, <span class='st'>"dplyr"</span>)
+<span class='no'>myRepo</span> <span class='kw'>&lt;-</span> <span class='no'>GitHubRepo</span>$<span class='fu'>new</span>(<span class='st'>"tidyverse"</span>, <span class='st'>"dplyr"</span>)
+<span class='no'>myRepo</span>$<span class='fu'>get_stats</span>()
+<span class='no'>myRepo</span>$<span class='fu'>get_branches</span>()
+<span class='no'>myRepo</span>$<span class='fu'>get_travis_status</span>()
+<span class='no'>myRepo</span>$<span class='fu'>get_coverage</span>()
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      
+      <li><a href="#format">Format</a></li>
+
+      <li><a href="#usage">Usage</a></li>
+
       <li><a href="#arguments">Arguments</a></li>
-            
+
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

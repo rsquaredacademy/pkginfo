@@ -1,18 +1,135 @@
-#' GitHub info
+#' Retrieve GitHub repository information
 #'
-#' Displays GitHub related information of a package.
+#' @section Usage:
+#' \preformatted{
+#' myRepo <- GitHubRepo$new("user_name", "repo_name")
+#' myRepo$get_stats()
+#' myRepo$get_branches()
+#' myRepo$get_issues()
+#' myRepo$get_labels()
+#' myRepo$get_milestones()
+#' myRepo$get_coc()
+#' myRepo$get_license()
+#' myRepo$get_pull_requests()
+#' myRepo$get_releases()
+#' myRepo$get_travis_status()
+#' myRepo$get_appveyor_status()
+#' myRepo$get_coverage()
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{user_name}{Username of the GitHub repository owner.}  
+#'   \item{repo_name}{Name of the GitHub repository.}
+#' }
+#'
+#' @section Details:
+#'
+#' To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("user_name", "repo_name")}.
+#'
+#' \code{myRepo$get_stats()} will return the number of stars, forks and issues of the package.
+#'
+#' \code{myRepo$get_branches()} will return the name of the branches of the package.
+#'
+#' \code{myRepo$get_issues()} will return the list of open issues.
+#'
+#' \code{myRepo$get_labels()} will return the name and color labels used in issues filed in the package.
+#'
+#' \code{myRepo$get_milestones()} will return the details of milestones associated with the package.
+#'
+#' \code{myRepo$get_coc()} will return the code of conduct of the package.
+#'
+#' \code{myRepo$get_license()} will return license of the package.
+#'
+#' \code{myRepo$get_pull_requests()} will return all the open pull requests.
+#'
+#' \code{myRepo$get_releases()} will return all the releases of the package on GitHub.
+#'
+#' \code{myRepo$get_travis_status()} will return the build status of the package from Travis CI.
+#'
+#' \code{myRepo$get_appveyor_status()} will return the build status of the package from Appveyor.
+#'
+#' \code{myRepo$get_coverage()} will return code coverage of the package from Codecov.
+#'
+#' @examples
+#' \dontrun{
+#' myRepo <- GitHubRepo$new("tidyverse", "dplyr")
+#' myRepo$get_stats()
+#' myRepo$get_branches()
+#' myRepo$get_travis_status()
+#' myRepo$get_coverage()
+#' }
+#'
+#' @name GitHubRepo
+#' @docType class
+#' @format An R6 class.
+#' @export
+#'
+NULL
+
+GitHubRepo <- R6::R6Class("GitHubRepo",
+  public = list(
+    user_name = NULL,
+    repo_name = NULL,
+    initialize = function(user_name = NA, repo_name = NA) {
+      self$user_name <- user_name
+      self$repo_name <- repo_name
+    },
+    get_stats = function() {
+      get_gh_stats(self$user_name, self$repo_name)
+    },
+    get_branches = function() {
+      get_gh_branches(self$user_name, self$repo_name)
+    },
+    get_issues = function() {
+      get_gh_issues(self$user_name, self$repo_name)
+    },
+    get_labels = function() {
+      get_gh_labels(self$user_name, self$repo_name)
+    },
+    get_milestones = function() {
+      get_gh_milestones(self$user_name, self$repo_name)
+    },
+    get_coc = function() {
+      get_gh_coc(self$user_name, self$repo_name)
+    },
+    get_license = function() {
+      get_gh_license(self$user_name, self$repo_name)
+    },
+    get_pull_requests = function() {
+      get_gh_pr(self$user_name, self$repo_name)
+    },
+    get_releases = function() {
+      get_gh_releases(self$user_name, self$repo_name)
+    },
+    get_travis_status = function() {
+      get_status_travis(self$user_name, self$repo_name)
+    },
+    get_appveyor_status = function() {
+      get_status_appveyor(self$user_name, self$repo_name)
+    },
+    get_coverage = function() {
+      get_code_coverage(self$user_name, self$repo_name)
+    }
+  )
+)
+
+
+#' Stars, forks and issues
+#'
+#' Returns number of stars, forks and open issues of a GitHub repository.
 #'
 #' @param user_name Name of the repository.
 #' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
-#' get_github_info("tidyverse", "dplyr")
+#' get_gh_stats("tidyverse", "dplyr")
 #' }
 #'
 #' @export
 #'
-get_github_info <- function(user_name, repo_name) {
+get_gh_stats <- function(user_name, repo_name) {
 
   check_repo(user_name, repo_name)
 
@@ -292,6 +409,90 @@ get_gh_releases <- function(user_name, repo_name) {
 
 }
 
+#' Travis build status
+#'
+#' Return the latest travis build status.
+#'
+#' @param user_name Name of the GitHub repository.
+#' @param repo_name Name of the package.
+#'
+#' @examples
+#' \dontrun{
+#' get_status_travis("rsquaredacademy", "olsrr")
+#' }
+#'
+#' @export
+#'
+get_status_travis <- function(user_name, repo_name) {
+
+  check_repo(user_name, repo_name)
+
+  pkg_name <- glue::glue("repos/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://api.travis-ci.org", path = pkg_name)
+  resp     <- httr::GET(url)
+
+  httr::content(resp, "parsed") %>%
+    xml2::as_list() %>%
+    magrittr::use_series('Projects') %>%
+    magrittr::use_series('Project') %>%
+    attributes() %>%
+    magrittr::use_series('lastBuildStatus') %>%
+    magrittr::extract(1)
+
+}
+
+#' Appveyor build status
+#'
+#' Return the latest appveyor build status.
+#'
+#' @param user_name Name of the GitHub repository.
+#' @param repo_name Name of the package.
+#'
+#' @examples
+#' \dontrun{
+#' get_status_appveyor("rsquaredacademy", "olsrr")
+#' }
+#'
+#' @export
+#'
+get_status_appveyor <- function(user_name, repo_name) {
+
+  check_repo(user_name, repo_name)
+
+  pkg_name <- glue::glue("/api/projects/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://ci.appveyor.com", path = pkg_name)
+  resp     <- httr::GET(url)
+  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+  result$build$status
+
+}
+
+#' Code coverage
+#'
+#' Return the code coverage of the package.
+#'
+#' @param user_name Name of the GitHub repository.
+#' @param repo_name Name of the package.
+#'
+#' @examples
+#' \dontrun{
+#' get_code_coverage("rsquaredacademy", "olsrr")
+#' }
+#'
+#' @export
+#'
+get_code_coverage <- function(user_name, repo_name) {
+
+  check_repo(user_name, repo_name)
+
+  pkg_name <- glue::glue("/api/gh/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://codecov.io", path = pkg_name)
+  resp     <- httr::GET(url)
+  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+  result$commit$totals$c
+
+}
+
 connect_api <- function(node) {
 
 	pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/", node)
@@ -301,3 +502,35 @@ connect_api <- function(node) {
 
 }
 
+
+check_repo <- function(user_name, repo_name) {
+  
+  if (curl::has_internet()) {
+    
+    repo_url <- glue::glue("https://github.com/", user_name)
+    
+    repo_status <-
+      repo_url %>%
+      httr::GET() %>%
+      httr::status_code()
+    
+    if (repo_status != 200) {
+      stop("Please check the repository name.", call. = FALSE)
+    }
+    
+    pkg_url <- glue::glue("https://github.com/", user_name, "/", repo_name)
+    
+    pkg_status <-
+      pkg_url %>%
+      httr::GET() %>%
+      httr::status_code()
+  
+    if (pkg_status != 200) {
+      stop("Please check the package name.", call. = FALSE)
+    }
+    
+  } else {
+    stop("Please check your internet connection.", call. = FALSE)
+  }
+  
+}

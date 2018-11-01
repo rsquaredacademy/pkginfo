@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Code of conduct — get_gh_coc • pkginfo</title>
+<title>Downloads — get_cran_downloads • pkginfo</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Code of conduct — get_gh_coc" />
+<meta property="og:title" content="Downloads — get_cran_downloads" />
 
-<meta property="og:description" content="Returns code of conduct of repository." />
+<meta property="og:description" content="Package downloads from RStudio CRAN mirror." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -106,36 +106,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Code of conduct</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-github.R'><code>R/info-github.R</code></a></small>
-    <div class="hidden name"><code>get_gh_coc.Rd</code></div>
+    <h1>Downloads</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-cran.R'><code>R/info-cran.R</code></a></small>
+    <div class="hidden name"><code>get_cran_downloads.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Returns code of conduct of repository.</p>
+    <p>Package downloads from RStudio CRAN mirror.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_gh_coc</span>(<span class='no'>user_name</span>, <span class='no'>repo_name</span>)</pre>
+    <pre class="usage"><span class='fu'>get_cran_downloads</span>(<span class='no'>package_name</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>user_name</th>
-      <td><p>User or organization name.</p></td>
-    </tr>
-    <tr>
-      <th>repo_name</th>
-      <td><p>Name of the repository.</p></td>
+      <th>package_name</th>
+      <td><p>Name of the package.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_gh_coc</span>(<span class='st'>"tidyverse"</span>, <span class='st'>"dplyr"</span>)
+<span class='fu'>get_cran_downloads</span>(<span class='st'>"dplyr"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

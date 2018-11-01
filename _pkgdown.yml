@@ -35,22 +35,10 @@ home:
 
 
 reference:
-- title: Download Info
+- title: GitHub 
 
   contents:
-  - get_downloads
-
-- title: Build Info
-
-  contents:
-  - check_travis
-  - check_appveyor
-  - check_coverage
-
-- title: GitHub Info
-
-  contents:
-  - get_github_info
+  - get_gh_stats
   - get_gh_branches
   - get_gh_issues
   - get_gh_labels
@@ -59,11 +47,16 @@ reference:
   - get_gh_license
   - get_gh_pr
   - get_gh_releases
+  - get_status_travis
+  - get_status_appveyor
+  - get_code_coverage
+  - GitHubRepo
 
-- title: CRAN Info
+- title: CRAN 
 
   contents:
-  - check_cran_results
+  - get_cran_downloads
+  - get_cran_results
   - get_cran_authors
   - get_cran_desc
   - get_cran_imports
@@ -75,10 +68,6 @@ reference:
   - get_cran_title
   - get_cran_urls
   - get_cran_version
-
-- title: OOP Interface
-
-  contents:
   - CranPackage
 
 - title: Others
