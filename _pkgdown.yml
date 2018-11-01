@@ -75,6 +75,10 @@ reference:
   - get_cran_title
   - get_cran_urls
   - get_cran_version
+
+- title: OOP Interface
+
+  contents:
   - CranPackage
 
 - title: Others
