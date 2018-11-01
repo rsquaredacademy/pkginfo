@@ -21,7 +21,7 @@ get_github_info <- function(user_name, repo_name) {
   issues <- pkg$open_issues_count
   forks  <- pkg$forks_count
 
-  tibble(
+  tibble::tibble(
     stars  = stars,
     issues = issues,
     forks  = forks
@@ -29,17 +29,14 @@ get_github_info <- function(user_name, repo_name) {
 
 }
 
-#' @importFrom httr modify_url GET content
-#' @importFrom jsonlite fromJSON
-#'
 pkg_github <- function(user_name, repo_name) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name)
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  pkg_name <- glue::glue("/repos/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://api.github.com", path = pkg_name)
+  resp     <- httr::GET(url)
+  jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
 }
 
@@ -55,8 +52,6 @@ pkg_github <- function(user_name, repo_name) {
 #' get_gh_branches("tidyverse", "dplyr")
 #' }
 #'
-#' @importFrom purrr map_chr
-#'
 #' @export
 #'
 get_gh_branches <- function(user_name, repo_name) {
@@ -64,7 +59,7 @@ get_gh_branches <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out <- connect_api("branches")
-  map_chr(out, "name")
+  purrr::map_chr(out, "name")
 
 }
 
@@ -80,8 +75,6 @@ get_gh_branches <- function(user_name, repo_name) {
 #' get_gh_issues("tidyverse", "dplyr")
 #' }
 #'
-#' @importFrom purrr map_int
-#'
 #' @export
 #'
 get_gh_issues <- function(user_name, repo_name) {
@@ -89,13 +82,13 @@ get_gh_issues <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out            <- connect_api("issues")
-  issue_date     <- as.Date(map_chr(out, "created_at"))
-  issue_number   <- map_int(out, "number")
-  issue_title    <- map_chr(out, "title")
-  issue_assignee <- extract2(out, 1)$assignee$login
-  issue_body     <- map_chr(out, "body")
+  issue_date     <- as.Date(purrr::map_chr(out, "created_at"))
+  issue_number   <- purrr::map_int(out, "number")
+  issue_title    <- purrr::map_chr(out, "title")
+  issue_assignee <- magrittr::extract2(out, 1)$assignee$login
+  issue_body     <- purrr::map_chr(out, "body")
 
-  tibble(
+  tibble::tibble(
     date        = issue_date,
     number      = issue_number,
     title       = issue_title,
@@ -125,10 +118,10 @@ get_gh_labels <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out         <- connect_api("labels")
-  label_name  <- map_chr(out, "name")
-  label_color <- map_chr(out, "color")
+  label_name  <- purrr::map_chr(out, "name")
+  label_color <- purrr::map_chr(out, "color")
 
-  tibble(
+  tibble::tibble(
     name  = label_name,
     color = label_color
   )
@@ -154,15 +147,15 @@ get_gh_milestones <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out      <- connect_api("milestones")
-  m_title  <- map_chr(out, "title")
-  m_body   <- map_chr(out, "description")
-  m_open   <- map_int(out, "open_issues")
-  m_closed <- map_int(out, "closed_issues")
-  m_start  <- as.Date(map_chr(out, "created_at"))
-  due      <- extract2(out, 1)$due_on
+  m_title  <- purrr::map_chr(out, "title")
+  m_body   <- purrr::map_chr(out, "description")
+  m_open   <- purrr::map_int(out, "open_issues")
+  m_closed <- purrr::map_int(out, "closed_issues")
+  m_start  <- as.Date(purrr::map_chr(out, "created_at"))
+  due      <- magrittr::extract2(out, 1)$due_on
   m_due    <- ifelse(is.null(due), NA, as.Date(due))
 
-  tibble(
+  tibble::tibble(
     title         = m_title,
     start_date    = m_start,
     due_date      = m_due,
@@ -191,10 +184,10 @@ get_gh_coc <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  pkg_name <- glue("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url, add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
-  out      <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
+  url      <- httr::modify_url("https://api.github.com", path = pkg_name)
+  resp     <- httr::GET(url, add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
+  out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
   cat(out$body)
 
@@ -251,12 +244,12 @@ get_gh_pr <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out         <- connect_api("pulls")
-  pull_number <- map_int(out, "number")
-  pull_start  <- as.Date(map_chr(out, "created_at"))
-  pull_title  <- map_chr(out, "title")
-  pull_status <- map_chr(out, "state")
+  pull_number <- purrr::map_int(out, "number")
+  pull_start  <- as.Date(purrr::map_chr(out, "created_at"))
+  pull_title  <- purrr::map_chr(out, "title")
+  pull_status <- purrr::map_chr(out, "state")
 
-  tibble(
+  tibble::tibble(
     number = pull_number,
     date   = pull_start,
     title  = pull_title,
@@ -284,13 +277,13 @@ get_gh_releases <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out               <- connect_api("releases")
-  release_tag       <- map_chr(out, "tag_name")
-  release_title     <- map_chr(out, "name")
-  pre_release       <- map_lgl(out, "prerelease")
-  release_published <- as.Date(map_chr(out, "published_at"))
+  release_tag       <- purrr::map_chr(out, "tag_name")
+  release_title     <- purrr::map_chr(out, "name")
+  pre_release       <- purrr::map_lgl(out, "prerelease")
+  release_published <- as.Date(purrr::map_chr(out, "published_at"))
 
 
-  tibble(
+  tibble::tibble(
     tag        = release_tag,
     date       = release_published,
     title      = release_title,
@@ -301,10 +294,10 @@ get_gh_releases <- function(user_name, repo_name) {
 
 connect_api <- function(node) {
 
-	pkg_name <- glue("/repos/", user_name, "/", repo_name, "/", node)
-  url      <- modify_url("https://api.github.com", path = pkg_name)
-  resp     <- GET(url)
-  fromJSON(content(resp, "text"), simplifyVector = FALSE)
+	pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/", node)
+  url      <- httr::modify_url("https://api.github.com", path = pkg_name)
+  resp     <- httr::GET(url)
+  jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
 }
 

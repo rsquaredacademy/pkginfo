@@ -9,19 +9,17 @@
 #' get_cran_title("dplyr")
 #' }
 #'
-#' @importFrom rvest html_text
-#'
 #' @export
 #'
 get_cran_title <- function(package_name) {
 
   check_cran(package_name)
 
-  url <- glue("https://cran.r-project.org/package=", package_name)
+  url <- glue::glue("https://cran.r-project.org/package=", package_name)
 
-  read_html(url) %>%
-    html_nodes("h2") %>%
-    html_text()
+  xml2::read_html(url) %>%
+    rvest::html_nodes("h2") %>%
+    rvest::html_text()
 
 }
 
@@ -42,12 +40,12 @@ get_cran_desc <- function(package_name) {
 
   check_cran(package_name)
 
-  url <- glue("https://cran.r-project.org/package=", package_name)
+  url <- glue::glue("https://cran.r-project.org/package=", package_name)
 
-  read_html(url) %>%
-    html_nodes("p") %>%
-    html_text() %>%
-    extract(1)
+  glue::read_html(url) %>%
+    rvest::html_nodes("p") %>%
+    rvest::html_text() %>%
+    magrittr::extract(1)
 
 }
 
@@ -63,8 +61,6 @@ get_cran_desc <- function(package_name) {
 #' get_cran_version("dplyr")
 #' }
 #'
-#' @importFrom dplyr filter
-#'
 #' @export
 #'
 get_cran_version <- function(package_name) {
@@ -74,8 +70,8 @@ get_cran_version <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Version:") %>%
-    use_series(X2)
+    dplyr::filter(X1 == "Version:") %>%
+    magrittr::use_series(X2)
 
 }
 
@@ -100,8 +96,8 @@ get_cran_r_dep <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Depends:") %>%
-    use_series(X2)
+    dplyr::filter(X1 == "Depends:") %>%
+    magrittr::use_series(X2)
 
 }
 
@@ -116,9 +112,6 @@ get_cran_r_dep <- function(package_name) {
 #' get_cran_imports("dplyr")
 #' }
 #'
-#' @importFrom stringr str_split
-#' @importFrom magrittr set_colnames
-#'
 #' @export
 #'
 get_cran_imports <- function(package_name) {
@@ -128,12 +121,12 @@ get_cran_imports <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Imports:") %>%
-    use_series(X2) %>%
-    str_split(pattern = ", ") %>%
+    dplyr::filter(X1 == "Imports:") %>%
+    magrittr::use_series(X2) %>%
+    stringr::str_split(pattern = ", ") %>%
     unlist() %>%
-    tibble() %>%
-    set_colnames("imports")
+    tibble::tibble() %>%
+    magrittr::set_colnames("imports")
 
 
 }
@@ -158,12 +151,12 @@ get_cran_suggests <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Suggests:") %>%
-    use_series(X2) %>%
-    str_split(pattern = ", ") %>%
+    dplyrt::filter(X1 == "Suggests:") %>%
+    magrittr::use_series(X2) %>%
+    stringr::str_split(pattern = ", ") %>%
     unlist() %>%
-    tibble() %>%
-    set_colnames("suggests")
+    tibble::tibble() %>%
+    magrittr::set_colnames("suggests")
 
 
 }
@@ -188,8 +181,8 @@ get_cran_pub_date <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Published:") %>%
-    use_series(X2)
+    dplyr::filter(X1 == "Published:") %>%
+    magrittr::use_series(X2)
 
 }
 
@@ -213,8 +206,8 @@ get_cran_license <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "License:") %>%
-    use_series(X2)
+    dplyr::filter(X1 == "License:") %>%
+    magrittr::use_series(X2)
 
 }
 
@@ -238,12 +231,12 @@ get_cran_authors <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Author:") %>%
-    use_series(X2) %>%
-    str_split(",\n  ") %>%
+    dplyr::filter(X1 == "Author:") %>%
+    magrittr::use_series(X2) %>%
+    stringr::str_split(",\n  ") %>%
     unlist() %>%
-    tibble() %>%
-    set_colnames("name")
+    tibble::tibble() %>%
+    magrittr::set_colnames("name")
 
 }
 
@@ -267,8 +260,8 @@ get_cran_maintainer <- function(package_name) {
 
   package_name %>%
     get_cran_table() %>%
-    filter(X1 == "Maintainer:") %>%
-    use_series(X2)
+    dplyr::filter(X1 == "Maintainer:") %>%
+    magrittr::use_series(X2)
 
 }
 
@@ -283,9 +276,6 @@ get_cran_maintainer <- function(package_name) {
 #' get_cran_urls("dplyr")
 #' }
 #'
-#' @importFrom dplyr mutate case_when
-#' @importFrom stringr str_detect
-#'
 #' @export
 #'
 get_cran_urls <- function(package_name) {
@@ -296,28 +286,28 @@ get_cran_urls <- function(package_name) {
   bugs <-
     package_name %>%
     get_cran_table() %>%
-    filter(X1 == "BugReports:") %>%
-    use_series(X2) %>%
-    extract(1)
+    dplyr::filter(X1 == "BugReports:") %>%
+    magrittr::use_series(X2) %>%
+    magrittr::extract(1)
 
   website <-
     package_name %>%
     get_cran_table() %>%
-    filter(X1 == "URL:") %>%
-    use_series(X2) %>%
-    str_split(pattern = ", ") %>%
+    dplyr::filter(X1 == "URL:") %>%
+    magrittr::use_series(X2) %>%
+    stringr::str_split(pattern = ", ") %>%
     unlist()
 
-  tibble(urls = c(bugs, website)) %>%
-    mutate(website = case_when(
-        str_detect(urls, pattern = "issues") ~ "Bugs",
-        str_detect(urls, pattern = "github") ~ "GitHub",
-        str_detect(urls, pattern = "gitlab") ~ "GitLab",
-        str_detect(urls, pattern = "r-forge") ~ "R-Forge",
+  tibble::tibble(urls = c(bugs, website)) %>%
+    dplyr::mutate(website = dplyr::case_when(
+        stringr::str_detect(urls, pattern = "issues") ~ "Bugs",
+        stringr::str_detect(urls, pattern = "github") ~ "GitHub",
+        stringr::str_detect(urls, pattern = "gitlab") ~ "GitLab",
+        stringr::str_detect(urls, pattern = "r-forge") ~ "R-Forge",
         TRUE ~ "Others"
       )
     ) %>%
-    select(website, urls)
+    dplyr::select(website, urls)
 
 }
 
@@ -325,28 +315,28 @@ get_cran_table <- function(package_name) {
 
   check_cran(package_name)
 
-  url <- glue(
+  url <- glue::glue(
     "https://cran.r-project.org/package=", package_name
   )
 
-  read_html(url) %>%
-    html_nodes("table") %>%
-    html_table() %>%
-    extract2(1)
+  xml2::read_html(url) %>%
+    rvest::html_nodes("table") %>%
+    rvest::html_table() %>%
+    magrittr::extract2(1)
 
 }
 
 
 check_cran <- function(package_name) {
   
-  if (has_internet()) {
+  if (curl::has_internet()) {
     
-    url <- glue("https://cran.r-project.org/package=", package_name)
+    url <- glue::glue("https://cran.r-project.org/package=", package_name)
     
     status <-
       url %>%
-      GET() %>%
-      status_code()
+      httr::GET() %>%
+      httr::status_code()
     
     if (status != 200) {
       stop("Please check the package name.", call. = FALSE)

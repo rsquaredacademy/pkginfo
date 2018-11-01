@@ -9,10 +9,7 @@
 #' get_downloads("dplyr")
 #' }
 #'
-#' @importFrom cranlogs cran_downloads
-#' @importFrom lubridate today
-#' @importFrom dplyr select
-#' @importFrom tibble tibble
+#' @importFrom magrittr %>%
 #'
 #' @export
 #'
@@ -21,24 +18,24 @@ get_downloads <- function(package_name) {
   check_cran(package_name)
   count <- NULL
 
-  latest <- today() - 2
-  last_day <- cran_downloads(package_name, from = latest, to = latest) %>%
-    select(count) %>%
+  latest <- lubridate::today() - 2
+  last_day <- cranlogs::cran_downloads(package_name, from = latest, to = latest) %>%
+    dplyr::select(count) %>%
     sum()
 
-  last_week <- cran_downloads(package_name, "last-week") %>%
-    select(count) %>%
+  last_week <- cranlogs::cran_downloads(package_name, "last-week") %>%
+    dplyr::select(count) %>%
     sum()
 
-  last_month <- cran_downloads(package_name, "last-month") %>%
-    select(count) %>%
+  last_month <- cranlogs::cran_downloads(package_name, "last-month") %>%
+    dplyr::select(count) %>%
     sum()
 
-  overall <- cran_downloads(package_name, from = "2012-10-01", to = latest) %>%
-    select(count) %>%
+  overall <- cranlogs::cran_downloads(package_name, from = "2012-10-01", to = latest) %>%
+    dplyr::select(count) %>%
     sum()
 
-  tibble(
+  tibble::tibble(
     latest = last_day,
     last_week = last_week,
     last_month = last_month,

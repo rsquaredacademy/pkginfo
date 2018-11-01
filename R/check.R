@@ -9,26 +9,20 @@
 #' check_cran_results("dplyr")
 #' }
 #'
-#' @importFrom pingr is_online
-#' @importFrom glue glue
-#' @importFrom magrittr extract2 %>%
-#' @importFrom xml2 read_html
-#' @importFrom rvest html_nodes html_table
-#'
 #' @export
 #'
 check_cran_results <- function(package_name) {
 
   check_result(package_name)
 
-  url <- glue(
+  url <- glue::glue(
     "https://cran.r-project.org/web/checks/check_results_", repo_name, ".html"
   )
 
-  read_html(url) %>%
-    html_nodes("table") %>%
-    html_table() %>%
-    extract2(1)
+  xml2::read_html(url) %>%
+    rvest::html_nodes("table") %>%
+    rvest::html_table() %>%
+    magrittr::extract2(1)
 
 }
 
@@ -44,28 +38,23 @@ check_cran_results <- function(package_name) {
 #' check_travis("rsquaredacademy", "olsrr")
 #' }
 #'
-#' @importFrom httr modify_url GET content
-#' @importFrom magrittr use_series extract
-#' @importFrom xml2 as_list
-#'
-#'
 #' @export
 #'
 check_travis <- function(user_name, repo_name) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue("repos/", user_name, "/", repo_name)
-  url      <- modify_url("https://api.travis-ci.org", path = pkg_name)
-  resp     <- GET(url)
+  pkg_name <- glue::glue("repos/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://api.travis-ci.org", path = pkg_name)
+  resp     <- httr::GET(url)
 
-  content(resp, "parsed") %>%
-    as_list() %>%
-    use_series('Projects') %>%
-    use_series('Project') %>%
+  httr::content(resp, "parsed") %>%
+    xml2::as_list() %>%
+    magrittr::use_series('Projects') %>%
+    magrittr::use_series('Project') %>%
     attributes() %>%
-    use_series('lastBuildStatus') %>%
-    extract(1)
+    magrittr::use_series('lastBuildStatus') %>%
+    magrittr::extract(1)
 
 }
 
@@ -81,18 +70,16 @@ check_travis <- function(user_name, repo_name) {
 #' check_appveyor("rsquaredacademy", "olsrr")
 #' }
 #'
-#' @importFrom jsonlite fromJSON
-#'
 #' @export
 #'
 check_appveyor <- function(user_name, repo_name) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue("/api/projects/", user_name, "/", repo_name)
-  url      <- modify_url("https://ci.appveyor.com", path = pkg_name)
-  resp     <- GET(url)
-  result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  pkg_name <- glue::glue("/api/projects/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://ci.appveyor.com", path = pkg_name)
+  resp     <- httr::GET(url)
+  result   <- jsonlite::fromJSON(content(resp, "text"), simplifyVector = FALSE)
   result$build$status
 
 }
@@ -115,31 +102,27 @@ check_coverage <- function(user_name, repo_name) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue("/api/gh/", user_name, "/", repo_name)
-  url      <- modify_url("https://codecov.io", path = pkg_name)
-  resp     <- GET(url)
-  result   <- fromJSON(content(resp, "text"), simplifyVector = FALSE)
+  pkg_name <- glue::glue("/api/gh/", user_name, "/", repo_name)
+  url      <- httr::modify_url("https://codecov.io", path = pkg_name)
+  resp     <- httr::GET(url)
+  result   <- jsonlite::fromJSON(content(resp, "text"), simplifyVector = FALSE)
   result$commit$totals$c
 
 }
-
-
-#' @importFrom curl has_internet
-#' @importFrom httr GET status_code
-#' 
+ 
 check_result <- function(repo_name) {
   
-  if (has_internet()) {
+  if (curl::has_internet()) {
     
-    url <- glue(
+    url <- glue::glue(
       "https://cran.r-project.org/web/checks/check_results_", repo_name, 
       ".html"
     )
     
     status <-
       url %>%
-      GET() %>%
-      status_code()
+      httr::GET() %>%
+      httr::status_code()
     
     if (status != 200) {
       stop("Please check the package name.", call. = FALSE)
@@ -153,25 +136,25 @@ check_result <- function(repo_name) {
 
 check_repo <- function(user_name, repo_name) {
   
-  if (has_internet()) {
+  if (curl::has_internet()) {
     
-    repo_url <- glue("https://github.com/", user_name)
+    repo_url <- glue::glue("https://github.com/", user_name)
     
     repo_status <-
       repo_url %>%
-      GET() %>%
-      status_code()
+      httr::GET() %>%
+      httr::status_code()
     
     if (repo_status != 200) {
       stop("Please check the repository name.", call. = FALSE)
     }
     
-    pkg_url <- glue("https://github.com/", user_name, "/", repo_name)
+    pkg_url <- glue::glue("https://github.com/", user_name, "/", repo_name)
     
     pkg_status <-
       pkg_url %>%
-      GET() %>%
-      status_code()
+      httr::GET() %>%
+      httr::status_code()
   
     if (pkg_status != 200) {
       stop("Please check the package name.", call. = FALSE)
