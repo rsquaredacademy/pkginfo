@@ -75,5 +75,10 @@ reference:
   - get_cran_title
   - get_cran_urls
   - get_cran_version
+  - CranPackage
 
+- title: Others
+
+  contents:
+  - pkginfo
 
