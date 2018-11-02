@@ -175,7 +175,7 @@ get_gh_branches <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  out <- connect_api("branches")
+  out <- connect_api(user_name, repo_name, "branches")
   purrr::map_chr(out, "name")
 
 }
@@ -198,7 +198,7 @@ get_gh_issues <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  out            <- connect_api("issues")
+  out            <- connect_api(user_name, repo_name, "issues")
   issue_date     <- as.Date(purrr::map_chr(out, "created_at"))
   issue_number   <- purrr::map_int(out, "number")
   issue_title    <- purrr::map_chr(out, "title")
@@ -234,7 +234,7 @@ get_gh_labels <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  out         <- connect_api("labels")
+  out         <- connect_api(user_name, repo_name, "labels")
   label_name  <- purrr::map_chr(out, "name")
   label_color <- purrr::map_chr(out, "color")
 
@@ -263,7 +263,7 @@ get_gh_milestones <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  out      <- connect_api("milestones")
+  out      <- connect_api(user_name, repo_name, "milestones")
   m_title  <- purrr::map_chr(out, "title")
   m_body   <- purrr::map_chr(out, "description")
   m_open   <- purrr::map_int(out, "open_issues")
@@ -329,7 +329,7 @@ get_gh_license <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-	out <- connect_api("license")
+	out <- connect_api(user_name, repo_name, "license")
   if (length(out) == 2) {
     cat("This repository does not have a license file.")
   } else {
@@ -360,7 +360,7 @@ get_gh_pr <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  out         <- connect_api("pulls")
+  out         <- connect_api(user_name, repo_name, "pulls")
   pull_number <- purrr::map_int(out, "number")
   pull_start  <- as.Date(purrr::map_chr(out, "created_at"))
   pull_title  <- purrr::map_chr(out, "title")
@@ -393,7 +393,7 @@ get_gh_releases <- function(user_name, repo_name) {
 
 	check_repo(user_name, repo_name)
 
-  out               <- connect_api("releases")
+  out               <- connect_api(user_name, repo_name, "releases")
   release_tag       <- purrr::map_chr(out, "tag_name")
   release_title     <- purrr::map_chr(out, "name")
   pre_release       <- purrr::map_lgl(out, "prerelease")
@@ -493,7 +493,7 @@ get_code_coverage <- function(user_name, repo_name) {
 
 }
 
-connect_api <- function(node) {
+connect_api <- function(user_name, repo_name, node) {
 
 	pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/", node)
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
