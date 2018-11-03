@@ -21,6 +21,7 @@ Imports:
     purrr,
     R6,
     rvest,
+    shiny,
     stringr,
     tibble,
     xml2
@@ -29,7 +30,6 @@ Suggest:
     kableExtra,
     knitr,
     rmarkdown,
-    shiny,
     shinycssloaders,
     shinydashboard,
     testthat
