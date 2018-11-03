@@ -35,6 +35,11 @@ home:
 
 
 reference:
+- title: Dashboard
+
+  contents:
+  - pkginfo_dashboard
+
 - title: GitHub 
 
   contents:

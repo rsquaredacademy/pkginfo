@@ -1,105 +1,128 @@
-library(shiny)
-library(shinydashboard)
-library(pkginfo)
+library(magrittr)
 
-ui <- dashboardPage(
-	dashboardHeader(title = "pkginfo"),
-	dashboardSidebar(
-	  sidebarMenu(
-	    menuItem("Basic Info", tabName = "basic_info", icon = icon("th")),
-	    menuItem("Downloads", tabName = "downloads", icon = icon("th")),
-	    menuItem("Build Status", tabName = "build_status", icon = icon("th")),
-	    menuItem("Issues", tabName = "issues", icon = icon("th")),
-	    menuItem("Releases", tabName = "releases", icon = icon("th")),
-	    menuItem("Branches", tabName = "branches", icon = icon("th")),
-	    menuItem("License", tabName = "license", icon = icon("th")),
-	    menuItem("Dependencies", tabName = "deps", icon = icon("th")),
-	    menuItem("Pull Requests", tabName = "pr", icon = icon("th"))
+ui <- shinydashboard::dashboardPage(
+	shinydashboard::dashboardHeader(title = "pkginfo"),
+	shinydashboard::dashboardSidebar(
+	  shinydashboard::sidebarMenu(
+	    shinydashboard::menuItem("Basic Info", tabName = "basic_info", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Downloads", tabName = "downloads", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Build Status", tabName = "build_status", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Issues", tabName = "issues", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Releases", tabName = "releases", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Branches", tabName = "branches", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Dependencies", tabName = "deps", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Pull Requests", tabName = "pr", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Exit", tabName = "exit", icon = shiny::icon("power-off"))
 	  )
 	),
-	dashboardBody(
-	  tabItems(
-	    tabItem(tabName = "basic_info",
-	    	h2("Basic Information"),
-	    	fluidRow(
-	    		textInput("user_name", "Repository Owner", value = NULL),
-	    		textInput("repo_name", "Repository Name", value = NULL)
+	shinydashboard::dashboardBody(
+	  shinydashboard::tabItems(
+	    shinydashboard::tabItem(tabName = "basic_info",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    	  	shiny::h2("Basic Information"),
+	    	  	shiny::br(),
+  	    		shiny::textInput("user_name", "Repository Owner", value = NULL),
+  	    		shiny::textInput("repo_name", "Repository Name", value = NULL)
+	    	  )
 	    	)
 	    ),
-	    tabItem(tabName = "downloads",
-	    	h2("CRAN Downloads"),
-	    	fluidRow(
-	    		verbatimTextOutput("cran_downloads")
+	    shinydashboard::tabItem(tabName = "downloads",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    	  	shiny::h2("CRAN Downloads"),
+	    	  	shiny::br(),
+	    		  shiny::tableOutput("cran_downloads") %>% 
+							shinycssloaders::withSpinner()
+	    	  )
 	    	)
 	    ),
-	    tabItem(tabName = "build_status",
-	    	h2("Build Status & Code Coverage"),
-	    	fluidRow(
-	    		infoBox("Travis", "Success", icon = icon("credit-card"), fill = TRUE),
-	    		infoBox("Appveyor", "Success", icon = icon("credit-card"), fill = TRUE),
-	    		infoBox("Codecov", "80%", icon = icon("list"), color = "purple", fill = TRUE)
+	    shinydashboard::tabItem(tabName = "build_status",
+	    	shiny::fluidRow(
+	    		shiny::column(12, align = 'center',
+	    			shiny::h2("Build Status & Code Coverage")
+	    		)
 	    	),
-	    	fluidRow(
-	    		valueBox(57, "Stars", icon = icon("credit-card")),
-	    		valueBox(9, "Forks", icon = icon("credit-card")),
-	    		valueBox(6, "Issues", icon = icon("credit-card"))
+	    	shiny::fluidRow(
+	    		shinycssloaders::withSpinner(shinydashboard::infoBoxOutput("travisBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::infoBoxOutput("appveyorBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::infoBoxOutput("coverageBox"))
+	    	),
+	    	shiny::fluidRow(
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("starsBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("forksBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("issuesBox"))
 	    	),
 
-	    	fluidRow(
-	    		valueBox(57, "Imports", icon = icon("credit-card")),
-	    		valueBox(9, "Suggests", icon = icon("credit-card")),
-	    		valueBox(6, "Pull Requests", icon = icon("credit-card"))
+	    	shiny::fluidRow(
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("importsBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("suggestsBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("prBox"))
 	    	),
-	    	fluidRow(
-	    		valueBox(57, "Branches", icon = icon("credit-card")),
-	    		valueBox(9, "Releases", icon = icon("credit-card")),
-	    		valueBox(6, "R Version", icon = icon("credit-card"))
+	    	shiny::fluidRow(
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("branchesBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("releasesBox")),
+	    		shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("versionBox"))
 	    	)
 	    ),
-	    tabItem(tabName = "issues",
-	    	h2("Open Issues"),
-	    	fluidRow(
-	    		verbatimTextOutput("gh_issues")
+	    shinydashboard::tabItem(tabName = "issues",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    	  	shiny::h2("Open Issues"),
+	    	  	shiny::br(),
+	    		  shiny::tableOutput("gh_issues") %>% 
+							shinycssloaders::withSpinner()
+	    	  )
 	    	)
 	    ),
-	    tabItem(tabName = "releases",
-	    	h2("Releases"),
-	    	fluidRow(
-	    		verbatimTextOutput("gh_releases")
+	    shinydashboard::tabItem(tabName = "releases",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    	  	shiny::h2("Releases"),
+	    	  	shiny::br(),
+	    		  shiny::tableOutput("gh_releases") %>% 
+							shinycssloaders::withSpinner()
+	    	  )
 	    	)
 	    ),
-	    tabItem(tabName = "branches",
-	    	h2("Branches"),
-	    	fluidRow(
-	    		verbatimTextOutput("gh_branches")
+	    shinydashboard::tabItem(tabName = "branches",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    		  shiny::tableOutput("gh_branches") %>% 
+							shinycssloaders::withSpinner()
+	    	  )
 	    	)
 	    ),
-	    tabItem(tabName = "license",
-	    	h2("License"),
-	    	fluidRow(
-	    		verbatimTextOutput("gh_license")
-	    	)
-	    ),
-	    tabItem(tabName = "deps",
-	    	h2("Dependencies"),
-	    	fluidRow(
-	    		h3("R Version"),
-	    		verbatimTextOutput("cran_r_version")
+	    shinydashboard::tabItem(tabName = "deps",
+	    	shiny::fluidRow(
+	    		shiny::column(12, align = 'center',
+	    			shiny::h2("Dependencies")
+	    		)
 	    	),
-	    	fluidRow(
-	    		h3("Imports"),
-	    		verbatimTextOutput("cran_imports")
-	    	),
-	    	fluidRow(
-	    		h3("Suggests"),
-	    		verbatimTextOutput("cran_suggests")
+	    	shiny::fluidRow(
+	    		shiny::column(6, align = 'center', 
+		    		shiny::tableOutput("cran_imports") %>% 
+							shinycssloaders::withSpinner()
+		    	), 
+		    	shiny::column(6, align = 'center',
+		    		shiny::tableOutput("cran_suggests") %>% 
+							shinycssloaders::withSpinner()
+	    		)
 	    	)
 	    ),
-	    tabItem(tabName = "pr",
-	    	h2("Open Pull Requests"),
-	    	fluidRow(
-	    		verbatimTextOutput("gh_prs")
+	    shinydashboard::tabItem(tabName = "pr",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    	  	shiny::h2("Open Pull Requests"),
+	    	  	shiny::br(),
+	    		  shiny::tableOutput("gh_prs") %>% 
+							shinycssloaders::withSpinner()
+	    	  )
 	    	)
+	    ),
+	    shinydashboard::tabItem(tabName = "exit",
+	    	shiny::fluidRow(shiny::column(12, align = 'center', shiny::h2("Thank you for using", shiny::strong("pkginfo"), "!"))),
+        shiny::fluidRow(shiny::column(12, align = 'center', shiny::actionButton("exit_button", "Exit App")))
 	    )
 	  )
 	)
@@ -107,42 +130,171 @@ ui <- dashboardPage(
 
 server <- function(input, output) {
 
-	output$cran_downloads <- renderPrint({
-		pkginfo::get_cran_downloads(input$repo_name)
+	output$cran_downloads <- shiny::renderPrint({
+		pkginfo::get_cran_downloads(input$repo_name) %>%
+		  dplyr::rename(Latest = latest, `Last Week` = last_week, `Last Month` = last_month, Total = total) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$gh_issues <- renderPrint({
-		pkginfo::get_gh_issues(input$user_name, input$repo_name)
+	output$travisBox <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "Travis", get_status_travis(input$user_name, input$repo_name), icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  output$appveyorBox <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "Appveyor", get_status_appveyor(input$user_name, input$repo_name), icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  output$coverageBox <- shinydashboard::renderInfoBox({
+    shinydashboard::infoBox(
+      "Coverage", get_code_coverage(input$user_name, input$repo_name), icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  info <- shiny::reactive({
+  	get_gh_stats(input$user_name, input$repo_name)
+  })
+
+  output$starsBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      info()$stars, "Stars", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  output$forksBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      info()$forks, "Forks", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  output$issuesBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      info()$issues, "Issues", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+
+  issues <- shiny::reactive({
+  	pkginfo::get_gh_issues(input$user_name, input$repo_name)
+  })
+
+  releases <- shiny::reactive({
+  	pkginfo::get_gh_releases(input$user_name, input$repo_name)
+  })
+
+  output$releasesBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      as.character(nrow(releases())), "Releases", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  branches <- shiny::reactive({
+  	pkginfo::get_gh_branches(input$user_name, input$repo_name)
+  })
+
+  output$branchesBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      as.character(nrow(branches())), "Branches", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  prs <- shiny::reactive({
+  	pkginfo::get_gh_pr(input$user_name, input$repo_name)
+  })
+
+  output$prBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      as.character(nrow(prs())), "Pull Requests", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  imports <- shiny::reactive({
+  	pkginfo::get_cran_imports(input$repo_name)
+  })
+
+  output$importsBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      as.character(nrow(imports())), "Imports", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  suggests <- shiny::reactive({
+  	pkginfo::get_cran_suggests(input$repo_name)
+  })
+
+  output$suggestsBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      as.character(nrow(suggests())), "Suggests", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+  output$versionBox <- shinydashboard::renderValueBox({
+    shinydashboard::valueBox(
+      pkginfo::get_cran_r_dep(input$repo_name), "R Version", icon = shiny::icon("list"),
+      color = "purple"
+    )
+  })
+
+	output$gh_issues <- shiny::renderPrint({
+		issues() %>%
+			dplyr::rename(Date = date, Number = number, Author = author, Title = title) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$gh_releases <- renderPrint({
-		pkginfo::get_gh_releases(input$user_name, input$repo_name)
+	output$gh_releases <- shiny::renderPrint({
+		releases() %>%
+		  dplyr::rename(Tag = tag, Date = date, Title = title, Prerelease = prerelease) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$gh_branches <- renderPrint({
-		pkginfo::get_gh_branches(input$user_name, input$repo_name)
+	output$gh_branches <- shiny::renderPrint({
+		branches() %>%
+		  dplyr::rename(Branches = branches) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$gh_prs <- renderPrint({
-		pkginfo::get_gh_pr(input$user_name, input$repo_name)
+	output$gh_prs <- shiny::renderPrint({
+		prs() %>%
+			dplyr::rename(Number = number, Date = date, Title = title, Status = status) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$gh_license <- renderPrint({
-		pkginfo::get_gh_license(input$user_name, input$repo_name)
+	output$cran_imports <- shiny::renderPrint({
+		imports() %>%
+		  dplyr::rename(Imports = imports) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$cran_r_version <- renderPrint({
-		pkginfo::get_cran_r_dep(input$repo_name)
+	output$cran_suggests <- shiny::renderPrint({
+		suggests() %>%
+		  dplyr::rename(Suggests = suggests) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
 	})
 
-	output$cran_imports <- renderPrint({
-		pkginfo::get_cran_imports(input$repo_name)
-	})
-
-	output$cran_suggests <- renderPrint({
-		pkginfo::get_cran_suggests(input$repo_name)
-	})
-
+	shiny::observeEvent(input$exit_button, {
+    shiny::stopApp()
+  })
 }
 
-shinyApp(ui, server)
+shiny::shinyApp(ui, server)

@@ -26,8 +26,11 @@ Imports:
     xml2
 Suggest:
     covr,
+    kableExtra,
+    knitr,
     rmarkdown,
     shiny,
+    shinycssloaders,
     shinydashboard,
     testthat
 License: MIT + file LICENSE

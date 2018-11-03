@@ -176,7 +176,7 @@ get_gh_branches <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out <- connect_api(user_name, repo_name, "branches")
-  purrr::map_chr(out, "name")
+  tibble::tibble(branches = purrr::map_chr(out, "name"))
 
 }
 
@@ -282,7 +282,7 @@ get_gh_milestones <- function(user_name, repo_name) {
 
   tibble::tibble(
     title         = m_title,
-    start_date    = m_start,
+    tart_date    = m_start,
     due_date      = m_due,
     description   = m_body,
     open_issues   = m_open,
