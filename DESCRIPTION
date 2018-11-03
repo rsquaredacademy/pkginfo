@@ -16,6 +16,7 @@ Imports:
     jsonlite,
     lubridate,
     magrittr,
+    memoise,
     pingr,
     purrr,
     R6,
@@ -26,6 +27,8 @@ Imports:
 Suggest:
     covr,
     rmarkdown,
+    shiny,
+    shinydashboard,
     testthat
 License: MIT + file LICENSE
 URL: https://pkginfo.rsquaredacademy.com, https://github.com/rsquaredacademy/pkginfo

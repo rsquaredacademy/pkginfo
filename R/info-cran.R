@@ -190,7 +190,7 @@ get_cran_results <- function(package_name) {
     "https://cran.r-project.org/web/checks/check_results_", repo_name, ".html"
   )
 
-  xml2::read_html(url) %>%
+  mem_read_html(url) %>%
     rvest::html_nodes("table") %>%
     rvest::html_table() %>%
     magrittr::extract2(1)
@@ -217,7 +217,7 @@ get_cran_title <- function(package_name) {
 
   url <- glue::glue("https://cran.r-project.org/package=", package_name)
 
-  xml2::read_html(url) %>%
+  mem_read_html(url) %>%
     rvest::html_nodes("h2") %>%
     rvest::html_text()
 
@@ -242,7 +242,7 @@ get_cran_desc <- function(package_name) {
 
   url <- glue::glue("https://cran.r-project.org/package=", package_name)
 
-  xml2::read_html(url) %>%
+  mem_read_html(url) %>%
     rvest::html_nodes("p") %>%
     rvest::html_text() %>%
     magrittr::extract(1)
@@ -269,7 +269,7 @@ get_cran_version <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Version:") %>%
     magrittr::use_series(X2)
 
@@ -295,7 +295,7 @@ get_cran_r_dep <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Depends:") %>%
     magrittr::use_series(X2)
 
@@ -320,7 +320,7 @@ get_cran_imports <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Imports:") %>%
     magrittr::use_series(X2) %>%
     stringr::str_split(pattern = ", ") %>%
@@ -350,7 +350,7 @@ get_cran_suggests <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Suggests:") %>%
     magrittr::use_series(X2) %>%
     stringr::str_split(pattern = ", ") %>%
@@ -380,7 +380,7 @@ get_cran_pub_date <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Published:") %>%
     magrittr::use_series(X2)
 
@@ -405,7 +405,7 @@ get_cran_license <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "License:") %>%
     magrittr::use_series(X2)
 
@@ -430,7 +430,7 @@ get_cran_authors <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Author:") %>%
     magrittr::use_series(X2) %>%
     stringr::str_split(",\n  ") %>%
@@ -459,7 +459,7 @@ get_cran_maintainer <- function(package_name) {
   X2 <- NULL
 
   package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "Maintainer:") %>%
     magrittr::use_series(X2)
 
@@ -485,14 +485,14 @@ get_cran_urls <- function(package_name) {
 
   bugs <-
     package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "BugReports:") %>%
     magrittr::use_series(X2) %>%
     magrittr::extract(1)
 
   website <-
     package_name %>%
-    get_cran_table() %>%
+    mem_get_cran_table() %>%
     dplyr::filter(X1 == "URL:") %>%
     magrittr::use_series(X2) %>%
     stringr::str_split(pattern = ", ") %>%
@@ -519,12 +519,16 @@ get_cran_table <- function(package_name) {
     "https://cran.r-project.org/package=", package_name
   )
 
-  xml2::read_html(url) %>%
+  mem_read_html(url) %>%
     rvest::html_nodes("table") %>%
     rvest::html_table() %>%
     magrittr::extract2(1)
 
 }
+
+mem_get_cran_table <- memoise::memoise(get_cran_table)
+
+mem_read_html <- memoise::memoise(xml2::read_html)
 
 
 check_cran <- function(package_name) {
