@@ -199,18 +199,26 @@ get_gh_issues <- function(user_name, repo_name) {
 	check_repo(user_name, repo_name)
 
   out            <- connect_api(user_name, repo_name, "issues")
-  issue_date     <- as.Date(purrr::map_chr(out, "created_at"))
   issue_number   <- purrr::map_int(out, "number")
   issue_title    <- purrr::map_chr(out, "title")
-  issue_assignee <- magrittr::extract2(out, 1)$assignee$login
   issue_body     <- purrr::map_chr(out, "body")
+
+  issue_date <- 
+    out %>%
+    purrr::map_chr("created_at") %>%
+    as.Date()
+
+  issue_user <-
+    out %>%
+	  purrr::map("user") %>%
+	  purrr::map_chr("login")
+
 
   tibble::tibble(
     date        = issue_date,
     number      = issue_number,
-    title       = issue_title,
-    assignee    = issue_assignee,
-    description = issue_body
+    author      = issue_user,
+    title       = issue_title
   )
 
 }
