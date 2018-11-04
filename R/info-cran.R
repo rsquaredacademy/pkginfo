@@ -187,7 +187,7 @@ get_cran_results <- function(package_name) {
   check_cran(package_name)
 
   url <- glue::glue(
-    "https://cran.r-project.org/web/checks/check_results_", repo_name, ".html"
+    "https://cran.r-project.org/web/checks/check_results_", package_name, ".html"
   )
 
   mem_read_html(url) %>%
