@@ -4,6 +4,7 @@ ui <- shinydashboard::dashboardPage(
 	shinydashboard::dashboardHeader(title = "pkginfo"),
 	shinydashboard::dashboardSidebar(
 	  shinydashboard::sidebarMenu(
+	  	id = "tabs",
 	    shinydashboard::menuItem("Basic Info", tabName = "basic_info", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Downloads", tabName = "downloads", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Build Status", tabName = "build_status", icon = shiny::icon("th")),
@@ -23,9 +24,15 @@ ui <- shinydashboard::dashboardPage(
 	    	  shiny::column(12, align = 'center',
 	    	  	shiny::h2("Basic Information"),
 	    	  	shiny::br(),
-  	    		shiny::textInput("user_name", "Repository Owner", value = NULL),
-  	    		shiny::textInput("repo_name", "Repository Name", value = NULL)
+  	    		shiny::textInput("repo_name", "Package/Repo Name", value = NULL),
+  	    		shiny::textInput("user_name", "GitHub Owner/Org", value = NULL)
 	    	  )
+	    	),
+	    	shiny::fluidRow(
+	    		shiny::column(12, align = 'center', 
+	    			shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"), 
+	    			shiny::actionButton("retrieve_info", "Retrieve Info")
+	    		)
 	    	)
 	    ),
 	    shinydashboard::tabItem(tabName = "downloads",
@@ -139,7 +146,23 @@ ui <- shinydashboard::dashboardPage(
 	)
 )
 
-server <- function(input, output) {
+server <- function(input, output, session) {
+
+	update_repo <- shiny::eventReactive(input$check_repo_name, {
+		pkginfo::get_gh_username(input$repo_name)
+	})
+
+	shiny::observe({
+		shiny::updateTextInput(
+			session,
+			inputId = "user_name",
+			value = update_repo()
+		)
+	})
+
+	shiny::observeEvent(input$retrieve_info, {
+		shinydashboard::updateTabItems(session, "tabs", "downloads")
+	})
 
 	output$cran_downloads <- shiny::renderPrint({
 		pkginfo::get_cran_downloads(input$repo_name) %>%
@@ -150,27 +173,27 @@ server <- function(input, output) {
 
 	output$travisBox <- shinydashboard::renderInfoBox({
     shinydashboard::infoBox(
-      "Travis", get_status_travis(input$user_name, input$repo_name), icon = shiny::icon("list"),
+      "Travis", get_status_travis(input$repo_name, input$user_name), icon = shiny::icon("list"),
       color = "purple"
     )
   })
 
   output$appveyorBox <- shinydashboard::renderInfoBox({
     shinydashboard::infoBox(
-      "Appveyor", get_status_appveyor(input$user_name, input$repo_name), icon = shiny::icon("list"),
+      "Appveyor", get_status_appveyor(input$repo_name, input$user_name), icon = shiny::icon("list"),
       color = "purple"
     )
   })
 
   output$coverageBox <- shinydashboard::renderInfoBox({
     shinydashboard::infoBox(
-      "Coverage", get_code_coverage(input$user_name, input$repo_name), icon = shiny::icon("list"),
+      "Coverage", get_code_coverage(input$repo_name, input$user_name), icon = shiny::icon("list"),
       color = "purple"
     )
   })
 
   info <- shiny::reactive({
-  	get_gh_stats(input$user_name, input$repo_name)
+  	get_gh_stats(input$repo_name, input$user_name)
   })
 
   output$starsBox <- shinydashboard::renderValueBox({
@@ -196,11 +219,11 @@ server <- function(input, output) {
 
 
   issues <- shiny::reactive({
-  	pkginfo::get_gh_issues(input$user_name, input$repo_name)
+  	pkginfo::get_gh_issues(input$repo_name, input$user_name)
   })
 
   releases <- shiny::reactive({
-  	pkginfo::get_gh_releases(input$user_name, input$repo_name)
+  	pkginfo::get_gh_releases(input$repo_name, input$user_name)
   })
 
   output$releasesBox <- shinydashboard::renderValueBox({
@@ -211,7 +234,7 @@ server <- function(input, output) {
   })
 
   branches <- shiny::reactive({
-  	pkginfo::get_gh_branches(input$user_name, input$repo_name)
+  	pkginfo::get_gh_branches(input$repo_name, input$user_name)
   })
 
   output$branchesBox <- shinydashboard::renderValueBox({
@@ -222,7 +245,7 @@ server <- function(input, output) {
   })
 
   prs <- shiny::reactive({
-  	pkginfo::get_gh_pr(input$user_name, input$repo_name)
+  	pkginfo::get_gh_pr(input$repo_name, input$user_name)
   })
 
   output$prBox <- shinydashboard::renderValueBox({

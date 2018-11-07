@@ -4,19 +4,19 @@
 \alias{get_gh_stats}
 \title{Stars, forks and issues}
 \usage{
-get_gh_stats(user_name, repo_name)
+get_gh_stats(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{Name of the repository.}
-
 \item{repo_name}{Name of the package.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Returns number of stars, forks and open issues of a GitHub repository.
 }
 \examples{
 \dontrun{
-get_gh_stats("tidyverse", "dplyr")
+get_gh_stats("dplyr", "tidyverse")
 }
 
 }

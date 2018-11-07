@@ -4,19 +4,19 @@
 \alias{get_gh_issues}
 \title{Issues}
 \usage{
-get_gh_issues(user_name, repo_name)
+get_gh_issues(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{User or organization name.}
-
 \item{repo_name}{Name of the repository.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Returns issues of repository.
 }
 \examples{
 \dontrun{
-get_gh_issues("tidyverse", "dplyr")
+get_gh_issues("dplyr", "tidyverse")
 }
 
 }

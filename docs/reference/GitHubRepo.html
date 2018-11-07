@@ -126,7 +126,7 @@
 
     
     <pre>
-myRepo &lt;- GitHubRepo$new("user_name", "repo_name")
+myRepo &lt;- GitHubRepo$new("repo_name", "user_name")
 myRepo$get_stats()
 myRepo$get_branches()
 myRepo$get_issues()
@@ -145,14 +145,14 @@ myRepo$get_coverage()
 
     
     <dl class='dl-horizontal'>
-  <dt>user_name</dt><dd><p>Username of the GitHub repository owner.</p></dd>  
+  <dt>user_name</dt><dd><p>GitHub user or organization name.</p></dd>  
   <dt>repo_name</dt><dd><p>Name of the GitHub repository.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-    <p>To create <code>GitHubRepo</code> objects, you need to use <code>GitHubRepo$new("user_name", "repo_name")</code>.</p>
+    <p>To create <code>GitHubRepo</code> objects, you need to use <code>GitHubRepo$new("repo_name", "user_name")</code>.</p>
 <p><code>myRepo$get_stats()</code> will return the number of stars, forks and issues of the package.</p>
 <p><code>myRepo$get_branches()</code> will return the name of the branches of the package.</p>
 <p><code>myRepo$get_issues()</code> will return the list of open issues.</p>
@@ -169,7 +169,7 @@ myRepo$get_coverage()
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>myRepo</span> <span class='kw'>&lt;-</span> <span class='no'>GitHubRepo</span>$<span class='fu'>new</span>(<span class='st'>"tidyverse"</span>, <span class='st'>"dplyr"</span>)
+<span class='no'>myRepo</span> <span class='kw'>&lt;-</span> <span class='no'>GitHubRepo</span>$<span class='fu'>new</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
 <span class='no'>myRepo</span>$<span class='fu'>get_stats</span>()
 <span class='no'>myRepo</span>$<span class='fu'>get_branches</span>()
 <span class='no'>myRepo</span>$<span class='fu'>get_travis_status</span>()

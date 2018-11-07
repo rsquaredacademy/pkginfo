@@ -4,19 +4,19 @@
 \alias{get_code_coverage}
 \title{Code coverage}
 \usage{
-get_code_coverage(user_name, repo_name)
+get_code_coverage(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{Name of the GitHub repository.}
-
 \item{repo_name}{Name of the package.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Return the code coverage of the package.
 }
 \examples{
 \dontrun{
-get_code_coverage("rsquaredacademy", "olsrr")
+get_code_coverage("dplyr", "rsquaredacademy")
 }
 
 }

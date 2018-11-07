@@ -52,6 +52,7 @@ reference:
   - get_gh_license
   - get_gh_pr
   - get_gh_releases
+  - get_gh_username
   - get_status_travis
   - get_status_appveyor
   - get_code_coverage

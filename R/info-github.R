@@ -2,7 +2,7 @@
 #'
 #' @section Usage:
 #' \preformatted{
-#' myRepo <- GitHubRepo$new("user_name", "repo_name")
+#' myRepo <- GitHubRepo$new("repo_name", "user_name")
 #' myRepo$get_stats()
 #' myRepo$get_branches()
 #' myRepo$get_issues()
@@ -19,13 +19,13 @@
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{user_name}{Username of the GitHub repository owner.}  
+#'   \item{user_name}{GitHub user or organization name.}  
 #'   \item{repo_name}{Name of the GitHub repository.}
 #' }
 #'
 #' @section Details:
 #'
-#' To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("user_name", "repo_name")}.
+#' To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("repo_name", "user_name")}.
 #'
 #' \code{myRepo$get_stats()} will return the number of stars, forks and issues of the package.
 #'
@@ -53,7 +53,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' myRepo <- GitHubRepo$new("tidyverse", "dplyr")
+#' myRepo <- GitHubRepo$new("dplyr", "tidyverse")
 #' myRepo$get_stats()
 #' myRepo$get_branches()
 #' myRepo$get_travis_status()
@@ -69,47 +69,47 @@ NULL
 
 GitHubRepo <- R6::R6Class("GitHubRepo",
   public = list(
-    user_name = NULL,
     repo_name = NULL,
-    initialize = function(user_name = NA, repo_name = NA) {
+    user_name = NULL,
+    initialize = function(repo_name = NA, user_name = NULL) {
       self$user_name <- user_name
       self$repo_name <- repo_name
     },
     get_stats = function() {
-      get_gh_stats(self$user_name, self$repo_name)
+      get_gh_stats(self$repo_name, self$user_name)
     },
     get_branches = function() {
-      get_gh_branches(self$user_name, self$repo_name)
+      get_gh_branches(self$repo_name, self$user_name)
     },
     get_issues = function() {
-      get_gh_issues(self$user_name, self$repo_name)
+      get_gh_issues(self$repo_name, self$user_name)
     },
     get_labels = function() {
-      get_gh_labels(self$user_name, self$repo_name)
+      get_gh_labels(self$repo_name, self$user_name)
     },
     get_milestones = function() {
-      get_gh_milestones(self$user_name, self$repo_name)
+      get_gh_milestones(self$repo_name, self$user_name)
     },
     get_coc = function() {
-      get_gh_coc(self$user_name, self$repo_name)
+      get_gh_coc(self$repo_name, self$user_name)
     },
     get_license = function() {
-      get_gh_license(self$user_name, self$repo_name)
+      get_gh_license(self$repo_name, self$user_name)
     },
     get_pull_requests = function() {
-      get_gh_pr(self$user_name, self$repo_name)
+      get_gh_pr(self$repo_name, self$user_name)
     },
     get_releases = function() {
-      get_gh_releases(self$user_name, self$repo_name)
+      get_gh_releases(self$repo_name, self$user_name)
     },
     get_travis_status = function() {
-      get_status_travis(self$user_name, self$repo_name)
+      get_status_travis(self$repo_name, self$user_name)
     },
     get_appveyor_status = function() {
-      get_status_appveyor(self$user_name, self$repo_name)
+      get_status_appveyor(self$repo_name, self$user_name)
     },
     get_coverage = function() {
-      get_code_coverage(self$user_name, self$repo_name)
+      get_code_coverage(self$repo_name, self$user_name)
     }
   )
 )
@@ -119,17 +119,21 @@ GitHubRepo <- R6::R6Class("GitHubRepo",
 #'
 #' Returns number of stars, forks and open issues of a GitHub repository.
 #'
-#' @param user_name Name of the repository.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_stats("tidyverse", "dplyr")
+#' get_gh_stats("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_stats <- function(user_name, repo_name) {
+get_gh_stats <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
   check_repo(user_name, repo_name)
 
@@ -161,17 +165,21 @@ pkg_github <- function(user_name, repo_name) {
 #'
 #' Returns names of branches.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_branches("tidyverse", "dplyr")
+#' get_gh_branches("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_branches <- function(user_name, repo_name) {
+get_gh_branches <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -184,17 +192,21 @@ get_gh_branches <- function(user_name, repo_name) {
 #'
 #' Returns issues of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_issues("tidyverse", "dplyr")
+#' get_gh_issues("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_issues <- function(user_name, repo_name) {
+get_gh_issues <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -227,18 +239,22 @@ get_gh_issues <- function(user_name, repo_name) {
 #'
 #' Returns labels of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_labels("tidyverse", "dplyr")
+#' get_gh_labels("dplyr", "tidyverse")
 #' }
 #'
 #'
 #' @export
 #'
-get_gh_labels <- function(user_name, repo_name) {
+get_gh_labels <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -257,17 +273,21 @@ get_gh_labels <- function(user_name, repo_name) {
 #'
 #' Returns milestones of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_milestones("tidyverse", "dplyr")
+#' get_gh_milestones("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_milestones <- function(user_name, repo_name) {
+get_gh_milestones <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -295,17 +315,21 @@ get_gh_milestones <- function(user_name, repo_name) {
 #'
 #' Returns code of conduct of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_coc("tidyverse", "dplyr")
+#' get_gh_coc("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_coc <- function(user_name, repo_name) {
+get_gh_coc <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -323,17 +347,21 @@ get_gh_coc <- function(user_name, repo_name) {
 #'
 #' Returns license of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_license("tidyverse", "dplyr")
+#' get_gh_license("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_license <- function(user_name, repo_name) {
+get_gh_license <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -354,17 +382,21 @@ get_gh_license <- function(user_name, repo_name) {
 #'
 #' Returns pull requests of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_pr("tidyverse", "dplyr")
+#' get_gh_pr("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_pr <- function(user_name, repo_name) {
+get_gh_pr <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -387,17 +419,21 @@ get_gh_pr <- function(user_name, repo_name) {
 #'
 #' Returns releases of repository.
 #'
-#' @param user_name User or organization name.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the repository.
 #'
 #' @examples
 #' \dontrun{
-#' get_gh_releases("tidyverse", "dplyr")
+#' get_gh_releases("dplyr", "tidyverse")
 #' }
 #'
 #' @export
 #'
-get_gh_releases <- function(user_name, repo_name) {
+get_gh_releases <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
 	check_repo(user_name, repo_name)
 
@@ -421,17 +457,21 @@ get_gh_releases <- function(user_name, repo_name) {
 #'
 #' Return the latest travis build status.
 #'
-#' @param user_name Name of the GitHub repository.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
-#' get_status_travis("rsquaredacademy", "olsrr")
+#' get_status_travis("dplyr", "rsquaredacademy")
 #' }
 #'
 #' @export
 #'
-get_status_travis <- function(user_name, repo_name) {
+get_status_travis <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
   check_repo(user_name, repo_name)
 
@@ -453,17 +493,21 @@ get_status_travis <- function(user_name, repo_name) {
 #'
 #' Return the latest appveyor build status.
 #'
-#' @param user_name Name of the GitHub repository.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
-#' get_status_appveyor("rsquaredacademy", "olsrr")
+#' get_status_appveyor("dplyr", "rsquaredacademy")
 #' }
 #'
 #' @export
 #'
-get_status_appveyor <- function(user_name, repo_name) {
+get_status_appveyor <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
   check_repo(user_name, repo_name)
 
@@ -479,17 +523,21 @@ get_status_appveyor <- function(user_name, repo_name) {
 #'
 #' Return the code coverage of the package.
 #'
-#' @param user_name Name of the GitHub repository.
+#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the package.
 #'
 #' @examples
 #' \dontrun{
-#' get_code_coverage("rsquaredacademy", "olsrr")
+#' get_code_coverage("dplyr", "rsquaredacademy")
 #' }
 #'
 #' @export
 #'
-get_code_coverage <- function(user_name, repo_name) {
+get_code_coverage <- function(repo_name, user_name = NULL) {
+
+	if (is.null(user_name)) {
+		user_name <- get_gh_username(repo_name)
+	}
 
   check_repo(user_name, repo_name)
 
@@ -541,4 +589,51 @@ check_repo <- function(user_name, repo_name) {
     stop("Please check your internet connection.", call. = FALSE)
   }
   
+}
+
+#' GitHub username
+#'
+#' Returns the GitHub user or organization name.
+#'
+#' @param package_name Name of the package.
+#'
+#' @examples
+#' \dontrun{
+#' get_gh_username("olsrr")
+#' }
+#'
+#' @export
+#'
+get_gh_username <- function(package_name) {
+
+	check_cran(package_name)
+
+	urls <- 
+	  get_cran_urls(package_name) %>%
+	  dplyr::filter(stringr::str_detect(urls, "github")) %>%
+	  dplyr::pull(urls) %>%
+	  dplyr::first() 
+
+	locate_slash <- stringr::str_locate_all(urls, "/")
+
+	start <- 
+	  locate_slash %>%
+	  get_location(position = 3) %>%
+	  magrittr::add(1)
+
+	end <- 
+	  locate_slash %>% 
+	  get_location(position = 4) %>%
+	  magrittr::subtract(1)
+
+	stringr::str_sub(urls, start, end)
+
+}
+
+
+get_location <- function(string, position) {
+  string %>% 
+    magrittr::extract2(1) %>% 
+    magrittr::extract(position, 1) %>% 
+    unname()
 }

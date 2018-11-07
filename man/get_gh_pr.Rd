@@ -4,19 +4,19 @@
 \alias{get_gh_pr}
 \title{Pull requests}
 \usage{
-get_gh_pr(user_name, repo_name)
+get_gh_pr(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{User or organization name.}
-
 \item{repo_name}{Name of the repository.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Returns pull requests of repository.
 }
 \examples{
 \dontrun{
-get_gh_pr("tidyverse", "dplyr")
+get_gh_pr("dplyr", "tidyverse")
 }
 
 }

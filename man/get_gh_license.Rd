@@ -4,19 +4,19 @@
 \alias{get_gh_license}
 \title{License}
 \usage{
-get_gh_license(user_name, repo_name)
+get_gh_license(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{User or organization name.}
-
 \item{repo_name}{Name of the repository.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Returns license of repository.
 }
 \examples{
 \dontrun{
-get_gh_license("tidyverse", "dplyr")
+get_gh_license("dplyr", "tidyverse")
 }
 
 }

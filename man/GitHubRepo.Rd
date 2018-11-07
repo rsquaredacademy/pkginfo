@@ -11,7 +11,7 @@ Retrieve GitHub repository information
 \section{Usage}{
 
 \preformatted{
-myRepo <- GitHubRepo$new("user_name", "repo_name")
+myRepo <- GitHubRepo$new("repo_name", "user_name")
 myRepo$get_stats()
 myRepo$get_branches()
 myRepo$get_issues()
@@ -30,7 +30,7 @@ myRepo$get_coverage()
 \section{Arguments}{
 
 \describe{
-  \item{user_name}{Username of the GitHub repository owner.}  
+  \item{user_name}{GitHub user or organization name.}  
   \item{repo_name}{Name of the GitHub repository.}
 }
 }
@@ -38,7 +38,7 @@ myRepo$get_coverage()
 \section{Details}{
 
 
-To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("user_name", "repo_name")}.
+To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("repo_name", "user_name")}.
 
 \code{myRepo$get_stats()} will return the number of stars, forks and issues of the package.
 
@@ -67,7 +67,7 @@ To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("user_
 
 \examples{
 \dontrun{
-myRepo <- GitHubRepo$new("tidyverse", "dplyr")
+myRepo <- GitHubRepo$new("dplyr", "tidyverse")
 myRepo$get_stats()
 myRepo$get_branches()
 myRepo$get_travis_status()

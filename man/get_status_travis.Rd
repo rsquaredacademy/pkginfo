@@ -4,19 +4,19 @@
 \alias{get_status_travis}
 \title{Travis build status}
 \usage{
-get_status_travis(user_name, repo_name)
+get_status_travis(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{Name of the GitHub repository.}
-
 \item{repo_name}{Name of the package.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Return the latest travis build status.
 }
 \examples{
 \dontrun{
-get_status_travis("rsquaredacademy", "olsrr")
+get_status_travis("dplyr", "rsquaredacademy")
 }
 
 }

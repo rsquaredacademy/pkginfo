@@ -4,19 +4,19 @@
 \alias{get_gh_milestones}
 \title{Milestones}
 \usage{
-get_gh_milestones(user_name, repo_name)
+get_gh_milestones(repo_name, user_name = NULL)
 }
 \arguments{
-\item{user_name}{User or organization name.}
-
 \item{repo_name}{Name of the repository.}
+
+\item{user_name}{GitHub user or organization name.}
 }
 \description{
 Returns milestones of repository.
 }
 \examples{
 \dontrun{
-get_gh_milestones("tidyverse", "dplyr")
+get_gh_milestones("dplyr", "tidyverse")
 }
 
 }
