@@ -40,25 +40,25 @@ get_cran_downloads("olsrr")
 #### Travis Build Status
 
 ```{r travis}
-get_status_travis("rsquaredacademy", "olsrr")
+get_status_travis("olsrr", "rsquaredacademy")
 ```
 
 #### Appveyor Build Status
 
 ```{r appveyor}
-get_status_appveyor("rsquaredacademy", "olsrr")
+get_status_appveyor("olsrr", "rsquaredacademy")
 ```
 
 #### Code Coverage
 
 ```{r coverage}
-get_code_coverage("rsquaredacademy", "olsrr")
+get_code_coverage("olsrr", "rsquaredacademy")
 ```
 
 #### GitHub Statistics
 
 ```{r github}
-get_gh_stats("rsquaredacademy", "olsrr")
+get_gh_stats("olsrr", "rsquaredacademy")
 ```
 
 ## Community Guidelines

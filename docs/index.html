@@ -88,8 +88,8 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"rsquaredacademy/pkginfo"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"rsquaredacademy/pkginfo"</span>)</a></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
@@ -97,38 +97,38 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="download-statistics" class="section level4">
 <h4 class="hasAnchor">
 <a href="#download-statistics" class="anchor"></a>Download Statistics</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/get_cran_downloads.html">get_cran_downloads</a></span>(<span class="st">"olsrr"</span>)
-<span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;   latest last_week last_month total</span>
-<span class="co">#&gt;    &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1    113       926       3632 34101</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/get_cran_downloads.html">get_cran_downloads</a></span>(<span class="st">"olsrr"</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 4</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;   latest last_week last_month total</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 1    183       965       3815 34476</span></a></code></pre></div>
 </div>
 <div id="travis-build-status" class="section level4">
 <h4 class="hasAnchor">
 <a href="#travis-build-status" class="anchor"></a>Travis Build Status</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/get_status_travis.html">get_status_travis</a></span>(<span class="st">"rsquaredacademy"</span>, <span class="st">"olsrr"</span>)
-<span class="co">#&gt; [1] "Success"</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/get_status_travis.html">get_status_travis</a></span>(<span class="st">"olsrr"</span>, <span class="st">"rsquaredacademy"</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; [1] "Success"</span></a></code></pre></div>
 </div>
 <div id="appveyor-build-status" class="section level4">
 <h4 class="hasAnchor">
 <a href="#appveyor-build-status" class="anchor"></a>Appveyor Build Status</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/get_status_appveyor.html">get_status_appveyor</a></span>(<span class="st">"rsquaredacademy"</span>, <span class="st">"olsrr"</span>)
-<span class="co">#&gt; [1] "success"</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/get_status_appveyor.html">get_status_appveyor</a></span>(<span class="st">"olsrr"</span>, <span class="st">"rsquaredacademy"</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] "success"</span></a></code></pre></div>
 </div>
 <div id="code-coverage" class="section level4">
 <h4 class="hasAnchor">
 <a href="#code-coverage" class="anchor"></a>Code Coverage</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/get_code_coverage.html">get_code_coverage</a></span>(<span class="st">"rsquaredacademy"</span>, <span class="st">"olsrr"</span>)
-<span class="co">#&gt; [1] "84.42623"</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/get_code_coverage.html">get_code_coverage</a></span>(<span class="st">"olsrr"</span>, <span class="st">"rsquaredacademy"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; [1] "84.42623"</span></a></code></pre></div>
 </div>
 <div id="github-statistics" class="section level4">
 <h4 class="hasAnchor">
 <a href="#github-statistics" class="anchor"></a>GitHub Statistics</h4>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/get_gh_stats.html">get_gh_stats</a></span>(<span class="st">"rsquaredacademy"</span>, <span class="st">"olsrr"</span>)
-<span class="co">#&gt; # A tibble: 1 x 3</span>
-<span class="co">#&gt;   stars issues forks</span>
-<span class="co">#&gt;   &lt;int&gt;  &lt;int&gt; &lt;int&gt;</span>
-<span class="co">#&gt; 1    57      4     9</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/get_gh_stats.html">get_gh_stats</a></span>(<span class="st">"olsrr"</span>, <span class="st">"rsquaredacademy"</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 3</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;   stars issues forks</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;int&gt;  &lt;int&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1    57      4     9</span></a></code></pre></div>
 </div>
 </div>
 <div id="community-guidelines" class="section level2">
