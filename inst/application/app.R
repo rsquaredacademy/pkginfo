@@ -12,6 +12,7 @@ ui <- shinydashboard::dashboardPage(
 	    shinydashboard::menuItem("Branches", tabName = "branches", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Dependencies", tabName = "deps", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Pull Requests", tabName = "pr", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Stack Overflow", tabName = "so", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Exit", tabName = "exit", icon = shiny::icon("power-off"))
 	  )
 	),
@@ -116,6 +117,16 @@ ui <- shinydashboard::dashboardPage(
 	    	  	shiny::h2("Open Pull Requests"),
 	    	  	shiny::br(),
 	    		  shiny::tableOutput("gh_prs") %>% 
+							shinycssloaders::withSpinner()
+	    	  )
+	    	)
+	    ),
+	    shinydashboard::tabItem(tabName = "so",
+	    	shiny::fluidRow(
+	    	  shiny::column(12, align = 'center',
+	    	  	shiny::h2("Stack OVerflow"),
+	    	  	shiny::br(),
+	    		  shiny::tableOutput("gh_so") %>% 
 							shinycssloaders::withSpinner()
 	    	  )
 	    	)
@@ -274,6 +285,13 @@ server <- function(input, output) {
 	output$gh_prs <- shiny::renderPrint({
 		prs() %>%
 			dplyr::rename(Number = number, Date = date, Title = title, Status = status) %>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
+	})
+
+	output$gh_so <- shiny::renderPrint({
+		pkginfo::get_so_questions(input$repo_name) %>%
+			dplyr::rename(Date = date, Title = title, Owner = owner, Answered = answered, Views = views) %>%
 		  knitr::kable(format = "html") %>%
 		  kableExtra::kable_styling(full_width = FALSE)
 	})
