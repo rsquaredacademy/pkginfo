@@ -5,9 +5,10 @@ ui <- shinydashboard::dashboardPage(
 	shinydashboard::dashboardSidebar(
 	  shinydashboard::sidebarMenu(
 	  	id = "tabs",
-	    shinydashboard::menuItem("Basic Info", tabName = "basic_info", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Welcome", tabName = "welcome", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Overview", tabName = "basic_info", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Downloads", tabName = "downloads", icon = shiny::icon("th")),
-	    shinydashboard::menuItem("Build Status", tabName = "build_status", icon = shiny::icon("th")),
+	    shinydashboard::menuItem("Indicators", tabName = "build_status", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Issues", tabName = "issues", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Releases", tabName = "releases", icon = shiny::icon("th")),
 	    shinydashboard::menuItem("Branches", tabName = "branches", icon = shiny::icon("th")),
@@ -19,10 +20,9 @@ ui <- shinydashboard::dashboardPage(
 	),
 	shinydashboard::dashboardBody(
 	  shinydashboard::tabItems(
-	    shinydashboard::tabItem(tabName = "basic_info",
+	    shinydashboard::tabItem(tabName = "welcome",
 	    	shiny::fluidRow(
 	    	  shiny::column(12, align = 'center',
-	    	  	shiny::h2("Basic Information"),
 	    	  	shiny::br(),
   	    		shiny::textInput("repo_name", "Package/Repo Name", value = NULL),
   	    		shiny::textInput("user_name", "GitHub Owner/Org", value = NULL)
@@ -31,7 +31,26 @@ ui <- shinydashboard::dashboardPage(
 	    	shiny::fluidRow(
 	    		shiny::column(12, align = 'center', 
 	    			shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"), 
-	    			shiny::actionButton("retrieve_info", "Retrieve Info")
+	    			shiny::actionButton("retrieve_info", "Retrieve Info"),
+	    			shiny::br(),
+  	    		shiny::br(),
+  	    		shiny::column(3),
+  	    		shiny::column(6, align = 'center', 
+	  	    		shiny::h4("Click on the Find User/Org button if you do not know the GitHub username or 
+	  	    			organization name. The app will find it if the package has a GitHub repository.")
+	  	    	),
+	  	    	shiny::column(3)
+	    		)
+	    	)
+	    ),
+	    shinydashboard::tabItem(tabName = "basic_info",
+	    	shiny::fluidRow(
+	    		shiny::column(12, align = 'center',
+	    			shiny::h2("Overview")
+	    		),
+	    		br(),
+	    		shiny::column(12, align = 'center',
+	    			shiny::p('Coming soon!')
 	    		)
 	    	)
 	    ),
@@ -43,12 +62,31 @@ ui <- shinydashboard::dashboardPage(
 	    		  shiny::tableOutput("cran_downloads") %>% 
 							shinycssloaders::withSpinner()
 	    	  )
-	    	)
+	    	),
+	    	shiny::fluidRow(
+	    		shiny::column(6, align = 'right',
+	    			shiny::dateInput("start_date", "From")
+	    		),
+	    		shiny::column(6, align = 'left',
+	    			shiny::dateInput("end_date", "To")
+	    		)
+	    	),
+	    	shiny::fluidRow(
+	    		column(2),
+	    		column(8, align = 'center',
+	    			plotOutput("downloads_plot") %>% 
+							shinycssloaders::withSpinner()
+	    		),
+	    		column(2)
+	    	),
+	    	shiny::br(),
+	    	shiny::br(),
+	    	shiny::br()
 	    ),
 	    shinydashboard::tabItem(tabName = "build_status",
 	    	shiny::fluidRow(
 	    		shiny::column(12, align = 'center',
-	    			shiny::h2("Build Status & Code Coverage")
+	    			shiny::h2("Indicators")
 	    		)
 	    	),
 	    	shiny::fluidRow(
@@ -161,7 +199,30 @@ server <- function(input, output, session) {
 	})
 
 	shiny::observeEvent(input$retrieve_info, {
-		shinydashboard::updateTabItems(session, "tabs", "downloads")
+		shinydashboard::updateTabItems(session, "tabs", "basic_info")
+	})
+
+	shiny::observeEvent(input$retrieve_info, {
+		shiny::updateDateInput(
+			session, 
+			inputId = "start_date",
+			value = lubridate::today() - 6
+		)
+	})
+
+	compute_downloads <- reactive({
+		
+		cranlogs::cran_downloads("olsrr", from = input$start_date, to = input$end_date) %>%
+		  dplyr::select(date, count) %>%
+		  ggplot2::ggplot() +
+		  ggplot2::geom_line(ggplot2::aes(x = date, y = count), color = 'red') +
+		  ggplot2::xlab("Date") + ggplot2::ylab("Downloads") + 
+		  ggplot2::ggtitle("CRAN Downloads")
+
+	})
+
+	output$downloads_plot <- shiny::renderPlot({
+		compute_downloads()
 	})
 
 	output$cran_downloads <- shiny::renderPrint({
@@ -173,27 +234,27 @@ server <- function(input, output, session) {
 
 	output$travisBox <- shinydashboard::renderInfoBox({
     shinydashboard::infoBox(
-      "Travis", get_status_travis(input$repo_name, input$user_name), icon = shiny::icon("list"),
+      "Travis", pkginfo::get_status_travis(input$repo_name, input$user_name), icon = shiny::icon("list"),
       color = "purple"
     )
   })
 
   output$appveyorBox <- shinydashboard::renderInfoBox({
     shinydashboard::infoBox(
-      "Appveyor", get_status_appveyor(input$repo_name, input$user_name), icon = shiny::icon("list"),
+      "Appveyor", pkginfo::get_status_appveyor(input$repo_name, input$user_name), icon = shiny::icon("list"),
       color = "purple"
     )
   })
 
   output$coverageBox <- shinydashboard::renderInfoBox({
     shinydashboard::infoBox(
-      "Coverage", get_code_coverage(input$repo_name, input$user_name), icon = shiny::icon("list"),
+      "Coverage", pkginfo::get_code_coverage(input$repo_name, input$user_name), icon = shiny::icon("list"),
       color = "purple"
     )
   })
 
   info <- shiny::reactive({
-  	get_gh_stats(input$repo_name, input$user_name)
+  	pkginfo::get_gh_stats(input$repo_name, input$user_name)
   })
 
   output$starsBox <- shinydashboard::renderValueBox({
