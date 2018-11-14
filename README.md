@@ -10,7 +10,7 @@ information
 [![Travis-CI Build
 Status](https://travis-ci.org/rsquaredacademy/pkginfo.svg?branch=master)](https://travis-ci.org/rsquaredacademy/pkginfo)
 [![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/pkginfo?branch=master&svg=true)](https://ci.appveyor.com/project/rsquaredacademy/pkginfo)
+Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/pkginfo?branch=master&svg=true)](https://ci.appveyor.com/project/aravindhebbali/pkginfo)
 ![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
 ## Installation
@@ -32,7 +32,7 @@ get_cran_downloads("olsrr")
 #> # A tibble: 1 x 4
 #>   latest last_week last_month total
 #>    <dbl>     <dbl>      <dbl> <dbl>
-#> 1    183       965       3815 34476
+#> 1    160       989       3915 35465
 ```
 
 #### Travis Build Status
@@ -63,7 +63,7 @@ get_gh_stats("olsrr", "rsquaredacademy")
 #> # A tibble: 1 x 3
 #>   stars issues forks
 #>   <int>  <int> <int>
-#> 1    57      4     9
+#> 1    59      4    10
 ```
 
 ## Community Guidelines
