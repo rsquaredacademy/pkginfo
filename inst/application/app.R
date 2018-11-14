@@ -16,8 +16,8 @@ ui <- shinydashboard::dashboardPage(
 			shinydashboard::menuItem("Pull Requests", tabName = "pr", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Stack Overflow", tabName = "so", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Exit", tabName = "exit", icon = shiny::icon("power-off"))
-		)
-	),
+			)
+		),
 	shinydashboard::dashboardBody(
 		shinydashboard::tabItems(
 			shinydashboard::tabItem(tabName = "welcome",
@@ -26,8 +26,8 @@ ui <- shinydashboard::dashboardPage(
 						shiny::br(),
 						shiny::textInput("repo_name", "Package/Repo Name", value = NULL),
 						shiny::textInput("user_name", "GitHub Owner/Org", value = NULL)
-					)
-				),
+						)
+					),
 				shiny::fluidRow(
 					shiny::column(12, align = 'center', 
 						shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"), 
@@ -40,108 +40,37 @@ ui <- shinydashboard::dashboardPage(
 								organization name. The app will find it if the package has a GitHub repository.")
 							),
 						shiny::column(3)
+						)
 					)
-				)
-			),
+				),
 			shinydashboard::tabItem(tabName = "basic_info",
 				shiny::fluidRow(
 					shiny::column(12, align = 'center',
 						shiny::h2("Overview")
-						)
-					),
+					)
+				),
 				shiny::br(),
 				shiny::br(),
 				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Title      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_title')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Description      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_desc')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Version      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_version')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Published      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_published')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Maintainer      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_maintainer')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('CRAN      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_cran')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Bug Reports      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_bugs')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('GitHub      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_github')
-					),
-					shiny::column(3)
-				),
-				shiny::fluidRow(
-					shiny::column(3),
-					shiny::column(1, align = 'left',
-						shiny::h5('Website      ')
-						),
-					shiny::column(5, align = 'left',
-						shiny::uiOutput('overview_website')
-					),
-					shiny::column(3)
-				),
-				shiny::br()
+					shiny::uiOutput('out_basic_title') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_desc') %>% 
+						shinycssloaders::withSpinner(),	
+					shiny::uiOutput('out_basic_version') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_pub') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_maintainer') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_cran') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_bugs') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_github') %>% 
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_website') %>% 
+						shinycssloaders::withSpinner()
+				)
 			),
 			shinydashboard::tabItem(tabName = "downloads",
 				shiny::fluidRow(
@@ -268,78 +197,192 @@ ui <- shinydashboard::dashboardPage(
 			shinydashboard::tabItem(tabName = "exit",
 				shiny::fluidRow(shiny::column(12, align = 'center', shiny::h2("Thank you for using", shiny::strong("pkginfo"), "!"))),
 				shiny::fluidRow(shiny::column(12, align = 'center', shiny::actionButton("exit_button", "Exit App")))
+				)
 			)
-		)
-	)
+)
 )
 
 server <- function(input, output, session) {
 
-	output$overview_title <- shiny::renderUI({
-		shiny::p(pkginfo::get_cran_title(input$repo_name))
-		})
-
-	output$overview_desc <- shiny::renderUI({
-		shiny::p(pkginfo::get_cran_desc(input$repo_name))
-	})
-
-	output$overview_version <- shiny::renderUI({
-		shiny::p(pkginfo::get_cran_version(input$repo_name))
-	})
-
-	output$overview_published <- shiny::renderUI({
-		shiny::p(pkginfo::get_cran_pub_date(input$repo_name))
-	})
-
-	output$overview_maintainer <- shiny::renderUI({
-		shiny::p(pkginfo::get_cran_maintainer(input$repo_name))
-	})
-
-	output$overview_cran <- shiny::renderUI({
-		shiny::tagList("", shiny::a("Link", href=paste0("https://CRAN.R-project.org/package=", input$repo_name),
-			, target="_blank"))
-	})
-
-	bug_url <- shiny::eventReactive(input$check_repo_name, {
+	bug_url <- shiny::eventReactive(input$retrieve_info, {
 		pkginfo:::get_cran_table(input$repo_name) %>%
-		  dplyr::filter(X1 == 'BugReports:') %>%
-		  dplyr::select(X2)
+			dplyr::filter(X1 == 'BugReports:') %>%
+			dplyr::select(X2)
 	})
 
-	output$overview_bugs <- shiny::renderUI({
-		shiny::tagList("", shiny::a("Link", href=bug_url(), target="_blank"))
-	})
-
-	output$overview_published <- shiny::renderUI({
-		shiny::p(pkginfo::get_cran_pub_date(input$repo_name))
-	})
-
-	github_url <- shiny::eventReactive(input$check_repo_name, {
+	github_url <- shiny::eventReactive(input$retrieve_info, {
 		uname <- pkginfo:::get_gh_username(input$repo_name) 
 		paste0('https://github.com/', uname, "/", input$repo_name)
 	})
 
-	output$overview_github <- shiny::renderUI({
-		shiny::tagList("", shiny::a("Link", href=github_url(), target="_blank"))
-	})
-
-	website_url <- shiny::eventReactive(input$check_repo_name, {
+	website_url <- shiny::eventReactive(input$retrieve_info, {
 		pkginfo::get_cran_urls(input$repo_name) %>%
-		  dplyr::filter(website != "Bugs") %>%
-		  dplyr::select(urls) %>%
-		  unlist() %>%
-		  stringr::str_extract(pattern = '^((?!github).)*$') %>%
-		  na.exclude() %>%
-		  magrittr::extract(1)
+			dplyr::filter(website != "Bugs") %>%
+			dplyr::select(urls) %>%
+			unlist() %>%
+			stringr::str_extract(pattern = '^((?!github).)*$') %>%
+			na.exclude() %>%
+			magrittr::extract(1)
 	})
 
-	output$overview_website <- shiny::renderUI({
-		shiny::tagList("", shiny::a("Link", href=website_url(), target="_blank"))
+	basic_info_title <- eventReactive(input$repo_name, {
+		shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Title      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(pkginfo::get_cran_title(input$repo_name))
+					),
+				shiny::column(3)
+		)
 	})
 
+	basic_info_desc <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Description      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(pkginfo::get_cran_desc(input$repo_name))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_version <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Version      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(pkginfo::get_cran_version(input$repo_name))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_pub <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Published      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(pkginfo::get_cran_pub_date(input$repo_name))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_maintainter <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Maintainer      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(pkginfo::get_cran_maintainer(input$repo_name))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_cran <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('CRAN      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=paste0("https://CRAN.R-project.org/package=", input$repo_name),
+				target="_blank")))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_bug <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Bugs            ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=bug_url(), target="_blank")))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_github <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('GitHub      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=github_url(), target="_blank")))
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_website <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Website      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=website_url(), target="_blank")))
+					),
+				shiny::column(3)
+			)
+	})
+
+
+	output$out_basic_title <- shiny::renderUI({
+		basic_info_title()
+	})
+
+	output$out_basic_desc <- shiny::renderUI({
+		basic_info_desc()
+	})
+
+	output$out_basic_version <- shiny::renderUI({
+		basic_info_version()
+	})
+
+	output$out_basic_pub <- shiny::renderUI({
+		basic_info_pub()
+	})
+
+	output$out_basic_maintainer <- shiny::renderUI({
+		basic_info_maintainter()
+	})
+
+	output$out_basic_cran <- shiny::renderUI({
+		basic_info_cran()
+	})
+
+	output$out_basic_bugs <- shiny::renderUI({
+		basic_info_bug()
+	})
+
+	output$out_basic_github <- shiny::renderUI({
+		basic_info_github()
+	})
+
+	output$out_basic_website <- shiny::renderUI({
+		basic_info_website()
+	})
+	
 	update_repo <- shiny::eventReactive(input$check_repo_name, {
 		pkginfo::get_gh_username(input$repo_name)
-	})
+		})
 
 	shiny::observe({
 		shiny::updateTextInput(
@@ -357,7 +400,15 @@ server <- function(input, output, session) {
 		shiny::updateDateInput(
 			session, 
 			inputId = "start_date",
-			value = lubridate::today() - 6
+			value = lubridate::today() - 8
+			)
+		})
+
+	shiny::observeEvent(input$retrieve_info, {
+		shiny::updateDateInput(
+			session, 
+			inputId = "end_date",
+			value = lubridate::today() - 2
 			)
 		})
 
