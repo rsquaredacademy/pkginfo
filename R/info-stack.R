@@ -6,20 +6,20 @@
 #'
 #' @examples
 #' \dontrun{
-#' get_so_questions("dplyr")	
+#' get_so_questions("dplyr")
 #' }
 #'
 #' @export
 #'
 get_so_questions <- function(package_name) {
 
-	url <- glue::glue("https://api.stackexchange.com/2.2/search?order=desc&sort=activity&tagged=", 
+	url <- paste0("https://api.stackexchange.com/2.2/search?order=desc&sort=activity&tagged=",
 		package_name, "&site=stackoverflow")
 
 	resp <- httr::GET(url)
 	out  <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
-	date_creation <- 
+	date_creation <-
 	  purrr::map_int(out$items, "creation_date") %>%
 	  as.POSIXct(origin = "1970-01-01", tz = "UTC") %>%
 	  as.Date()

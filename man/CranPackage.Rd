@@ -13,7 +13,7 @@ Retrieve package information
 \preformatted{
 myPackage <- CranPackage$new("package_name")
 myPackage$get_downloads()
-myPackage$get_results()
+myPackage$get_cran_check_results()
 myPackage$get_title()
 myPackage$get_description()
 myPackage$get_version()
@@ -44,7 +44,7 @@ To create \code{CranPackage} objects, you need to use \code{CranPackage$new("pac
 from the RStudio CRAN mirror for the last day, last week, last month and
 total downloads.
 
-\code{myPackage$get_check_results()} will return the CRAN check results of
+\code{myPackage$get_cran_check_results()} will return the CRAN check results of
 the package.
 
 \code{myPackage$get_title()} will return the title of the package.

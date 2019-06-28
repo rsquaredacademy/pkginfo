@@ -11,16 +11,12 @@ Imports:
     cranlogs,
     curl,
     dplyr,
-    glue,
     httr,
     jsonlite,
     lubridate,
     magrittr,
-    memoise,
-    pingr,
     purrr,
     R6,
-    rvest,
     shiny,
     stringr,
     tibble,
@@ -38,6 +34,6 @@ URL: https://pkginfo.rsquaredacademy.com, https://github.com/rsquaredacademy/pkg
 BugReports: https://github.com/rsquaredacademy/pkginfo/issues
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: 
     testthat

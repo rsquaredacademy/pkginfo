@@ -14,7 +14,7 @@ Display package related questions on Stack Overflow.
 }
 \examples{
 \dontrun{
-get_so_questions("dplyr")	
+get_so_questions("dplyr")
 }
 
 }

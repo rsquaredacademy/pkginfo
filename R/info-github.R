@@ -19,7 +19,7 @@
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{user_name}{GitHub user or organization name.}  
+#'   \item{user_name}{GitHub user or organization name.}
 #'   \item{repo_name}{Name of the GitHub repository.}
 #' }
 #'
@@ -154,7 +154,7 @@ pkg_github <- function(user_name, repo_name) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue::glue("/repos/", user_name, "/", repo_name)
+  pkg_name <- paste0("/repos/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
   resp     <- httr::GET(url)
   jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
@@ -215,7 +215,7 @@ get_gh_issues <- function(repo_name, user_name = NULL) {
   issue_title    <- purrr::map_chr(out, "title")
   issue_body     <- purrr::map_chr(out, "body")
 
-  issue_date <- 
+  issue_date <-
     out %>%
     purrr::map_chr("created_at") %>%
     as.Date()
@@ -333,7 +333,7 @@ get_gh_coc <- function(repo_name, user_name = NULL) {
 
 	check_repo(user_name, repo_name)
 
-  pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
+  pkg_name <- paste0("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
   resp     <- httr::GET(url, httr::add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
   out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
@@ -369,7 +369,7 @@ get_gh_license <- function(repo_name, user_name = NULL) {
   if (length(out) == 2) {
     cat("This repository does not have a license file.")
   } else {
-    if (pingr::is_online()) {
+    if (curl::has_internet()) {
       utils::browseURL(out$html_url)
     } else {
       cat("Please ensure your internet connection is working.")
@@ -475,7 +475,7 @@ get_status_travis <- function(repo_name, user_name = NULL) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue::glue("repos/", user_name, "/", repo_name)
+  pkg_name <- paste0("repos/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://api.travis-ci.org", path = pkg_name)
   resp     <- httr::GET(url)
 
@@ -511,7 +511,7 @@ get_status_appveyor <- function(repo_name, user_name = NULL) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue::glue("/api/projects/", user_name, "/", repo_name)
+  pkg_name <- paste0("/api/projects/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://ci.appveyor.com", path = pkg_name)
   resp     <- httr::GET(url)
   result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
@@ -541,7 +541,7 @@ get_code_coverage <- function(repo_name, user_name = NULL) {
 
   check_repo(user_name, repo_name)
 
-  pkg_name <- glue::glue("/api/gh/", user_name, "/", repo_name)
+  pkg_name <- paste0("/api/gh/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://codecov.io", path = pkg_name)
   resp     <- httr::GET(url)
   result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
@@ -551,7 +551,7 @@ get_code_coverage <- function(repo_name, user_name = NULL) {
 
 connect_api <- function(user_name, repo_name, node) {
 
-	pkg_name <- glue::glue("/repos/", user_name, "/", repo_name, "/", node)
+	pkg_name <- paste0("/repos/", user_name, "/", repo_name, "/", node)
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
   resp     <- httr::GET(url)
   jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
@@ -560,35 +560,35 @@ connect_api <- function(user_name, repo_name, node) {
 
 
 check_repo <- function(user_name, repo_name) {
-  
+
   if (curl::has_internet()) {
-    
-    repo_url <- glue::glue("https://github.com/", user_name)
-    
+
+    repo_url <- paste0("https://github.com/", user_name)
+
     repo_status <-
       repo_url %>%
       httr::GET() %>%
       httr::status_code()
-    
+
     if (repo_status != 200) {
       stop("Please check the repository name.", call. = FALSE)
     }
-    
-    pkg_url <- glue::glue("https://github.com/", user_name, "/", repo_name)
-    
+
+    pkg_url <- paste0("https://github.com/", user_name, "/", repo_name)
+
     pkg_status <-
       pkg_url %>%
       httr::GET() %>%
       httr::status_code()
-  
+
     if (pkg_status != 200) {
       stop("Please check the package name.", call. = FALSE)
     }
-    
+
   } else {
     stop("Please check your internet connection.", call. = FALSE)
   }
-  
+
 }
 
 #' GitHub username
@@ -608,21 +608,21 @@ get_gh_username <- function(package_name) {
 
 	check_cran(package_name)
 
-	urls <- 
+	urls <-
 	  get_cran_urls(package_name) %>%
 	  dplyr::filter(stringr::str_detect(urls, "github")) %>%
 	  dplyr::pull(urls) %>%
-	  dplyr::first() 
+	  dplyr::first()
 
 	locate_slash <- stringr::str_locate_all(urls, "/")
 
-	start <- 
+	start <-
 	  locate_slash %>%
 	  get_location(position = 3) %>%
 	  magrittr::add(1)
 
-	end <- 
-	  locate_slash %>% 
+	end <-
+	  locate_slash %>%
 	  get_location(position = 4) %>%
 	  magrittr::subtract(1)
 
@@ -632,8 +632,8 @@ get_gh_username <- function(package_name) {
 
 
 get_location <- function(string, position) {
-  string %>% 
-    magrittr::extract2(1) %>% 
-    magrittr::extract(position, 1) %>% 
+  string %>%
+    magrittr::extract2(1) %>%
+    magrittr::extract(position, 1) %>%
     unname()
 }

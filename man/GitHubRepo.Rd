@@ -30,7 +30,7 @@ myRepo$get_coverage()
 \section{Arguments}{
 
 \describe{
-  \item{user_name}{GitHub user or organization name.}  
+  \item{user_name}{GitHub user or organization name.}
   \item{repo_name}{Name of the GitHub repository.}
 }
 }

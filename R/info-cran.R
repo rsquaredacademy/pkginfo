@@ -4,7 +4,7 @@
 #' \preformatted{
 #' myPackage <- CranPackage$new("package_name")
 #' myPackage$get_downloads()
-#' myPackage$get_results()
+#' myPackage$get_cran_check_results()
 #' myPackage$get_title()
 #' myPackage$get_description()
 #' myPackage$get_version()
@@ -31,7 +31,7 @@
 #' from the RStudio CRAN mirror for the last day, last week, last month and
 #' total downloads.
 #'
-#' \code{myPackage$get_check_results()} will return the CRAN check results of
+#' \code{myPackage$get_cran_check_results()} will return the CRAN check results of
 #' the package.
 #'
 #' \code{myPackage$get_title()} will return the title of the package.
@@ -75,47 +75,49 @@ NULL
 CranPackage <- R6::R6Class("CranPackage",
   public = list(
     package_name = NULL,
+    pkg_details  = NULL,
     initialize = function(package_name = NA) {
       self$package_name <- package_name
+      self$pkg_details  <- get_pkg_details(self$package_name)
     },
     get_downloads = function() {
-      get_cran_downloads(self$package_name)
+      get_pkg_downloads(self$package_name)
     },
     get_title = function() {
-      get_cran_title(self$package_name)
+      get_pkg_title(self$pkg_details)
     },
     get_description = function() {
-      get_cran_desc(self$package_name)
+      get_pkg_desc(self$pkg_details)
     },
     get_version = function() {
-      get_cran_version(self$package_name)
+      get_pkg_version(self$pkg_details)
     },
     get_r_dep = function() {
-      get_cran_r_dep(self$package_name)
+      get_pkg_r_dep(self$pkg_details)
     },
     get_imports = function() {
-      get_cran_imports(self$package_name)
+      get_pkg_imports(self$pkg_details)
     },
     get_suggests = function() {
-      get_cran_suggests(self$package_name)
+      get_pkg_suggests(self$pkg_details)
     },
     get_publish_date = function() {
-      get_cran_pub_date(self$package_name)
+      get_pkg_publish_date(self$pkg_details)
     },
     get_license = function() {
-      get_cran_license(self$package_name)
+      get_pkg_license(self$pkg_details)
     },
     get_authors = function() {
-      get_cran_authors(self$package_name)
+      get_pkg_authors(self$pkg_details)
     },
     get_maintainer = function() {
-      get_cran_maintainer(self$package_name)
+      get_pkg_maintainer(self$pkg_details)
     },
     get_urls = function() {
-      get_cran_urls(self$package_name)
+      get_pkg_urls(self$pkg_details)
     },
-    get_check_results = function() {
-      get_cran_results(self$package)
+    get_cran_check_results = function() {
+      get_pkg_cran_check_results(self$package_name)
     }
   )
 )
@@ -129,14 +131,14 @@ CranPackage <- R6::R6Class("CranPackage",
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_downloads("dplyr")
+#' get_pkg_downloads("dplyr")
 #' }
 #'
 #' @importFrom magrittr %>%
 #'
 #' @export
 #'
-get_cran_downloads <- function(package_name) {
+get_pkg_downloads <- function(package_name) {
 
   check_cran(package_name)
   count <- NULL
@@ -169,7 +171,7 @@ get_cran_downloads <- function(package_name) {
 }
 
 
-#' Check results
+#' CRAN status
 #'
 #' Return latest CRAN build results.
 #'
@@ -177,76 +179,80 @@ get_cran_downloads <- function(package_name) {
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_results("dplyr")
+#' get_pkg_cran_check_results("dplyr")
 #' }
 #'
 #' @export
 #'
-get_cran_results <- function(package_name) {
+get_pkg_cran_check_results <- function(package_name) {
 
-  check_cran(package_name)
+  base_url    <- "https://cranchecks.info/"
+  pkg_url     <- httr::modify_url(base_url, path = paste0("pkgs/", package_name))
+  resp        <- httr::GET(pkg_url)
+  resp_status <- httr::status_code(resp)
 
-  url <- glue::glue(
-    "https://cran.r-project.org/web/checks/check_results_", package_name, ".html"
-  )
+  if (resp_status == 200) {
+    pkg_checks <-
+      resp %>%
+      httr::content(as = "text") %>%
+      jsonlite::fromJSON(simplifyVector = TRUE) %>%
+      magrittr::use_series(data) %>%
+      magrittr::use_series(checks)
+  } else {
+    stop("Please check the package name.")
+  }
 
-  mem_read_html(url) %>%
-    rvest::html_nodes("table") %>%
-    rvest::html_table() %>%
-    magrittr::extract2(1)
+  pkg_status <- dplyr::pull(pkg_checks, status)
+  all_ok     <- any(pkg_status != "OK")
+
+  if (all_ok) {
+    pkg_not_ok <- which(pkg_status != "OK")
+    pkg_checks %>%
+      dplyr::slice(pkg_not_ok) %>%
+      dplyr::select(flavor, status)
+  } else {
+    message("Hurray! All CRAN checks are successful.")
+  }
 
 }
-
 
 #' Title
 #'
 #' Retrieve the title of the package from CRAN.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_title("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_title()
 #' }
 #'
 #' @export
 #'
-get_cran_title <- function(package_name) {
-
-  check_cran(package_name)
-
-  url <- glue::glue("https://cran.r-project.org/package=", package_name)
-
-  mem_read_html(url) %>%
-    rvest::html_nodes("h2") %>%
-    rvest::html_text()
-
+get_pkg_title <- function(pkg_detail) {
+    magrittr::use_series(pkg_detail, Title)
 }
 
 #' Description
 #'
 #' Retrieve the description of the package from CRAN.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_desc("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_desc()
 #' }
+
 #'
 #' @export
 #'
-get_cran_desc <- function(package_name) {
-
-  check_cran(package_name)
-
-  url <- glue::glue("https://cran.r-project.org/package=", package_name)
-
-  mem_read_html(url) %>%
-    rvest::html_nodes("p") %>%
-    rvest::html_text() %>%
-    magrittr::extract(1)
-
+get_pkg_desc <- function(pkg_detail) {
+  magrittr::use_series(pkg_detail, Description)
 }
 
 
@@ -254,25 +260,20 @@ get_cran_desc <- function(package_name) {
 #'
 #' Retrieve the latest version of the package from CRAN.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_version("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_version()
 #' }
+
 #'
 #' @export
 #'
-get_cran_version <- function(package_name) {
-
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Version:") %>%
-    magrittr::use_series(X2)
-
+get_pkg_version <- function(pkg_detail) {
+  magrittr::use_series(pkg_detail, Version)
 }
 
 
@@ -280,24 +281,23 @@ get_cran_version <- function(package_name) {
 #'
 #' Retrieve the R version on which the package depends.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_r_dep("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_r_dep()
 #' }
+
 #'
 #' @export
 #'
-get_cran_r_dep <- function(package_name) {
+get_pkg_r_dep <- function(pkg_details) {
 
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Depends:") %>%
-    magrittr::use_series(X2)
+  pkg_details %>%
+    magrittr::use_series(Depends) %>%
+    magrittr::use_series(R)
 
 }
 
@@ -305,29 +305,24 @@ get_cran_r_dep <- function(package_name) {
 #'
 #' Retrieve the list of packages imported.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_imports("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_imports()
 #' }
+
 #'
 #' @export
 #'
-get_cran_imports <- function(package_name) {
+get_pkg_imports <- function(pkg_details) {
 
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Imports:") %>%
-    magrittr::use_series(X2) %>%
-    stringr::str_split(pattern = ", ") %>%
+  pkg_details %>%
+    magrittr::use_series(Imports) %>%
     unlist() %>%
-    tibble::tibble() %>%
-    magrittr::set_colnames("imports")
-
+    names()
 
 }
 
@@ -335,220 +330,217 @@ get_cran_imports <- function(package_name) {
 #'
 #' Retrieve the list of packages suggested.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_suggests("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_suggests()
 #' }
+
 #'
 #' @export
 #'
-get_cran_suggests <- function(package_name) {
+get_pkg_suggests <- function(pkg_details) {
 
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Suggests:") %>%
-    magrittr::use_series(X2) %>%
-    stringr::str_split(pattern = ", ") %>%
+  pkg_details %>%
+    magrittr::use_series(Suggests) %>%
     unlist() %>%
-    tibble::tibble() %>%
-    magrittr::set_colnames("suggests")
-
-
+    names()
 }
 
 #' Published date
 #'
 #' Retrieve the latest date on which the package was published to CRAN.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_pub_date("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_publish_date()
 #' }
+
 #'
 #' @export
 #'
-get_cran_pub_date <- function(package_name) {
-
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Published:") %>%
-    magrittr::use_series(X2)
-
+get_pkg_publish_date <- function(pkg_details) {
+  magrittr::use_series(pkg_details, "Date/Publication")
 }
 
 #' License
 #'
 #' Retrieve the license type of the package.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_license("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_license()
 #' }
 #'
 #' @export
 #'
-get_cran_license <- function(package_name) {
-
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "License:") %>%
-    magrittr::use_series(X2)
-
+get_pkg_license <- function(pkg_details) {
+  magrittr::use_series(pkg_details, License)
 }
 
 #' Authors
 #'
 #' Retrieve the list of authors of the package.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_authors("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_authors()
 #' }
 #'
 #' @export
 #'
-get_cran_authors <- function(package_name) {
+get_pkg_authors <- function(pkg_details) {
 
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Author:") %>%
-    magrittr::use_series(X2) %>%
-    stringr::str_split(",\n  ") %>%
+  pkg_details %>%
+    magrittr::use_series(Author) %>%
+    stringr::str_split(",\n") %>%
     unlist() %>%
     tibble::tibble() %>%
-    magrittr::set_colnames("name")
+    magrittr::set_colnames("author_details") %>%
+    dplyr::mutate(
+      author = stringr::str_split(author_details, pattern = "\\[") %>%
+        purrr::map_chr(1) %>%
+        stringr::str_trim(side = "right"),
+      role = stringr::str_split(author_details, pattern = "\\[") %>%
+        purrr::map_chr(2) %>%
+        stringr::str_split(pattern = "\\]") %>%
+        purrr::map_chr(1)
 
+    ) %>%
+    dplyr::select(author, role)
 }
 
 #' Maintainer
 #'
 #' Retrieve the details of the maintainer of the package.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_maintainer("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_maintainer()
 #' }
 #'
 #' @export
 #'
-get_cran_maintainer <- function(package_name) {
-
-  X1 <- NULL
-  X2 <- NULL
-
-  package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "Maintainer:") %>%
-    magrittr::use_series(X2)
-
+get_pkg_maintainer <- function(pkg_details) {
+  magrittr::use_series(pkg_details, Maintainer)
 }
 
 #' URL
 #'
 #' Retrieve the list of URLs associated with the package.
 #'
-#' @param package_name Name of the R package.
+#' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' get_cran_urls("dplyr")
+#' "dplyr" %>%
+#'   get_pkg_details() %>%
+#'   get_pkg_urls()
 #' }
 #'
 #' @export
 #'
-get_cran_urls <- function(package_name) {
+get_pkg_urls <- function(pkg_details) {
 
-  X1 <- NULL
-  X2 <- NULL
+  bugs <- magrittr::use_series(pkg_details, BugReports)
+  docs <- magrittr::use_series(pkg_details, URL)
 
-  bugs <-
-    package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "BugReports:") %>%
-    magrittr::use_series(X2) %>%
-    magrittr::extract(1)
+  detect_sep <-
+    pkg_details %>%
+    magrittr::use_series(URL) %>%
+    stringr::str_detect("\n")
 
-  website <-
-    package_name %>%
-    mem_get_cran_table() %>%
-    dplyr::filter(X1 == "URL:") %>%
-    magrittr::use_series(X2) %>%
-    stringr::str_split(pattern = ", ") %>%
-    unlist()
+  if (detect_sep) {
+    docs_site <- stringr::str_split(docs, pattern = ",\n")
+  } else {
+    docs_site <- stringr::str_split(docs, pattern = ",")
+  }
 
-  tibble::tibble(urls = c(bugs, website)) %>%
+  docu <-
+    docs_site %>%
+    unlist() %>%
+    stringr::str_trim()
+
+  tibble::tibble(urls = c(bugs, docu)) %>%
     dplyr::mutate(website = dplyr::case_when(
-        stringr::str_detect(urls, pattern = "issues") ~ "Bugs",
-        stringr::str_detect(urls, pattern = "github") ~ "GitHub",
-        stringr::str_detect(urls, pattern = "gitlab") ~ "GitLab",
-        stringr::str_detect(urls, pattern = "r-forge") ~ "R-Forge",
-        TRUE ~ "Others"
-      )
+      stringr::str_detect(urls, pattern = "issues") ~ "Bugs",
+      stringr::str_detect(urls, pattern = "github") ~ "GitHub",
+      stringr::str_detect(urls, pattern = "gitlab") ~ "GitLab",
+      stringr::str_detect(urls, pattern = "r-forge") ~ "R-Forge",
+      TRUE ~ "Others")
     ) %>%
     dplyr::select(website, urls)
 
 }
 
-get_cran_table <- function(package_name) {
+
+#' Package details
+#'
+#' Extracts package details from crandb API.
+#'
+#' @param package_name Name of the R package.
+#'
+#' @examples
+#' get_pkg_details("dplyr")
+#'
+#' @export
+#'
+get_pkg_details <- function(package_name) {
 
   check_cran(package_name)
 
-  url <- glue::glue(
-    "https://cran.r-project.org/package=", package_name
-  )
+  base_url    <- "http://crandb.r-pkg.org"
+  pkg_url     <- httr::modify_url(base_url, path = package_name)
+  resp        <- httr::GET(pkg_url)
+  resp_status <- httr::status_code(resp)
 
-  mem_read_html(url) %>%
-    rvest::html_nodes("table") %>%
-    rvest::html_table() %>%
-    magrittr::extract2(1)
+  if (resp_status == 200) {
+    resp %>%
+      httr::content(as = "text") %>%
+      jsonlite::fromJSON(simplifyVector = TRUE)
+  } else {
+    stop("Please check the package name.")
+  }
 
 }
 
-mem_get_cran_table <- memoise::memoise(get_cran_table)
-
-mem_read_html <- memoise::memoise(xml2::read_html)
-
-
 check_cran <- function(package_name) {
-  
+
   if (curl::has_internet()) {
-    
-    url <- glue::glue("https://cran.r-project.org/package=", package_name)
-    
+
+    url <- paste0("https://cran.r-project.org/package=", package_name)
+
     status <-
       url %>%
       httr::GET() %>%
       httr::status_code()
-    
+
     if (status != 200) {
       stop("Please check the package name.", call. = FALSE)
     }
-    
+
   } else {
     stop("Please check your internet connection.", call. = FALSE)
   }
-  
+
 }
 
