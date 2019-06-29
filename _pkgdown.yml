@@ -40,7 +40,7 @@ reference:
   contents:
   - pkginfo_dashboard
 
-- title: GitHub 
+- title: GitHub
 
   contents:
   - get_gh_stats
@@ -58,22 +58,22 @@ reference:
   - get_code_coverage
   - GitHubRepo
 
-- title: CRAN 
+- title: CRAN
 
   contents:
-  - get_cran_downloads
-  - get_cran_results
-  - get_cran_authors
-  - get_cran_desc
-  - get_cran_imports
-  - get_cran_license
-  - get_cran_maintainer
-  - get_cran_pub_date
-  - get_cran_r_dep
-  - get_cran_suggests
-  - get_cran_title
-  - get_cran_urls
-  - get_cran_version
+  - get_pkg_downloads
+  - get_pkg_cran_check_results
+  - get_pkg_authors
+  - get_pkg_desc
+  - get_pkg_imports
+  - get_pkg_license
+  - get_pkg_maintainer
+  - get_pkg_publish_date
+  - get_pkg_r_dep
+  - get_pkg_suggests
+  - get_pkg_title
+  - get_pkg_urls
+  - get_pkg_version
   - CranPackage
 
 - title: Others

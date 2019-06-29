@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Travis build status — get_status_travis • pkginfo</title>
+<title>License — get_pkg_license • pkginfo</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Travis build status — get_status_travis" />
+<meta property="og:title" content="License — get_pkg_license" />
 
-<meta property="og:description" content="Return the latest travis build status." />
+<meta property="og:description" content="Retrieve the license type of the package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,36 +108,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Travis build status</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-github.R'><code>R/info-github.R</code></a></small>
-    <div class="hidden name"><code>get_status_travis.Rd</code></div>
+    <h1>License</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-cran.R'><code>R/info-cran.R</code></a></small>
+    <div class="hidden name"><code>get_pkg_license.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return the latest travis build status.</p>
+    <p>Retrieve the license type of the package.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_status_travis</span>(<span class='no'>repo_name</span>, <span class='kw'>user_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>get_pkg_license</span>(<span class='no'>pkg_details</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>repo_name</th>
-      <td><p>Name of the package.</p></td>
-    </tr>
-    <tr>
-      <th>user_name</th>
-      <td><p>GitHub user or organization name.</p></td>
+      <th>pkg_details</th>
+      <td><p>An object of class <code>pkg_details</code>.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_status_travis</span>(<span class='st'>"dplyr"</span>, <span class='st'>"rsquaredacademy"</span>)
+<span class='st'>"dplyr"</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='get_pkg_details.html'>get_pkg_details</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>get_pkg_license</span>()
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

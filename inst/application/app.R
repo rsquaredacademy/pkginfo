@@ -29,14 +29,14 @@ ui <- shinydashboard::dashboardPage(
 						)
 					),
 				shiny::fluidRow(
-					shiny::column(12, align = 'center', 
-						shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"), 
+					shiny::column(12, align = 'center',
+						shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"),
 						shiny::actionButton("retrieve_info", "Retrieve Info"),
 						shiny::br(),
 						shiny::br(),
 						shiny::column(3),
-						shiny::column(6, align = 'center', 
-							shiny::h4("Click on the Find User/Org button if you do not know the GitHub username or 
+						shiny::column(6, align = 'center',
+							shiny::h4("Click on the Find User/Org button if you do not know the GitHub username or
 								organization name. The app will find it if the package has a GitHub repository.")
 							),
 						shiny::column(3)
@@ -52,23 +52,23 @@ ui <- shinydashboard::dashboardPage(
 				shiny::br(),
 				shiny::br(),
 				shiny::fluidRow(
-					shiny::uiOutput('out_basic_title') %>% 
+					shiny::uiOutput('out_basic_title') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_desc') %>% 
-						shinycssloaders::withSpinner(),	
-					shiny::uiOutput('out_basic_version') %>% 
+					shiny::uiOutput('out_basic_desc') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_pub') %>% 
+					shiny::uiOutput('out_basic_version') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_maintainer') %>% 
+					shiny::uiOutput('out_basic_pub') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_cran') %>% 
+					shiny::uiOutput('out_basic_maintainer') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_bugs') %>% 
+					shiny::uiOutput('out_basic_cran') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_github') %>% 
+					shiny::uiOutput('out_basic_bugs') %>%
 						shinycssloaders::withSpinner(),
-					shiny::uiOutput('out_basic_website') %>% 
+					shiny::uiOutput('out_basic_github') %>%
+						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_website') %>%
 						shinycssloaders::withSpinner()
 				)
 			),
@@ -77,7 +77,7 @@ ui <- shinydashboard::dashboardPage(
 					shiny::column(12, align = 'center',
 						shiny::h2("CRAN Downloads"),
 						shiny::br(),
-						shiny::tableOutput("cran_downloads") %>% 
+						shiny::tableOutput("cran_downloads") %>%
 						shinycssloaders::withSpinner()
 						)
 					),
@@ -92,7 +92,7 @@ ui <- shinydashboard::dashboardPage(
 				shiny::fluidRow(
 					column(2),
 					column(8, align = 'center',
-						plotOutput("downloads_plot") %>% 
+						plotOutput("downloads_plot") %>%
 						shinycssloaders::withSpinner()
 						),
 					column(2)
@@ -134,7 +134,7 @@ ui <- shinydashboard::dashboardPage(
 					shiny::column(12, align = 'center',
 						shiny::h2("Open Issues"),
 						shiny::br(),
-						shiny::tableOutput("gh_issues") %>% 
+						shiny::tableOutput("gh_issues") %>%
 						shinycssloaders::withSpinner()
 						)
 					)
@@ -144,7 +144,7 @@ ui <- shinydashboard::dashboardPage(
 					shiny::column(12, align = 'center',
 						shiny::h2("Releases"),
 						shiny::br(),
-						shiny::tableOutput("gh_releases") %>% 
+						shiny::tableOutput("gh_releases") %>%
 						shinycssloaders::withSpinner()
 						)
 					)
@@ -152,7 +152,7 @@ ui <- shinydashboard::dashboardPage(
 			shinydashboard::tabItem(tabName = "branches",
 				shiny::fluidRow(
 					shiny::column(12, align = 'center',
-						shiny::tableOutput("gh_branches") %>% 
+						shiny::tableOutput("gh_branches") %>%
 						shinycssloaders::withSpinner()
 						)
 					)
@@ -164,12 +164,12 @@ ui <- shinydashboard::dashboardPage(
 						)
 					),
 				shiny::fluidRow(
-					shiny::column(6, align = 'center', 
-						shiny::tableOutput("cran_imports") %>% 
-						shinycssloaders::withSpinner()
-						), 
 					shiny::column(6, align = 'center',
-						shiny::tableOutput("cran_suggests") %>% 
+						shiny::tableOutput("cran_imports") %>%
+						shinycssloaders::withSpinner()
+						),
+					shiny::column(6, align = 'center',
+						shiny::tableOutput("cran_suggests") %>%
 						shinycssloaders::withSpinner()
 						)
 					)
@@ -179,7 +179,7 @@ ui <- shinydashboard::dashboardPage(
 					shiny::column(12, align = 'center',
 						shiny::h2("Open Pull Requests"),
 						shiny::br(),
-						shiny::tableOutput("gh_prs") %>% 
+						shiny::tableOutput("gh_prs") %>%
 						shinycssloaders::withSpinner()
 						)
 					)
@@ -189,14 +189,16 @@ ui <- shinydashboard::dashboardPage(
 					shiny::column(12, align = 'center',
 						shiny::h2("Stack OVerflow"),
 						shiny::br(),
-						shiny::tableOutput("gh_so") %>% 
+						shiny::tableOutput("gh_so") %>%
 						shinycssloaders::withSpinner()
 						)
 					)
 				),
 			shinydashboard::tabItem(tabName = "exit",
-				shiny::fluidRow(shiny::column(12, align = 'center', shiny::h2("Thank you for using", shiny::strong("pkginfo"), "!"))),
-				shiny::fluidRow(shiny::column(12, align = 'center', shiny::actionButton("exit_button", "Exit App")))
+				shiny::fluidRow(shiny::column(12, align = 'center',
+				  shiny::h2("Thank you for using", shiny::strong("pkginfo"), "!"))),
+				shiny::fluidRow(shiny::column(12, align = 'center',
+				  shiny::actionButton("exit_button", "Exit App")))
 				)
 			)
 )
@@ -211,12 +213,12 @@ server <- function(input, output, session) {
 	})
 
 	github_url <- shiny::eventReactive(input$retrieve_info, {
-		uname <- pkginfo:::get_gh_username(input$repo_name) 
+		uname <- pkginfo:::get_gh_username(input$repo_name)
 		paste0('https://github.com/', uname, "/", input$repo_name)
 	})
 
 	website_url <- shiny::eventReactive(input$retrieve_info, {
-		pkginfo::get_cran_urls(input$repo_name) %>%
+		pkginfo::get_pkg_urls(input$repo_name) %>%
 			dplyr::filter(website != "Bugs") %>%
 			dplyr::select(urls) %>%
 			unlist() %>%
@@ -232,7 +234,7 @@ server <- function(input, output, session) {
 					shiny::h5('Title      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_cran_title(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_title(input$repo_name))
 					),
 				shiny::column(3)
 		)
@@ -245,7 +247,7 @@ server <- function(input, output, session) {
 					shiny::h5('Description      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_cran_desc(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_desc(input$repo_name))
 					),
 				shiny::column(3)
 				)
@@ -258,7 +260,7 @@ server <- function(input, output, session) {
 					shiny::h5('Version      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_cran_version(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_version(input$repo_name))
 					),
 				shiny::column(3)
 				)
@@ -271,7 +273,7 @@ server <- function(input, output, session) {
 					shiny::h5('Published      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_cran_pub_date(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_publish_date(input$repo_name))
 					),
 				shiny::column(3)
 				)
@@ -284,7 +286,7 @@ server <- function(input, output, session) {
 					shiny::h5('Maintainer      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_cran_maintainer(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_maintainer(input$repo_name))
 					),
 				shiny::column(3)
 				)
@@ -297,7 +299,8 @@ server <- function(input, output, session) {
 					shiny::h5('CRAN      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=paste0("https://CRAN.R-project.org/package=", input$repo_name),
+					shiny::h5(shiny::tagList("", shiny::a("Link",
+					  href=paste0("https://CRAN.R-project.org/package=", input$repo_name),
 				target="_blank")))
 					),
 				shiny::column(3)
@@ -311,7 +314,8 @@ server <- function(input, output, session) {
 					shiny::h5('Bugs            ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=bug_url(), target="_blank")))
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=bug_url(),
+					                                      target="_blank")))
 					),
 				shiny::column(3)
 				)
@@ -324,7 +328,8 @@ server <- function(input, output, session) {
 					shiny::h5('GitHub      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=github_url(), target="_blank")))
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=github_url(),
+					                                      target="_blank")))
 					),
 				shiny::column(3)
 				)
@@ -337,7 +342,8 @@ server <- function(input, output, session) {
 					shiny::h5('Website      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=website_url(), target="_blank")))
+					shiny::h5(shiny::tagList("", shiny::a("Link", href=website_url(),
+					                                      target="_blank")))
 					),
 				shiny::column(3)
 			)
@@ -379,7 +385,7 @@ server <- function(input, output, session) {
 	output$out_basic_website <- shiny::renderUI({
 		basic_info_website()
 	})
-	
+
 	update_repo <- shiny::eventReactive(input$check_repo_name, {
 		pkginfo::get_gh_username(input$repo_name)
 		})
@@ -398,7 +404,7 @@ server <- function(input, output, session) {
 
 	shiny::observeEvent(input$retrieve_info, {
 		shiny::updateDateInput(
-			session, 
+			session,
 			inputId = "start_date",
 			value = lubridate::today() - 8
 			)
@@ -406,19 +412,20 @@ server <- function(input, output, session) {
 
 	shiny::observeEvent(input$retrieve_info, {
 		shiny::updateDateInput(
-			session, 
+			session,
 			inputId = "end_date",
 			value = lubridate::today() - 2
 			)
 		})
 
 	compute_downloads <- reactive({
-		
-		cranlogs::cran_downloads(input$repo_name, from = input$start_date, to = input$end_date) %>%
+
+		cranlogs::cran_downloads(input$repo_name, from = input$start_date,
+		                         to = input$end_date) %>%
 		dplyr::select(date, count) %>%
 		ggplot2::ggplot() +
 		ggplot2::geom_line(ggplot2::aes(x = date, y = count), color = 'red') +
-		ggplot2::xlab("Date") + ggplot2::ylab("Downloads") + 
+		ggplot2::xlab("Date") + ggplot2::ylab("Downloads") +
 		ggplot2::ggtitle("CRAN Downloads")
 
 		})
@@ -428,29 +435,33 @@ server <- function(input, output, session) {
 		})
 
 	output$cran_downloads <- shiny::renderPrint({
-		pkginfo::get_cran_downloads(input$repo_name) %>%
-		dplyr::rename(Latest = latest, `Last Week` = last_week, `Last Month` = last_month, Total = total) %>%
+		pkginfo::get_pkg_downloads(input$repo_name) %>%
+		dplyr::rename(Latest = latest, `Last Week` = last_week,
+		              `Last Month` = last_month, Total = total) %>%
 		knitr::kable(format = "html") %>%
 		kableExtra::kable_styling(full_width = FALSE)
 		})
 
 	output$travisBox <- shinydashboard::renderInfoBox({
 		shinydashboard::infoBox(
-			"Travis", pkginfo::get_status_travis(input$repo_name, input$user_name), icon = shiny::icon("list"),
+			"Travis", pkginfo::get_status_travis(input$repo_name, input$user_name),
+			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
 	output$appveyorBox <- shinydashboard::renderInfoBox({
 		shinydashboard::infoBox(
-			"Appveyor", pkginfo::get_status_appveyor(input$repo_name, input$user_name), icon = shiny::icon("list"),
+			"Appveyor", pkginfo::get_status_appveyor(input$repo_name, input$user_name),
+			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
 	output$coverageBox <- shinydashboard::renderInfoBox({
 		shinydashboard::infoBox(
-			"Coverage", pkginfo::get_code_coverage(input$repo_name, input$user_name), icon = shiny::icon("list"),
+			"Coverage", pkginfo::get_code_coverage(input$repo_name, input$user_name),
+			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
@@ -530,7 +541,7 @@ server <- function(input, output, session) {
 		})
 
 	suggests <- shiny::reactive({
-		pkginfo::get_cran_suggests(input$repo_name)
+		pkginfo::get_pkg_suggests(input$repo_name)
 		})
 
 	output$suggestsBox <- shinydashboard::renderValueBox({
@@ -542,21 +553,24 @@ server <- function(input, output, session) {
 
 	output$versionBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			pkginfo::get_cran_r_dep(input$repo_name), "R Version", icon = shiny::icon("list"),
+			pkginfo::get_pkg_r_dep(input$repo_name), "R Version",
+			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
 	output$gh_issues <- shiny::renderPrint({
 		issues() %>%
-		dplyr::rename(Date = date, Number = number, Author = author, Title = title) %>%
+		dplyr::rename(Date = date, Number = number, Author = author,
+		              Title = title) %>%
 		knitr::kable(format = "html") %>%
 		kableExtra::kable_styling(full_width = FALSE)
 		})
 
 	output$gh_releases <- shiny::renderPrint({
 		releases() %>%
-		dplyr::rename(Tag = tag, Date = date, Title = title, Prerelease = prerelease) %>%
+		dplyr::rename(Tag = tag, Date = date, Title = title,
+		              Prerelease = prerelease) %>%
 		knitr::kable(format = "html") %>%
 		kableExtra::kable_styling(full_width = FALSE)
 		})
@@ -570,14 +584,16 @@ server <- function(input, output, session) {
 
 	output$gh_prs <- shiny::renderPrint({
 		prs() %>%
-		dplyr::rename(Number = number, Date = date, Title = title, Status = status) %>%
+		dplyr::rename(Number = number, Date = date, Title = title,
+		              Status = status) %>%
 		knitr::kable(format = "html") %>%
 		kableExtra::kable_styling(full_width = FALSE)
 		})
 
 	output$gh_so <- shiny::renderPrint({
 		pkginfo::get_so_questions(input$repo_name) %>%
-		dplyr::rename(Date = date, Title = title, Owner = owner, Answered = answered, Views = views) %>%
+		dplyr::rename(Date = date, Title = title, Owner = owner,
+		              Answered = answered, Views = views) %>%
 		knitr::kable(format = "html") %>%
 		kableExtra::kable_styling(full_width = FALSE)
 		})

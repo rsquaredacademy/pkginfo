@@ -13,6 +13,8 @@ get_pkg_details(package_name)
 Extracts package details from crandb API.
 }
 \examples{
+\dontrun{
 get_pkg_details("dplyr")
+}
 
 }
