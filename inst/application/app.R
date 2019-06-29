@@ -206,10 +206,15 @@ ui <- shinydashboard::dashboardPage(
 
 server <- function(input, output, session) {
 
+  pkg_details <-
+    shiny::eventReactive(input$retrieve_info, {
+      pkginfo::get_pkg_details(input$repo_name)
+    })
+
 	bug_url <- shiny::eventReactive(input$retrieve_info, {
-		pkginfo:::get_cran_table(input$repo_name) %>%
-			dplyr::filter(X1 == 'BugReports:') %>%
-			dplyr::select(X2)
+		pkginfo::get_pkg_urls(pkg_details()) %>%
+			dplyr::filter(website == 'Bugs') %>%
+			dplyr::select(urls)
 	})
 
 	github_url <- shiny::eventReactive(input$retrieve_info, {
@@ -218,7 +223,7 @@ server <- function(input, output, session) {
 	})
 
 	website_url <- shiny::eventReactive(input$retrieve_info, {
-		pkginfo::get_pkg_urls(input$repo_name) %>%
+		pkginfo::get_pkg_urls(pkg_details()) %>%
 			dplyr::filter(website != "Bugs") %>%
 			dplyr::select(urls) %>%
 			unlist() %>%
@@ -234,7 +239,7 @@ server <- function(input, output, session) {
 					shiny::h5('Title      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_pkg_title(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_title(pkg_details()))
 					),
 				shiny::column(3)
 		)
@@ -247,7 +252,7 @@ server <- function(input, output, session) {
 					shiny::h5('Description      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_pkg_desc(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_desc(pkg_details()))
 					),
 				shiny::column(3)
 				)
@@ -260,7 +265,7 @@ server <- function(input, output, session) {
 					shiny::h5('Version      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_pkg_version(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_version(pkg_details()))
 					),
 				shiny::column(3)
 				)
@@ -273,7 +278,7 @@ server <- function(input, output, session) {
 					shiny::h5('Published      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_pkg_publish_date(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_publish_date(pkg_details()))
 					),
 				shiny::column(3)
 				)
@@ -286,7 +291,7 @@ server <- function(input, output, session) {
 					shiny::h5('Maintainer      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_pkg_maintainer(input$repo_name))
+					shiny::h5(pkginfo::get_pkg_maintainer(pkg_details()))
 					),
 				shiny::column(3)
 				)
@@ -435,7 +440,7 @@ server <- function(input, output, session) {
 		})
 
 	output$cran_downloads <- shiny::renderPrint({
-		pkginfo::get_pkg_downloads(input$repo_name) %>%
+		pkginfo::get_pkg_downloads(pkg_details()) %>%
 		dplyr::rename(Latest = latest, `Last Week` = last_week,
 		              `Last Month` = last_month, Total = total) %>%
 		knitr::kable(format = "html") %>%
@@ -530,30 +535,32 @@ server <- function(input, output, session) {
 		})
 
 	imports <- shiny::reactive({
-		pkginfo::get_cran_imports(input$repo_name)
-		})
+		pkg_details() %>%
+		  pkginfo::get_pkg_imports() 
+	})
 
 	output$importsBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			as.character(nrow(imports())), "Imports", icon = shiny::icon("list"),
+			as.character(length(imports())), "Imports", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
 	suggests <- shiny::reactive({
-		pkginfo::get_pkg_suggests(input$repo_name)
-		})
+		pkg_details() %>%
+		  pkginfo::get_pkg_suggests() 
+	})
 
 	output$suggestsBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			as.character(nrow(suggests())), "Suggests", icon = shiny::icon("list"),
+			as.character(length(suggests())), "Suggests", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
 	output$versionBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			pkginfo::get_pkg_r_dep(input$repo_name), "R Version",
+			pkginfo::get_pkg_r_dep(pkg_details()), "R Version",
 			icon = shiny::icon("list"),
 			color = "purple"
 			)
@@ -599,18 +606,20 @@ server <- function(input, output, session) {
 		})
 
 	output$cran_imports <- shiny::renderPrint({
-		imports() %>%
-		dplyr::rename(Imports = imports) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
+		imports()  %>%
+	    tibble::tibble() %>%
+	    magrittr::set_colnames("Imports")	%>%
+			knitr::kable(format = "html") %>%
+			kableExtra::kable_styling(full_width = FALSE)
 		})
 
 	output$cran_suggests <- shiny::renderPrint({
 		suggests() %>%
-		dplyr::rename(Suggests = suggests) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
-		})
+		  tibble::tibble() %>%
+	    magrittr::set_colnames("Imports")	%>%
+		  knitr::kable(format = "html") %>%
+		  kableExtra::kable_styling(full_width = FALSE)
+	})
 
 	shiny::observeEvent(input$exit_button, {
 		shiny::stopApp()
