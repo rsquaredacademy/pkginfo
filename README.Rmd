@@ -34,7 +34,7 @@ devtools::install_github("rsquaredacademy/pkginfo")
 #### Download Statistics
 
 ```{r downloads}
-get_cran_downloads("olsrr")
+get_pkg_downloads("olsrr")
 ```
 
 #### Travis Build Status
