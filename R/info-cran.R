@@ -500,7 +500,9 @@ get_pkg_urls <- function(pkg_details) {
 #' @param package_name Name of the R package.
 #'
 #' @examples
+#' \dontrun{
 #' get_pkg_details("dplyr")
+#' }
 #'
 #' @export
 #'
