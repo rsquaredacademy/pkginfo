@@ -231,8 +231,8 @@ get_pkg_cran_check_results <- function(package_name) {
 #'
 #' @export
 #'
-get_pkg_title <- function(pkg_detail) {
-    magrittr::use_series(pkg_detail, Title)
+get_pkg_title <- function(pkg_details) {
+    magrittr::use_series(pkg_details, Title)
 }
 
 #' Description
@@ -251,8 +251,8 @@ get_pkg_title <- function(pkg_detail) {
 #'
 #' @export
 #'
-get_pkg_desc <- function(pkg_detail) {
-  magrittr::use_series(pkg_detail, Description)
+get_pkg_desc <- function(pkg_details) {
+  magrittr::use_series(pkg_details, Description)
 }
 
 
@@ -272,8 +272,8 @@ get_pkg_desc <- function(pkg_detail) {
 #'
 #' @export
 #'
-get_pkg_version <- function(pkg_detail) {
-  magrittr::use_series(pkg_detail, Version)
+get_pkg_version <- function(pkg_details) {
+  magrittr::use_series(pkg_details, Version)
 }
 
 

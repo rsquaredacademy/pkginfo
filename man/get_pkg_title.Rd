@@ -4,7 +4,7 @@
 \alias{get_pkg_title}
 \title{Title}
 \usage{
-get_pkg_title(pkg_detail)
+get_pkg_title(pkg_details)
 }
 \arguments{
 \item{pkg_details}{An object of class \code{pkg_details}.}

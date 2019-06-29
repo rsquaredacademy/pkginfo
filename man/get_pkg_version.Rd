@@ -4,7 +4,7 @@
 \alias{get_pkg_version}
 \title{Version}
 \usage{
-get_pkg_version(pkg_detail)
+get_pkg_version(pkg_details)
 }
 \arguments{
 \item{pkg_details}{An object of class \code{pkg_details}.}

@@ -609,7 +609,7 @@ get_gh_username <- function(package_name) {
 	check_cran(package_name)
 
 	urls <-
-	  get_cran_urls(package_name) %>%
+	  get_pkg_urls(package_name) %>%
 	  dplyr::filter(stringr::str_detect(urls, "github")) %>%
 	  dplyr::pull(urls) %>%
 	  dplyr::first()

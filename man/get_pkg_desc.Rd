@@ -4,7 +4,7 @@
 \alias{get_pkg_desc}
 \title{Description}
 \usage{
-get_pkg_desc(pkg_detail)
+get_pkg_desc(pkg_details)
 }
 \arguments{
 \item{pkg_details}{An object of class \code{pkg_details}.}
