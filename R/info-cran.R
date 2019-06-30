@@ -144,19 +144,23 @@ get_pkg_downloads <- function(package_name) {
   count <- NULL
 
   latest <- lubridate::today() - 2
-  last_day <- cranlogs::cran_downloads(package_name, from = latest, to = latest) %>%
+  last_day <-
+    cranlogs::cran_downloads(package_name, from = latest, to = latest) %>%
     dplyr::select(count) %>%
     sum()
 
-  last_week <- cranlogs::cran_downloads(package_name, "last-week") %>%
+  last_week <-
+    cranlogs::cran_downloads(package_name, "last-week") %>%
     dplyr::select(count) %>%
     sum()
 
-  last_month <- cranlogs::cran_downloads(package_name, "last-month") %>%
+  last_month <-
+    cranlogs::cran_downloads(package_name, "last-month") %>%
     dplyr::select(count) %>%
     sum()
 
-  overall <- cranlogs::cran_downloads(package_name, from = "2012-10-01", to = latest) %>%
+  overall <-
+    cranlogs::cran_downloads(package_name, from = "2012-10-01", to = latest) %>%
     dplyr::select(count) %>%
     sum()
 
@@ -441,7 +445,20 @@ get_pkg_authors <- function(pkg_details) {
 #' @export
 #'
 get_pkg_maintainer <- function(pkg_details) {
-  magrittr::use_series(pkg_details, Maintainer)
+
+  details <-
+    pkgd %>%
+    magrittr::use_series(Maintainer) %>%
+    stringr::str_replace(pattern = ">", replacement = "") %>%
+    stringr::str_trim() %>%
+    stringr::str_split(pattern = "<") %>%
+    unlist()
+
+  tibble::tibble(
+    name  = details[1],
+    email = details[2]
+  )
+
 }
 
 #' URL
