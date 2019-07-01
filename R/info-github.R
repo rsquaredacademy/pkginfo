@@ -135,18 +135,22 @@ get_gh_stats <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-  check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  pkg    <- pkg_github(user_name, repo_name)
-  stars  <- pkg$stargazers_count
-  issues <- pkg$open_issues_count
-  forks  <- pkg$forks_count
+	  pkg    <- pkg_github(user_name, repo_name)
+	  stars  <- pkg$stargazers_count
+	  issues <- pkg$open_issues_count
+	  forks  <- pkg$forks_count
 
-  tibble::tibble(
-    stars  = stars,
-    issues = issues,
-    forks  = forks
-  )
+	  tibble::tibble(
+	    stars  = stars,
+	    issues = issues,
+	    forks  = forks
+	  )
+	}
 
 }
 
@@ -181,10 +185,14 @@ get_gh_branches <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  out <- connect_api(user_name, repo_name, "branches")
-  tibble::tibble(branches = purrr::map_chr(out, "name"))
+	  out <- connect_api(user_name, repo_name, "branches")
+	  tibble::tibble(branches = purrr::map_chr(out, "name"))
+	}
 
 }
 
@@ -208,30 +216,34 @@ get_gh_issues <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  out            <- connect_api(user_name, repo_name, "issues")
-  issue_number   <- purrr::map_int(out, "number")
-  issue_title    <- purrr::map_chr(out, "title")
-  issue_body     <- purrr::map_chr(out, "body")
+	  out            <- connect_api(user_name, repo_name, "issues")
+	  issue_number   <- purrr::map_int(out, "number")
+	  issue_title    <- purrr::map_chr(out, "title")
+	  issue_body     <- purrr::map_chr(out, "body")
 
-  issue_date <-
-    out %>%
-    purrr::map_chr("created_at") %>%
-    as.Date()
+	  issue_date <-
+	    out %>%
+	    purrr::map_chr("created_at") %>%
+	    as.Date()
 
-  issue_user <-
-    out %>%
-	  purrr::map("user") %>%
-	  purrr::map_chr("login")
+	  issue_user <-
+	    out %>%
+		  purrr::map("user") %>%
+		  purrr::map_chr("login")
 
 
-  tibble::tibble(
-    date        = issue_date,
-    number      = issue_number,
-    author      = issue_user,
-    title       = issue_title
-  )
+	  tibble::tibble(
+	    date        = issue_date,
+	    number      = issue_number,
+	    author      = issue_user,
+	    title       = issue_title
+	  )	
+	}
 
 }
 
@@ -256,16 +268,20 @@ get_gh_labels <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  out         <- connect_api(user_name, repo_name, "labels")
-  label_name  <- purrr::map_chr(out, "name")
-  label_color <- purrr::map_chr(out, "color")
+	  out         <- connect_api(user_name, repo_name, "labels")
+	  label_name  <- purrr::map_chr(out, "name")
+	  label_color <- purrr::map_chr(out, "color")
 
-  tibble::tibble(
-    name  = label_name,
-    color = label_color
-  )
+	  tibble::tibble(
+	    name  = label_name,
+	    color = label_color
+	  )	
+	}
 
 }
 
@@ -289,25 +305,29 @@ get_gh_milestones <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  out      <- connect_api(user_name, repo_name, "milestones")
-  m_title  <- purrr::map_chr(out, "title")
-  m_body   <- purrr::map_chr(out, "description")
-  m_open   <- purrr::map_int(out, "open_issues")
-  m_closed <- purrr::map_int(out, "closed_issues")
-  m_start  <- as.Date(purrr::map_chr(out, "created_at"))
-  due      <- magrittr::extract2(out, 1)$due_on
-  m_due    <- ifelse(is.null(due), NA, as.Date(due))
+	  out      <- connect_api(user_name, repo_name, "milestones")
+	  m_title  <- purrr::map_chr(out, "title")
+	  m_body   <- purrr::map_chr(out, "description")
+	  m_open   <- purrr::map_int(out, "open_issues")
+	  m_closed <- purrr::map_int(out, "closed_issues")
+	  m_start  <- as.Date(purrr::map_chr(out, "created_at"))
+	  due      <- magrittr::extract2(out, 1)$due_on
+	  m_due    <- ifelse(is.null(due), NA, as.Date(due))
 
-  tibble::tibble(
-    title         = m_title,
-    tart_date    = m_start,
-    due_date      = m_due,
-    description   = m_body,
-    open_issues   = m_open,
-    closed_issues = m_closed
-  )
+	  tibble::tibble(
+	    title         = m_title,
+	    tart_date    = m_start,
+	    due_date      = m_due,
+	    description   = m_body,
+	    open_issues   = m_open,
+	    closed_issues = m_closed
+	  )	
+	}
 
 }
 
@@ -331,14 +351,18 @@ get_gh_coc <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  pkg_name <- paste0("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
-  url      <- httr::modify_url("https://api.github.com", path = pkg_name)
-  resp     <- httr::GET(url, httr::add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
-  out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+	  pkg_name <- paste0("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
+	  url      <- httr::modify_url("https://api.github.com", path = pkg_name)
+	  resp     <- httr::GET(url, httr::add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
+	  out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
-  cat(out$body)
+	  cat(out$body)	
+	}
 
 }
 
@@ -363,18 +387,22 @@ get_gh_license <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-	out <- connect_api(user_name, repo_name, "license")
-  if (length(out) == 2) {
-    cat("This repository does not have a license file.")
-  } else {
-    if (curl::has_internet()) {
-      utils::browseURL(out$html_url)
-    } else {
-      cat("Please ensure your internet connection is working.")
-    }
-  }
+		out <- connect_api(user_name, repo_name, "license")
+	  if (length(out) == 2) {
+	    cat("This repository does not have a license file.")
+	  } else {
+	    if (curl::has_internet()) {
+	      utils::browseURL(out$html_url)
+	    } else {
+	      cat("Please ensure your internet connection is working.")
+	    }
+	  }	
+	}
 
 }
 
@@ -398,20 +426,24 @@ get_gh_pr <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  out         <- connect_api(user_name, repo_name, "pulls")
-  pull_number <- purrr::map_int(out, "number")
-  pull_start  <- as.Date(purrr::map_chr(out, "created_at"))
-  pull_title  <- purrr::map_chr(out, "title")
-  pull_status <- purrr::map_chr(out, "state")
+	  out         <- connect_api(user_name, repo_name, "pulls")
+	  pull_number <- purrr::map_int(out, "number")
+	  pull_start  <- as.Date(purrr::map_chr(out, "created_at"))
+	  pull_title  <- purrr::map_chr(out, "title")
+	  pull_status <- purrr::map_chr(out, "state")
 
-  tibble::tibble(
-    number = pull_number,
-    date   = pull_start,
-    title  = pull_title,
-    status = pull_status
-  )
+	  tibble::tibble(
+	    number = pull_number,
+	    date   = pull_start,
+	    title  = pull_title,
+	    status = pull_status
+	  )	
+	}
 
 }
 
@@ -435,21 +467,25 @@ get_gh_releases <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-	check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  out               <- connect_api(user_name, repo_name, "releases")
-  release_tag       <- purrr::map_chr(out, "tag_name")
-  release_title     <- purrr::map_chr(out, "name")
-  pre_release       <- purrr::map_lgl(out, "prerelease")
-  release_published <- as.Date(purrr::map_chr(out, "published_at"))
+	  out               <- connect_api(user_name, repo_name, "releases")
+	  release_tag       <- purrr::map_chr(out, "tag_name")
+	  release_title     <- purrr::map_chr(out, "name")
+	  pre_release       <- purrr::map_lgl(out, "prerelease")
+	  release_published <- as.Date(purrr::map_chr(out, "published_at"))
 
 
-  tibble::tibble(
-    tag        = release_tag,
-    date       = release_published,
-    title      = release_title,
-    prerelease = pre_release
-  )
+	  tibble::tibble(
+	    tag        = release_tag,
+	    date       = release_published,
+	    title      = release_title,
+	    prerelease = pre_release
+	  )	
+	}
 
 }
 
@@ -473,19 +509,23 @@ get_status_travis <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-  check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  pkg_name <- paste0("repos/", user_name, "/", repo_name)
-  url      <- httr::modify_url("https://api.travis-ci.org", path = pkg_name)
-  resp     <- httr::GET(url)
+	  pkg_name <- paste0("repos/", user_name, "/", repo_name)
+	  url      <- httr::modify_url("https://api.travis-ci.org", path = pkg_name)
+	  resp     <- httr::GET(url)
 
-  httr::content(resp, "parsed") %>%
-    xml2::as_list() %>%
-    magrittr::use_series('Projects') %>%
-    magrittr::use_series('Project') %>%
-    attributes() %>%
-    magrittr::use_series('lastBuildStatus') %>%
-    magrittr::extract(1)
+	  httr::content(resp, "parsed") %>%
+	    xml2::as_list() %>%
+	    magrittr::use_series('Projects') %>%
+	    magrittr::use_series('Project') %>%
+	    attributes() %>%
+	    magrittr::use_series('lastBuildStatus') %>%
+	    magrittr::extract(1)
+		}
 
 }
 
@@ -539,13 +579,17 @@ get_code_coverage <- function(repo_name, user_name = NULL) {
 		user_name <- get_gh_username(repo_name)
 	}
 
-  check_repo(user_name, repo_name)
+	if (is.null(user_name)) {
+		NULL
+	} else {
+		check_repo(user_name, repo_name)
 
-  pkg_name <- paste0("/api/gh/", user_name, "/", repo_name)
-  url      <- httr::modify_url("https://codecov.io", path = pkg_name)
-  resp     <- httr::GET(url)
-  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
-  result$commit$totals$c
+	  pkg_name <- paste0("/api/gh/", user_name, "/", repo_name)
+	  url      <- httr::modify_url("https://codecov.io", path = pkg_name)
+	  resp     <- httr::GET(url)
+	  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+	  result$commit$totals$c
+	}
 
 }
 

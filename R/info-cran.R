@@ -447,7 +447,7 @@ get_pkg_authors <- function(pkg_details) {
 get_pkg_maintainer <- function(pkg_details) {
 
   details <-
-    pkgd %>%
+    pkg_details %>%
     magrittr::use_series(Maintainer) %>%
     stringr::str_replace(pattern = ">", replacement = "") %>%
     stringr::str_trim() %>%

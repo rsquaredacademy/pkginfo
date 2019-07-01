@@ -62,6 +62,8 @@ ui <- shinydashboard::dashboardPage(
 						shinycssloaders::withSpinner(),
 					shiny::uiOutput('out_basic_maintainer') %>%
 						shinycssloaders::withSpinner(),
+					shiny::uiOutput('out_basic_maintainer_email') %>%
+						shinycssloaders::withSpinner(),
 					shiny::uiOutput('out_basic_cran') %>%
 						shinycssloaders::withSpinner(),
 					shiny::uiOutput('out_basic_bugs') %>%
@@ -291,7 +293,20 @@ server <- function(input, output, session) {
 					shiny::h5('Maintainer      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(pkginfo::get_pkg_maintainer(pkg_details()))
+					shiny::h5(pkginfo::get_pkg_maintainer(pkg_details())[[1]])
+					),
+				shiny::column(3)
+				)
+	})
+
+	basic_info_maintainter_email <- eventReactive(input$repo_name, {
+			shiny::fluidRow(
+				shiny::column(3),
+				shiny::column(1, align = 'left',
+					shiny::h5('Email      ')
+					),
+				shiny::column(5, align = 'left',
+					shiny::h5(pkginfo::get_pkg_maintainer(pkg_details())[[2]])
 					),
 				shiny::column(3)
 				)
@@ -375,6 +390,10 @@ server <- function(input, output, session) {
 		basic_info_maintainter()
 	})
 
+	output$out_basic_maintainer_email <- shiny::renderUI({
+		basic_info_maintainter_email()
+	})
+
 	output$out_basic_cran <- shiny::renderUI({
 		basic_info_cran()
 	})
@@ -447,96 +466,176 @@ server <- function(input, output, session) {
 		kableExtra::kable_styling(full_width = FALSE)
 		})
 
+	# indicators: travis status
+	travis_status <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <- pkginfo::get_status_travis(input$repo_name, input$user_name)
+		}
+		return(out)
+	})
+
 	output$travisBox <- shinydashboard::renderInfoBox({
 		shinydashboard::infoBox(
-			"Travis", pkginfo::get_status_travis(input$repo_name, input$user_name),
+			"Travis", travis_status(),
 			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
+
+	# indicators: appveyor status
+	appveyor_status <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <- pkginfo::get_status_appveyor(input$repo_name, input$user_name)
+		}
+		return(out)
+	})
 
 	output$appveyorBox <- shinydashboard::renderInfoBox({
 		shinydashboard::infoBox(
-			"Appveyor", pkginfo::get_status_appveyor(input$repo_name, input$user_name),
+			"Appveyor", appveyor_status(),
 			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
+
+	# indicators: code coverage
+	code_status <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <- pkginfo::get_code_coverage(input$repo_name, input$user_name)
+		}
+		return(out)
+	})
 
 	output$coverageBox <- shinydashboard::renderInfoBox({
 		shinydashboard::infoBox(
-			"Coverage", pkginfo::get_code_coverage(input$repo_name, input$user_name),
+			"Coverage", code_status(),
 			icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
-	info <- shiny::reactive({
-		pkginfo::get_gh_stats(input$repo_name, input$user_name)
-		})
+	# indicators: GitHub stars
+	github_stars <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <- pkginfo::get_gh_stats(input$repo_name, input$user_name)$stars
+		}
+		return(out)
+	})
 
 	output$starsBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			info()$stars, "Stars", icon = shiny::icon("list"),
+			github_stars(), "Stars", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
+
+	# indicators: GitHub forks
+	github_forks <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <- pkginfo::get_gh_stats(input$repo_name, input$user_name)$forks
+		}
+		return(out)
+	})
 
 	output$forksBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			info()$forks, "Forks", icon = shiny::icon("list"),
+			github_forks(), "Forks", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
+
+	# indicators: GitHub issues
+	github_issues <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <- pkginfo::get_gh_stats(input$repo_name, input$user_name)$issues
+		}
+		return(out)
+	})
 
 	output$issuesBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			info()$issues, "Issues", icon = shiny::icon("list"),
+			github_issues(), "Issues", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
 
-	issues <- shiny::reactive({
-		pkginfo::get_gh_issues(input$repo_name, input$user_name)
-		})
-
-	releases <- shiny::reactive({
-		pkginfo::get_gh_releases(input$repo_name, input$user_name)
-		})
+	# indicators: GitHub releases
+	github_releases <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <-
+			  pkginfo::get_gh_releases(input$repo_name, input$user_name) %>%
+			  nrow() %>%
+			  as.character()
+		}
+		return(out)
+	})
 
 	output$releasesBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			as.character(nrow(releases())), "Releases", icon = shiny::icon("list"),
+			github_releases(), "Releases", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
-	branches <- shiny::reactive({
-		pkginfo::get_gh_branches(input$repo_name, input$user_name)
-		})
+	# indicators: GitHub branches
+	github_branches <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <-
+			  pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
+			  nrow() %>%
+			  as.character()
+		}
+		return(out)
+	})
 
 	output$branchesBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			as.character(nrow(branches())), "Branches", icon = shiny::icon("list"),
+			github_branches(), "Branches", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
-	prs <- shiny::reactive({
-		pkginfo::get_gh_pr(input$repo_name, input$user_name)
-		})
+	# indicators: GitHub pull requests
+	github_prs <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			out <- NA
+		} else {
+			out <-
+			  pkginfo::get_gh_pr(input$repo_name, input$user_name) %>%
+			  nrow() %>%
+			  as.character()
+		}
+		return(out)
+	})
 
 	output$prBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
-			as.character(nrow(prs())), "Pull Requests", icon = shiny::icon("list"),
+			github_prs(), "Pull Requests", icon = shiny::icon("list"),
 			color = "purple"
 			)
 		})
 
+	# indicators: imports
 	imports <- shiny::reactive({
 		pkg_details() %>%
-		  pkginfo::get_pkg_imports() 
+		  pkginfo::get_pkg_imports()
 	})
 
 	output$importsBox <- shinydashboard::renderValueBox({
@@ -546,9 +645,10 @@ server <- function(input, output, session) {
 			)
 		})
 
+	# indicators: suggests
 	suggests <- shiny::reactive({
 		pkg_details() %>%
-		  pkginfo::get_pkg_suggests() 
+		  pkginfo::get_pkg_suggests()
 	})
 
 	output$suggestsBox <- shinydashboard::renderValueBox({
@@ -558,6 +658,7 @@ server <- function(input, output, session) {
 			)
 		})
 
+	# indicators: R version
 	output$versionBox <- shinydashboard::renderValueBox({
 		shinydashboard::valueBox(
 			pkginfo::get_pkg_r_dep(pkg_details()), "R Version",
@@ -566,45 +667,91 @@ server <- function(input, output, session) {
 			)
 		})
 
+	# issues
+	github_issues_list <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			"There is no GitHub repository associated with this R package."
+		} else {
+			pkginfo::get_gh_issues(input$repo_name, input$user_name) %>%
+				dplyr::rename(Date = date, Number = number, Author = author,
+				              Title = title) %>%
+				knitr::kable(format = "html") %>%
+				kableExtra::kable_styling(full_width = FALSE)
+		}
+	})
+
 	output$gh_issues <- shiny::renderPrint({
-		issues() %>%
-		dplyr::rename(Date = date, Number = number, Author = author,
-		              Title = title) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
-		})
+		github_issues_list()	
+	})
+
+	# releases
+	github_releases_list <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			"There is no GitHub repository associated with this R package."
+		} else {
+			pkginfo::get_gh_releases(input$repo_name, input$user_name) %>%
+				dplyr::rename(Tag = tag, Date = date, Title = title,
+				              Prerelease = prerelease) %>%
+				knitr::kable(format = "html") %>%
+				kableExtra::kable_styling(full_width = FALSE)
+		}
+	})
 
 	output$gh_releases <- shiny::renderPrint({
-		releases() %>%
-		dplyr::rename(Tag = tag, Date = date, Title = title,
-		              Prerelease = prerelease) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
-		})
+		github_releases_list()	
+	})
+
+	# branches
+	github_branches_list <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			"There is no GitHub repository associated with this R package."
+		} else {
+			 pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
+				dplyr::rename(Branches = branches) %>%
+				knitr::kable(format = "html") %>%
+				kableExtra::kable_styling(full_width = FALSE)
+		}
+	})
 
 	output$gh_branches <- shiny::renderPrint({
-		branches() %>%
-		dplyr::rename(Branches = branches) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
-		})
+		github_branches_list()	
+	})
+
+	# pull requests
+	github_prs_list <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			"There is no GitHub repository associated with this R package."
+		} else {
+			pkginfo::get_gh_pr(input$repo_name, input$user_name) %>%
+				dplyr::rename(Number = number, Date = date, Title = title,
+					              Status = status) %>%
+				knitr::kable(format = "html") %>%
+				kableExtra::kable_styling(full_width = FALSE)
+		}
+	})
 
 	output$gh_prs <- shiny::renderPrint({
-		prs() %>%
-		dplyr::rename(Number = number, Date = date, Title = title,
-		              Status = status) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
-		})
+		github_prs_list()	
+	})
+
+	# stack overflow
+	github_so_list <- shiny::eventReactive(input$retrieve_info, {
+		if (input$user_name == "") {
+			"There are no questions associated with this R package on Stack Overflow."
+		} else {
+			pkginfo::get_so_questions(input$repo_name) %>%
+				dplyr::rename(Date = date, Title = title, Owner = owner,
+				              Answered = answered, Views = views) %>%
+				knitr::kable(format = "html") %>%
+				kableExtra::kable_styling(full_width = FALSE)
+		}
+	})
 
 	output$gh_so <- shiny::renderPrint({
-		pkginfo::get_so_questions(input$repo_name) %>%
-		dplyr::rename(Date = date, Title = title, Owner = owner,
-		              Answered = answered, Views = views) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
-		})
+		github_so_list()	
+	})
 
+	# imports
 	output$cran_imports <- shiny::renderPrint({
 		imports()  %>%
 	    tibble::tibble() %>%
@@ -613,6 +760,7 @@ server <- function(input, output, session) {
 			kableExtra::kable_styling(full_width = FALSE)
 		})
 
+	# suggests
 	output$cran_suggests <- shiny::renderPrint({
 		suggests() %>%
 		  tibble::tibble() %>%
