@@ -608,27 +608,40 @@ get_gh_username <- function(package_name) {
 
 	check_cran(package_name)
 
-	urls <-
+  all_urls <-
     package_name %>%
     get_pkg_details() %>%
-	  get_pkg_urls() %>%
-	  dplyr::filter(stringr::str_detect(urls, "github")) %>%
-	  dplyr::pull(urls) %>%
-	  dplyr::first()
+    get_pkg_urls()
 
-	locate_slash <- stringr::str_locate_all(urls, "/")
+  check_git <-
+    all_urls %>%
+    dplyr::filter(stringr::str_detect(urls, "github")) %>%
+    nrow()
 
-	start <-
-	  locate_slash %>%
-	  get_location(position = 3) %>%
-	  magrittr::add(1)
+  if (check_git > 0) {
+    
+    urls <-
+      all_urls %>%
+      dplyr::filter(stringr::str_detect(urls, "github")) %>%
+      dplyr::pull(urls) %>%
+      dplyr::first()
 
-	end <-
-	  locate_slash %>%
-	  get_location(position = 4) %>%
-	  magrittr::subtract(1)
+  	locate_slash <- stringr::str_locate_all(urls, "/")
 
-	stringr::str_sub(urls, start, end)
+		start <-
+		  locate_slash %>%
+		  get_location(position = 3) %>%
+		  magrittr::add(1)
+
+		end <-
+		  locate_slash %>%
+		  get_location(position = 4) %>%
+		  magrittr::subtract(1)
+
+		stringr::str_sub(urls, start, end)
+  } else {
+    message("There is no associated GitHub repository for this package.")
+  }
 
 }
 
