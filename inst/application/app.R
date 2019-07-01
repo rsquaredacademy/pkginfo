@@ -214,24 +214,88 @@ server <- function(input, output, session) {
     })
 
 	bug_url <- shiny::eventReactive(input$retrieve_info, {
-		pkginfo::get_pkg_urls(pkg_details()) %>%
-			dplyr::filter(website == 'Bugs') %>%
-			dplyr::select(urls)
+
+	  get_bugs_url <-
+	    pkg_details() %>%
+	    pkginfo::get_pkg_urls() %>%
+	    dplyr::filter(website == "Bugs") %>%
+	    nrow()
+
+	  if (get_bugs_url != 1) {
+	    "NA"
+	  } else {
+	    pkg_details() %>%
+	      pkginfo::get_pkg_urls() %>%
+	      dplyr::filter(website == "Bugs") %>%
+	      dplyr::pull(urls)
+	  }
+	})
+
+	bugs_url_link <- shiny::eventReactive(input$retrieve_info, {
+
+		if (bug_url() != "NA") {
+			"Link"
+		} else {
+			"NA"
+		}
+
 	})
 
 	github_url <- shiny::eventReactive(input$retrieve_info, {
-		uname <- pkginfo:::get_gh_username(input$repo_name)
-		paste0('https://github.com/', uname, "/", input$repo_name)
+
+	  get_github_url <-
+	    pkg_details() %>%
+	    pkginfo::get_pkg_urls() %>%
+	    dplyr::filter(website == "GitHub") %>%
+	    nrow()
+
+	  if (get_github_url != 1) {
+	    git_url <- "NA"
+	  } else {
+	    git_url <-
+	      pkg_details() %>%
+	      pkginfo::get_pkg_urls() %>%
+	      dplyr::filter(website == "GitHub") %>%
+	      dplyr::pull(urls)
+	  }
+
+	})
+
+	github_url_link <- shiny::eventReactive(input$retrieve_info, {
+
+		if (github_url() != "NA") {
+			"Link"
+		} else {
+			"NA"
+		}
+
 	})
 
 	website_url <- shiny::eventReactive(input$retrieve_info, {
-		pkginfo::get_pkg_urls(pkg_details()) %>%
-			dplyr::filter(website != "Bugs") %>%
-			dplyr::select(urls) %>%
-			unlist() %>%
-			stringr::str_extract(pattern = '^((?!github).)*$') %>%
-			na.exclude() %>%
-			magrittr::extract(1)
+	  get_docs_url <-
+	    pkg_details() %>%
+	    pkginfo::get_pkg_urls() %>%
+	    dplyr::filter(website == "Others") %>%
+	    nrow()
+
+	  if (get_docs_url != 1) {
+	    "NA"
+	  } else {
+	    pkg_details() %>%
+	      pkginfo::get_pkg_urls() %>%
+	      dplyr::filter(website == "Others") %>%
+	      dplyr::pull(urls)
+	  }
+	})
+
+	website_url_link <- shiny::eventReactive(input$retrieve_info, {
+
+		if (website_url() != "NA") {
+			"Link"
+		} else {
+			"NA"
+		}
+
 	})
 
 	basic_info_title <- eventReactive(input$repo_name, {
@@ -334,7 +398,7 @@ server <- function(input, output, session) {
 					shiny::h5('Bugs            ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=bug_url(),
+					shiny::h5(shiny::tagList("", shiny::a(bugs_url_link(), href=bug_url(),
 					                                      target="_blank")))
 					),
 				shiny::column(3)
@@ -348,7 +412,7 @@ server <- function(input, output, session) {
 					shiny::h5('GitHub      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=github_url(),
+					shiny::h5(shiny::tagList("", shiny::a(github_url_link(), href=github_url(),
 					                                      target="_blank")))
 					),
 				shiny::column(3)
@@ -362,7 +426,7 @@ server <- function(input, output, session) {
 					shiny::h5('Website      ')
 					),
 				shiny::column(5, align = 'left',
-					shiny::h5(shiny::tagList("", shiny::a("Link", href=website_url(),
+					shiny::h5(shiny::tagList("", shiny::a(website_url_link(), href=website_url(),
 					                                      target="_blank")))
 					),
 				shiny::column(3)
@@ -411,8 +475,13 @@ server <- function(input, output, session) {
 	})
 
 	update_repo <- shiny::eventReactive(input$check_repo_name, {
-		pkginfo::get_gh_username(input$repo_name)
-		})
+		repo_name <- pkginfo::get_gh_username(input$repo_name)
+		if (is.null(repo_name)) {
+			"NA"
+		} else {
+			repo_name
+		}
+	})
 
 	shiny::observe({
 		shiny::updateTextInput(
@@ -468,7 +537,7 @@ server <- function(input, output, session) {
 
 	# indicators: travis status
 	travis_status <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <- pkginfo::get_status_travis(input$repo_name, input$user_name)
@@ -486,7 +555,7 @@ server <- function(input, output, session) {
 
 	# indicators: appveyor status
 	appveyor_status <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <- pkginfo::get_status_appveyor(input$repo_name, input$user_name)
@@ -504,7 +573,7 @@ server <- function(input, output, session) {
 
 	# indicators: code coverage
 	code_status <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <- pkginfo::get_code_coverage(input$repo_name, input$user_name)
@@ -522,7 +591,7 @@ server <- function(input, output, session) {
 
 	# indicators: GitHub stars
 	github_stars <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <- pkginfo::get_gh_stats(input$repo_name, input$user_name)$stars
@@ -539,7 +608,7 @@ server <- function(input, output, session) {
 
 	# indicators: GitHub forks
 	github_forks <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <- pkginfo::get_gh_stats(input$repo_name, input$user_name)$forks
@@ -556,7 +625,7 @@ server <- function(input, output, session) {
 
 	# indicators: GitHub issues
 	github_issues <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <- pkginfo::get_gh_stats(input$repo_name, input$user_name)$issues
@@ -574,7 +643,7 @@ server <- function(input, output, session) {
 
 	# indicators: GitHub releases
 	github_releases <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <-
@@ -594,7 +663,7 @@ server <- function(input, output, session) {
 
 	# indicators: GitHub branches
 	github_branches <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <-
@@ -614,7 +683,7 @@ server <- function(input, output, session) {
 
 	# indicators: GitHub pull requests
 	github_prs <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			out <- NA
 		} else {
 			out <-
@@ -669,7 +738,7 @@ server <- function(input, output, session) {
 
 	# issues
 	github_issues_list <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
 			pkginfo::get_gh_issues(input$repo_name, input$user_name) %>%
@@ -681,12 +750,12 @@ server <- function(input, output, session) {
 	})
 
 	output$gh_issues <- shiny::renderPrint({
-		github_issues_list()	
+		github_issues_list()
 	})
 
 	# releases
 	github_releases_list <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
 			pkginfo::get_gh_releases(input$repo_name, input$user_name) %>%
@@ -698,12 +767,12 @@ server <- function(input, output, session) {
 	})
 
 	output$gh_releases <- shiny::renderPrint({
-		github_releases_list()	
+		github_releases_list()
 	})
 
 	# branches
 	github_branches_list <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
 			 pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
@@ -714,12 +783,12 @@ server <- function(input, output, session) {
 	})
 
 	output$gh_branches <- shiny::renderPrint({
-		github_branches_list()	
+		github_branches_list()
 	})
 
 	# pull requests
 	github_prs_list <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
 			pkginfo::get_gh_pr(input$repo_name, input$user_name) %>%
@@ -731,12 +800,12 @@ server <- function(input, output, session) {
 	})
 
 	output$gh_prs <- shiny::renderPrint({
-		github_prs_list()	
+		github_prs_list()
 	})
 
 	# stack overflow
 	github_so_list <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "") {
+		if (input$user_name == "NA") {
 			"There are no questions associated with this R package on Stack Overflow."
 		} else {
 			pkginfo::get_so_questions(input$repo_name) %>%
@@ -748,7 +817,7 @@ server <- function(input, output, session) {
 	})
 
 	output$gh_so <- shiny::renderPrint({
-		github_so_list()	
+		github_so_list()
 	})
 
 	# imports
