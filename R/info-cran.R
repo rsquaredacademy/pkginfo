@@ -371,7 +371,9 @@ get_pkg_suggests <- function(pkg_details) {
 #' @export
 #'
 get_pkg_publish_date <- function(pkg_details) {
-  magrittr::use_series(pkg_details, "Date/Publication")
+  pkg_details %>%
+    magrittr::use_series("Date/Publication") %>%
+    lubridate::date()
 }
 
 #' License
