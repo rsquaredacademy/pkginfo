@@ -28,13 +28,15 @@ get_so_questions <- function(package_name) {
 	answered <- purrr::map_lgl(out$items, "is_answered")
 	views    <- purrr::map_int(out$items, "view_count")
 	owner    <- purrr::map_chr(purrr::map(out$items, "owner"), "display_name")
+	qlink    <- purrr::map_chr(out$items, "link")
 
 	tibble::tibble(
 		date     = date_creation,
 		title    = title,
 		owner    = owner,
 		answered = answered,
-		views    = views
+		views    = views,
+		link     = qlink
 	)
 
 }
