@@ -189,7 +189,7 @@ ui <- shinydashboard::dashboardPage(
 			shinydashboard::tabItem(tabName = "so",
 				shiny::fluidRow(
 					shiny::column(12, align = 'center',
-						shiny::h2("Stack OVerflow"),
+						shiny::h2("Stack Overflow"),
 						shiny::br(),
 						shiny::tableOutput("gh_so") %>%
 						shinycssloaders::withSpinner()
@@ -741,11 +741,18 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			pkginfo::get_gh_issues(input$repo_name, input$user_name) %>%
-				dplyr::rename(Date = date, Number = number, Author = author,
-				              Title = title) %>%
-				knitr::kable(format = "html") %>%
-				kableExtra::kable_styling(full_width = FALSE)
+			itable <- 
+				pkginfo::get_gh_issues(input$repo_name, input$user_name) %>%
+				dplyr::rename(Date = date, Number = number, Author = author, Title = title) 
+
+			prep_url <-
+			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
+			  	"/issues/", itable$Number)
+
+			itable %>%
+			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
+			  knitr::kable("html", escape = FALSE) %>%
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
 		}
 	})
 
@@ -758,11 +765,18 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			pkginfo::get_gh_releases(input$repo_name, input$user_name) %>%
-				dplyr::rename(Tag = tag, Date = date, Title = title,
-				              Prerelease = prerelease) %>%
-				knitr::kable(format = "html") %>%
-				kableExtra::kable_styling(full_width = FALSE)
+			itable <- 
+				pkginfo::get_gh_releases(input$repo_name, input$user_name) %>%
+				dplyr::rename(Tag = tag, Date = date, Title = title, Prerelease = prerelease) 
+
+			prep_url <-
+			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
+			  	"/releases/tag/", itable$Tag)
+
+			itable %>%
+			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
+			  knitr::kable("html", escape = FALSE) %>%
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
 		}
 	})
 
@@ -775,10 +789,18 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			 pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
-				dplyr::rename(Branches = branches) %>%
-				knitr::kable(format = "html") %>%
-				kableExtra::kable_styling(full_width = FALSE)
+			itable <- 
+				pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
+				dplyr::rename(Branches = branches)
+
+			prep_url <-
+			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
+			  	"/tree/", itable$Branches)
+
+			itable %>%
+			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
+			  knitr::kable("html", escape = FALSE) %>%
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
 		}
 	})
 
@@ -791,11 +813,18 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			pkginfo::get_gh_pr(input$repo_name, input$user_name) %>%
-				dplyr::rename(Number = number, Date = date, Title = title,
-					              Status = status) %>%
-				knitr::kable(format = "html") %>%
-				kableExtra::kable_styling(full_width = FALSE)
+			itable <- 
+				pkginfo::get_gh_pr(input$repo_name, input$user_name) %>%
+				dplyr::rename(Number = number, Date = date, Title = title, Status = status)
+
+			prep_url <-
+			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
+			  	"/pull/", itable$Number)
+
+			itable %>%
+			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
+			  knitr::kable("html", escape = FALSE) %>%
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
 		}
 	})
 
@@ -808,11 +837,16 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There are no questions associated with this R package on Stack Overflow."
 		} else {
-			pkginfo::get_so_questions(input$repo_name) %>%
+			itable <- 
+				pkginfo::get_so_questions(input$repo_name) %>%
 				dplyr::rename(Date = date, Title = title, Owner = owner,
-				              Answered = answered, Views = views) %>%
-				knitr::kable(format = "html") %>%
-				kableExtra::kable_styling(full_width = FALSE)
+				              Answered = answered, Views = views, qlink = link)
+
+			itable %>%
+			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = itable$qlink)) %>%
+			  dplyr::select(-qlink) %>%
+			  knitr::kable("html", escape = FALSE) %>%
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
 		}
 	})
 
@@ -822,21 +856,31 @@ server <- function(input, output, session) {
 
 	# imports
 	output$cran_imports <- shiny::renderPrint({
-		imports()  %>%
-	    tibble::tibble() %>%
-	    magrittr::set_colnames("Imports")	%>%
-			knitr::kable(format = "html") %>%
-			kableExtra::kable_styling(full_width = FALSE)
-		})
+		imports() %>% 
+			tibble::tibble() %>% 
+		  magrittr::set_colnames("packages") %>% 
+		  dplyr::mutate(Imports = kableExtra::cell_spec(packages, "html", 
+		    link = paste0("https://CRAN.R-project.org/package=", packages))
+		  ) %>%
+		  dplyr::select(Imports) %>% 
+		  knitr::kable("html", escape = FALSE, target = "_blank") %>%
+		  kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 
+		}
+	)
 
 	# suggests
 	output$cran_suggests <- shiny::renderPrint({
 		suggests() %>%
-		  tibble::tibble() %>%
-	    magrittr::set_colnames("Imports")	%>%
-		  knitr::kable(format = "html") %>%
-		  kableExtra::kable_styling(full_width = FALSE)
-	})
+			tibble::tibble() %>% 
+		  magrittr::set_colnames("packages") %>% 
+		  dplyr::mutate(Suggests = kableExtra::cell_spec(packages, "html", 
+		    link = paste0("https://CRAN.R-project.org/package=", packages))
+		  ) %>%
+		  dplyr::select(Suggests) %>% 
+		  knitr::kable("html", escape = FALSE, target = "_blank") %>%
+		  kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 
+		}
+	)
 
 	shiny::observeEvent(input$exit_button, {
 		shiny::stopApp()
