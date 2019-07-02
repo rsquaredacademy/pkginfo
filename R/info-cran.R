@@ -565,3 +565,25 @@ check_cran <- function(package_name) {
 
 }
 
+check_package_name <- function(package_name) {
+
+  if (curl::has_internet()) {
+
+    url <- paste0("https://cran.r-project.org/package=", package_name)
+
+    status <-
+      url %>%
+      httr::GET() %>%
+      httr::status_code()
+
+    if (status != 200) {
+      FALSE
+    } else {
+      TRUE
+    }
+
+  } else {
+    stop("Please check your internet connection.", call. = FALSE)
+  }
+
+}

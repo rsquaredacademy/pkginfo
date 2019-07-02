@@ -1,6 +1,6 @@
 library(magrittr)
 
-ui <- shinydashboard::dashboardPage(
+ui <- shinydashboard::dashboardPage(skin = "blue",
 	shinydashboard::dashboardHeader(title = "pkginfo"),
 	shinydashboard::dashboardSidebar(
 		shinydashboard::sidebarMenu(
@@ -25,22 +25,13 @@ ui <- shinydashboard::dashboardPage(
 					shiny::column(12, align = 'center',
 						shiny::br(),
 						shiny::textInput("repo_name", "Package/Repo Name", value = NULL),
-						shiny::textInput("user_name", "GitHub Owner/Org", value = NULL)
+						shiny::actionButton("check_package_name", "Verify Package Name"),
+						shiny::br(),
+						shiny::br()
 						)
 					),
 				shiny::fluidRow(
-					shiny::column(12, align = 'center',
-						shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"),
-						shiny::actionButton("retrieve_info", "Retrieve Info"),
-						shiny::br(),
-						shiny::br(),
-						shiny::column(3),
-						shiny::column(6, align = 'center',
-							shiny::h4("Click on the Find User/Org button if you do not know the GitHub username or
-								organization name. The app will find it if the package has a GitHub repository.")
-							),
-						shiny::column(3)
-						)
+					shiny::uiOutput("package_check")
 					)
 				),
 			shinydashboard::tabItem(tabName = "basic_info",
@@ -207,6 +198,33 @@ ui <- shinydashboard::dashboardPage(
 )
 
 server <- function(input, output, session) {
+
+	valid_package <- shiny::eventReactive(input$check_package_name, {
+		pkginfo:::check_package_name(input$repo_name)
+	})
+
+	output$package_check <- renderUI({
+		if (valid_package()) {
+			shiny::column(12, align = 'center',
+						shiny::textInput("user_name", "GitHub Owner/Org", value = NULL),
+						shiny::br(),
+						shiny::actionButton(inputId = "check_repo_name", label = "Find User/Org"),
+						shiny::actionButton("retrieve_info", "Retrieve Info"),
+						shiny::br(),
+						shiny::br(),
+						shiny::column(3),
+						shiny::column(6, align = 'center',
+							shiny::h4("Click on the Find User/Org button if you do not know the GitHub username or
+								organization name. The app will find it if the package has a GitHub repository.")
+							),
+						shiny::column(3)
+						)
+		} else {
+			shiny::column(12, align = 'center',
+				shiny::h5("You have entered an invalid package name.")
+			)
+		}
+	})
 
   pkg_details <-
     shiny::eventReactive(input$retrieve_info, {
@@ -741,9 +759,9 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			itable <- 
+			itable <-
 				pkginfo::get_gh_issues(input$repo_name, input$user_name) %>%
-				dplyr::rename(Date = date, Number = number, Author = author, Title = title) 
+				dplyr::rename(Date = date, Number = number, Author = author, Title = title)
 
 			prep_url <-
 			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
@@ -752,7 +770,7 @@ server <- function(input, output, session) {
 			itable %>%
 			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
 			  knitr::kable("html", escape = FALSE) %>%
-  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	})
 
@@ -765,9 +783,9 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			itable <- 
+			itable <-
 				pkginfo::get_gh_releases(input$repo_name, input$user_name) %>%
-				dplyr::rename(Tag = tag, Date = date, Title = title, Prerelease = prerelease) 
+				dplyr::rename(Tag = tag, Date = date, Title = title, Prerelease = prerelease)
 
 			prep_url <-
 			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
@@ -776,7 +794,7 @@ server <- function(input, output, session) {
 			itable %>%
 			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
 			  knitr::kable("html", escape = FALSE) %>%
-  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	})
 
@@ -789,7 +807,7 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			itable <- 
+			itable <-
 				pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
 				dplyr::rename(Branches = branches)
 
@@ -800,7 +818,7 @@ server <- function(input, output, session) {
 			itable %>%
 			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
 			  knitr::kable("html", escape = FALSE) %>%
-  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	})
 
@@ -813,7 +831,7 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There is no GitHub repository associated with this R package."
 		} else {
-			itable <- 
+			itable <-
 				pkginfo::get_gh_pr(input$repo_name, input$user_name) %>%
 				dplyr::rename(Number = number, Date = date, Title = title, Status = status)
 
@@ -824,7 +842,7 @@ server <- function(input, output, session) {
 			itable %>%
 			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
 			  knitr::kable("html", escape = FALSE) %>%
-  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	})
 
@@ -837,7 +855,7 @@ server <- function(input, output, session) {
 		if (input$user_name == "NA") {
 			"There are no questions associated with this R package on Stack Overflow."
 		} else {
-			itable <- 
+			itable <-
 				pkginfo::get_so_questions(input$repo_name) %>%
 				dplyr::rename(Date = date, Title = title, Owner = owner,
 				              Answered = answered, Views = views, qlink = link)
@@ -846,7 +864,7 @@ server <- function(input, output, session) {
 			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = itable$qlink)) %>%
 			  dplyr::select(-qlink) %>%
 			  knitr::kable("html", escape = FALSE) %>%
-  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 	
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	})
 
@@ -856,29 +874,29 @@ server <- function(input, output, session) {
 
 	# imports
 	output$cran_imports <- shiny::renderPrint({
-		imports() %>% 
-			tibble::tibble() %>% 
-		  magrittr::set_colnames("packages") %>% 
-		  dplyr::mutate(Imports = kableExtra::cell_spec(packages, "html", 
+		imports() %>%
+			tibble::tibble() %>%
+		  magrittr::set_colnames("packages") %>%
+		  dplyr::mutate(Imports = kableExtra::cell_spec(packages, "html",
 		    link = paste0("https://CRAN.R-project.org/package=", packages))
 		  ) %>%
-		  dplyr::select(Imports) %>% 
+		  dplyr::select(Imports) %>%
 		  knitr::kable("html", escape = FALSE, target = "_blank") %>%
-		  kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 
+		  kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	)
 
 	# suggests
 	output$cran_suggests <- shiny::renderPrint({
 		suggests() %>%
-			tibble::tibble() %>% 
-		  magrittr::set_colnames("packages") %>% 
-		  dplyr::mutate(Suggests = kableExtra::cell_spec(packages, "html", 
+			tibble::tibble() %>%
+		  magrittr::set_colnames("packages") %>%
+		  dplyr::mutate(Suggests = kableExtra::cell_spec(packages, "html",
 		    link = paste0("https://CRAN.R-project.org/package=", packages))
 		  ) %>%
-		  dplyr::select(Suggests) %>% 
+		  dplyr::select(Suggests) %>%
 		  knitr::kable("html", escape = FALSE, target = "_blank") %>%
-		  kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE) 
+		  kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 		}
 	)
 
