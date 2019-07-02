@@ -2,7 +2,7 @@
 % Please edit documentation in R/info-cran.R
 \name{get_pkg_cran_check_results}
 \alias{get_pkg_cran_check_results}
-\title{CRAN status}
+\title{CRAN check results}
 \usage{
 get_pkg_cran_check_results(package_name)
 }
@@ -10,7 +10,7 @@ get_pkg_cran_check_results(package_name)
 \item{package_name}{Name of the package.}
 }
 \description{
-Return latest CRAN build results.
+Return latest CRAN check results.
 }
 \examples{
 \dontrun{

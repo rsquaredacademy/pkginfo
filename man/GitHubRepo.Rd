@@ -3,10 +3,10 @@
 \docType{class}
 \name{GitHubRepo}
 \alias{GitHubRepo}
-\title{Retrieve GitHub repository information}
+\title{Retrieve GitHub information}
 \format{An R6 class.}
 \description{
-Retrieve GitHub repository information
+Retrieve GitHub information
 }
 \section{Usage}{
 

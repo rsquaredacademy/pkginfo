@@ -2,7 +2,7 @@
 % Please edit documentation in R/info-cran.R
 \name{get_pkg_downloads}
 \alias{get_pkg_downloads}
-\title{Downloads}
+\title{Package downloads}
 \usage{
 get_pkg_downloads(package_name)
 }

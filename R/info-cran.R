@@ -123,7 +123,41 @@ CranPackage <- R6::R6Class("CranPackage",
 )
 
 
-#' Downloads
+#' Package details
+#'
+#' Extracts package details from crandb API.
+#'
+#' @param package_name Name of the R package.
+#'
+#' @examples
+#' \dontrun{
+#' get_pkg_details("dplyr")
+#' }
+#'
+#' @importFrom magrittr %>%
+#'
+#' @export
+#'
+get_pkg_details <- function(package_name) {
+
+  check_cran(package_name)
+
+  base_url    <- "http://crandb.r-pkg.org"
+  pkg_url     <- httr::modify_url(base_url, path = package_name)
+  resp        <- httr::GET(pkg_url)
+  resp_status <- httr::status_code(resp)
+
+  if (resp_status == 200) {
+    resp %>%
+      httr::content(as = "text") %>%
+      jsonlite::fromJSON(simplifyVector = TRUE)
+  } else {
+    stop("Please check the package name.")
+  }
+
+}
+
+#' Package downloads
 #'
 #' Package downloads from RStudio CRAN mirror.
 #'
@@ -133,8 +167,6 @@ CranPackage <- R6::R6Class("CranPackage",
 #' \dontrun{
 #' get_pkg_downloads("dplyr")
 #' }
-#'
-#' @importFrom magrittr %>%
 #'
 #' @export
 #'
@@ -175,9 +207,9 @@ get_pkg_downloads <- function(package_name) {
 }
 
 
-#' CRAN status
+#' CRAN check results
 #'
-#' Return latest CRAN build results.
+#' Return latest CRAN check results.
 #'
 #' @param package_name Name of the package.
 #'
@@ -220,60 +252,48 @@ get_pkg_cran_check_results <- function(package_name) {
 
 }
 
-#' Title
+#' CRAN package details
 #'
-#' Retrieve the title of the package from CRAN.
+#' Extracts and formats package details such as title, description, version, 
+#' R version dependency, imports, suggests, published date, license, authors,
+#' maintainer and associated urls from crandb API.
 #'
 #' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
 #' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_title()
+#' pkgdetails <- get_pkg_details("dplyr")
+#' get_pkg_title(pkgdetails)
+#' get_pkg_desc(pkgdetails)
+#' get_pkg_version(pkgdetails)
+#' get_pkg_r_dep(pkgdetails)
+#' get_pkg_imports(pkgdetails)
+#' get_pkg_suggests(pkgdetails)
+#' get_pkg_publish_date(pkgdetails)
+#' get_pkg_license(pkgdetails)
+#' get_pkg_authors(pkgdetails)
+#' get_pkg_maintainer(pkgdetails)
+#' get_pkg_urls(pkgdetails)
 #' }
 #'
+#' @name package_info
+NULL
+
+#' @rdname package_info
 #' @export
 #'
 get_pkg_title <- function(pkg_details) {
     magrittr::use_series(pkg_details, Title)
 }
 
-#' Description
-#'
-#' Retrieve the description of the package from CRAN.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_desc()
-#' }
-
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_desc <- function(pkg_details) {
   magrittr::use_series(pkg_details, Description)
 }
 
-
-#' Version
-#'
-#' Retrieve the latest version of the package from CRAN.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_version()
-#' }
-
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_version <- function(pkg_details) {
@@ -281,20 +301,7 @@ get_pkg_version <- function(pkg_details) {
 }
 
 
-#' Dependency
-#'
-#' Retrieve the R version on which the package depends.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_r_dep()
-#' }
-
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_r_dep <- function(pkg_details) {
@@ -305,20 +312,7 @@ get_pkg_r_dep <- function(pkg_details) {
 
 }
 
-#' Imports
-#'
-#' Retrieve the list of packages imported.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_imports()
-#' }
-
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_imports <- function(pkg_details) {
@@ -330,20 +324,7 @@ get_pkg_imports <- function(pkg_details) {
 
 }
 
-#' Suggests
-#'
-#' Retrieve the list of packages suggested.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_suggests()
-#' }
-
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_suggests <- function(pkg_details) {
@@ -354,20 +335,7 @@ get_pkg_suggests <- function(pkg_details) {
     names()
 }
 
-#' Published date
-#'
-#' Retrieve the latest date on which the package was published to CRAN.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_publish_date()
-#' }
-
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_publish_date <- function(pkg_details) {
@@ -376,38 +344,14 @@ get_pkg_publish_date <- function(pkg_details) {
     lubridate::date()
 }
 
-#' License
-#'
-#' Retrieve the license type of the package.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_license()
-#' }
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_license <- function(pkg_details) {
   magrittr::use_series(pkg_details, License)
 }
 
-#' Authors
-#'
-#' Retrieve the list of authors of the package.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_authors()
-#' }
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_authors <- function(pkg_details) {
@@ -431,19 +375,7 @@ get_pkg_authors <- function(pkg_details) {
     dplyr::select(author, role)
 }
 
-#' Maintainer
-#'
-#' Retrieve the details of the maintainer of the package.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_maintainer()
-#' }
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_maintainer <- function(pkg_details) {
@@ -463,19 +395,7 @@ get_pkg_maintainer <- function(pkg_details) {
 
 }
 
-#' URL
-#'
-#' Retrieve the list of URLs associated with the package.
-#'
-#' @param pkg_details An object of class \code{pkg_details}.
-#'
-#' @examples
-#' \dontrun{
-#' "dplyr" %>%
-#'   get_pkg_details() %>%
-#'   get_pkg_urls()
-#' }
-#'
+#' @rdname package_info
 #' @export
 #'
 get_pkg_urls <- function(pkg_details) {
@@ -511,38 +431,6 @@ get_pkg_urls <- function(pkg_details) {
 
 }
 
-
-#' Package details
-#'
-#' Extracts package details from crandb API.
-#'
-#' @param package_name Name of the R package.
-#'
-#' @examples
-#' \dontrun{
-#' get_pkg_details("dplyr")
-#' }
-#'
-#' @export
-#'
-get_pkg_details <- function(package_name) {
-
-  check_cran(package_name)
-
-  base_url    <- "http://crandb.r-pkg.org"
-  pkg_url     <- httr::modify_url(base_url, path = package_name)
-  resp        <- httr::GET(pkg_url)
-  resp_status <- httr::status_code(resp)
-
-  if (resp_status == 200) {
-    resp %>%
-      httr::content(as = "text") %>%
-      jsonlite::fromJSON(simplifyVector = TRUE)
-  } else {
-    stop("Please check the package name.")
-  }
-
-}
 
 check_cran <- function(package_name) {
 

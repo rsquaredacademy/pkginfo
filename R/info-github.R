@@ -1,4 +1,4 @@
-#' Retrieve GitHub repository information
+#' Retrieve GitHub information
 #'
 #' @section Usage:
 #' \preformatted{
@@ -115,18 +115,77 @@ GitHubRepo <- R6::R6Class("GitHubRepo",
 )
 
 
-#' Stars, forks and issues
+#' Retrieve GitHub information.
 #'
-#' Returns number of stars, forks and open issues of a GitHub repository.
+#' Returns the GitHub username, stars, forks, branches, issues, labels, 
+#' milestones, code of conduct, license, pull requests and releases.
 #'
-#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the package.
+#' @param user_name GitHub user or organization name.
 #'
 #' @examples
 #' \dontrun{
+#' get_gh_username("olsrr")
 #' get_gh_stats("dplyr", "tidyverse")
+#' get_gh_branches("dplyr", "tidyverse")
+#' get_gh_issues("dplyr", "tidyverse")
+#' get_gh_labels("dplyr", "tidyverse")
+#' get_gh_milestones("dplyr", "tidyverse")
+#' get_gh_coc("dplyr", "tidyverse")
+#' get_gh_license("dplyr", "tidyverse")
+#' get_gh_pr("dplyr", "tidyverse")
+#' get_gh_releases("dplyr", "tidyverse")
 #' }
 #'
+#' @name github_info
+#'
+NULL
+
+#' @rdname github_info
+#' @export
+#'
+get_gh_username <- function(repo_name) {
+
+	check_cran(repo_name)
+
+  all_urls <-
+    repo_name %>%
+    get_pkg_details() %>%
+    get_pkg_urls()
+
+  check_git <-
+    all_urls %>%
+    dplyr::filter(stringr::str_detect(urls, "github")) %>%
+    nrow()
+
+  if (check_git > 0) {
+    
+    urls <-
+      all_urls %>%
+      dplyr::filter(stringr::str_detect(urls, "github")) %>%
+      dplyr::pull(urls) %>%
+      dplyr::first()
+
+  	locate_slash <- stringr::str_locate_all(urls, "/")
+
+		start <-
+		  locate_slash %>%
+		  get_location(position = 3) %>%
+		  magrittr::add(1)
+
+		end <-
+		  locate_slash %>%
+		  get_location(position = 4) %>%
+		  magrittr::subtract(1)
+
+		stringr::str_sub(urls, start, end)
+  } else {
+    message("There is no associated GitHub repository for this package.")
+  }
+
+}
+
+#' @rdname github_info
 #' @export
 #'
 get_gh_stats <- function(repo_name, user_name = NULL) {
@@ -165,18 +224,7 @@ pkg_github <- function(user_name, repo_name) {
 
 }
 
-#' Branches
-#'
-#' Returns names of branches.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_branches("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_branches <- function(repo_name, user_name = NULL) {
@@ -196,18 +244,7 @@ get_gh_branches <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Issues
-#'
-#' Returns issues of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_issues("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_issues <- function(repo_name, user_name = NULL) {
@@ -247,19 +284,7 @@ get_gh_issues <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Labels
-#'
-#' Returns labels of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_labels("dplyr", "tidyverse")
-#' }
-#'
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_labels <- function(repo_name, user_name = NULL) {
@@ -285,18 +310,7 @@ get_gh_labels <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Milestones
-#'
-#' Returns milestones of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_milestones("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_milestones <- function(repo_name, user_name = NULL) {
@@ -331,18 +345,7 @@ get_gh_milestones <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Code of conduct
-#'
-#' Returns code of conduct of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_coc("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_coc <- function(repo_name, user_name = NULL) {
@@ -367,18 +370,7 @@ get_gh_coc <- function(repo_name, user_name = NULL) {
 }
 
 
-#' License
-#'
-#' Returns license of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_license("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_license <- function(repo_name, user_name = NULL) {
@@ -406,18 +398,7 @@ get_gh_license <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Pull requests
-#'
-#' Returns pull requests of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_pr("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_pr <- function(repo_name, user_name = NULL) {
@@ -447,18 +428,7 @@ get_gh_pr <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Releases
-#'
-#' Returns releases of repository.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the repository.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_releases("dplyr", "tidyverse")
-#' }
-#'
+#' @rdname github_info
 #' @export
 #'
 get_gh_releases <- function(repo_name, user_name = NULL) {
@@ -489,18 +459,27 @@ get_gh_releases <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Travis build status
+#' Retrieve build information.
 #'
-#' Return the latest travis build status.
+#' Returns build status from Travis CI and Appveyor, and code coverage from 
+#' codecov.
 #'
-#' @param user_name GitHub user or organization name.
 #' @param repo_name Name of the package.
+#' @param user_name GitHub user or organization name.
 #'
 #' @examples
 #' \dontrun{
-#' get_status_travis("dplyr", "rsquaredacademy")
+#' get_status_travis("dplyr", "tidyverse")
+#' get_status_appveyor("dplyr", "tidyverse")
+#' get_code_coverage("dplyr", "tidyverse")
 #' }
 #'
+#' @name build_info
+#'
+NULL
+
+
+#' @rdname build_info
 #' @export
 #'
 get_status_travis <- function(repo_name, user_name = NULL) {
@@ -529,18 +508,7 @@ get_status_travis <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Appveyor build status
-#'
-#' Return the latest appveyor build status.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the package.
-#'
-#' @examples
-#' \dontrun{
-#' get_status_appveyor("dplyr", "rsquaredacademy")
-#' }
-#'
+#' @rdname build_info
 #' @export
 #'
 get_status_appveyor <- function(repo_name, user_name = NULL) {
@@ -559,18 +527,7 @@ get_status_appveyor <- function(repo_name, user_name = NULL) {
 
 }
 
-#' Code coverage
-#'
-#' Return the code coverage of the package.
-#'
-#' @param user_name GitHub user or organization name.
-#' @param repo_name Name of the package.
-#'
-#' @examples
-#' \dontrun{
-#' get_code_coverage("dplyr", "rsquaredacademy")
-#' }
-#'
+#' @rdname build_info
 #' @export
 #'
 get_code_coverage <- function(repo_name, user_name = NULL) {
@@ -634,61 +591,6 @@ check_repo <- function(user_name, repo_name) {
   }
 
 }
-
-#' GitHub username
-#'
-#' Returns the GitHub user or organization name.
-#'
-#' @param package_name Name of the package.
-#'
-#' @examples
-#' \dontrun{
-#' get_gh_username("olsrr")
-#' }
-#'
-#' @export
-#'
-get_gh_username <- function(package_name) {
-
-	check_cran(package_name)
-
-  all_urls <-
-    package_name %>%
-    get_pkg_details() %>%
-    get_pkg_urls()
-
-  check_git <-
-    all_urls %>%
-    dplyr::filter(stringr::str_detect(urls, "github")) %>%
-    nrow()
-
-  if (check_git > 0) {
-    
-    urls <-
-      all_urls %>%
-      dplyr::filter(stringr::str_detect(urls, "github")) %>%
-      dplyr::pull(urls) %>%
-      dplyr::first()
-
-  	locate_slash <- stringr::str_locate_all(urls, "/")
-
-		start <-
-		  locate_slash %>%
-		  get_location(position = 3) %>%
-		  magrittr::add(1)
-
-		end <-
-		  locate_slash %>%
-		  get_location(position = 4) %>%
-		  magrittr::subtract(1)
-
-		stringr::str_sub(urls, start, end)
-  } else {
-    message("There is no associated GitHub repository for this package.")
-  }
-
-}
-
 
 get_location <- function(string, position) {
   string %>%

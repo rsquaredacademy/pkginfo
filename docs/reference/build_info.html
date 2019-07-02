@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CRAN check results — get_pkg_cran_check_results • pkginfo</title>
+<title>Retrieve build information. — build_info • pkginfo</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,10 @@
 
 
 
-<meta property="og:title" content="CRAN check results — get_pkg_cran_check_results" />
+<meta property="og:title" content="Retrieve build information. — build_info" />
 
-<meta property="og:description" content="Return latest CRAN check results." />
+<meta property="og:description" content="Returns build status from Travis CI and Appveyor, and code coverage from 
+codecov." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -108,32 +109,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>CRAN check results</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-cran.R'><code>R/info-cran.R</code></a></small>
-    <div class="hidden name"><code>get_pkg_cran_check_results.Rd</code></div>
+    <h1>Retrieve build information.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rsquaredacademy/pkginfo/blob/master/R/info-github.R'><code>R/info-github.R</code></a></small>
+    <div class="hidden name"><code>build_info.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Return latest CRAN check results.</p>
+    <p>Returns build status from Travis CI and Appveyor, and code coverage from 
+codecov.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_pkg_cran_check_results</span>(<span class='no'>package_name</span>)</pre>
+    <pre class="usage"><span class='fu'>get_status_travis</span>(<span class='no'>repo_name</span>, <span class='kw'>user_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>get_status_appveyor</span>(<span class='no'>repo_name</span>, <span class='kw'>user_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>get_code_coverage</span>(<span class='no'>repo_name</span>, <span class='kw'>user_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>package_name</th>
+      <th>repo_name</th>
       <td><p>Name of the package.</p></td>
+    </tr>
+    <tr>
+      <th>user_name</th>
+      <td><p>GitHub user or organization name.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_pkg_cran_check_results</span>(<span class='st'>"dplyr"</span>)
+<span class='fu'>get_status_travis</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
+<span class='fu'>get_status_appveyor</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
+<span class='fu'>get_code_coverage</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

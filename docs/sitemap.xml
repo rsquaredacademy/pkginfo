@@ -4,49 +4,13 @@
     <loc>https://pkginfo.rsquaredacademy.com/index.html</loc>
   </url>
   <url>
+    <loc>https://pkginfo.rsquaredacademy.com/reference/build_info.html</loc>
+  </url>
+  <url>
     <loc>https://pkginfo.rsquaredacademy.com/reference/CranPackage.html</loc>
   </url>
   <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_code_coverage.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_branches.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_coc.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_issues.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_license.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_milestones.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_pr.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_releases.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_stats.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_gh_username.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_authors.html</loc>
-  </url>
-  <url>
     <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_cran_check_results.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_desc.html</loc>
   </url>
   <url>
     <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_details.html</loc>
@@ -55,43 +19,16 @@
     <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_downloads.html</loc>
   </url>
   <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_imports.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_license.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_maintainer.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_publish_date.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_r_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_suggests.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_title.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_urls.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_version.html</loc>
-  </url>
-  <url>
     <loc>https://pkginfo.rsquaredacademy.com/reference/get_so_questions.html</loc>
   </url>
   <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_status_appveyor.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_status_travis.html</loc>
-  </url>
-  <url>
     <loc>https://pkginfo.rsquaredacademy.com/reference/GitHubRepo.html</loc>
+  </url>
+  <url>
+    <loc>https://pkginfo.rsquaredacademy.com/reference/github_info.html</loc>
+  </url>
+  <url>
+    <loc>https://pkginfo.rsquaredacademy.com/reference/package_info.html</loc>
   </url>
   <url>
     <loc>https://pkginfo.rsquaredacademy.com/reference/pkginfo.html</loc>

@@ -43,19 +43,8 @@ reference:
 - title: GitHub
 
   contents:
-  - get_gh_stats
-  - get_gh_branches
-  - get_gh_issues
-  - get_gh_labels
-  - get_gh_milestones
-  - get_gh_coc
-  - get_gh_license
-  - get_gh_pr
-  - get_gh_releases
-  - get_gh_username
-  - get_status_travis
-  - get_status_appveyor
-  - get_code_coverage
+  - github_info
+  - build_info
   - GitHubRepo
 
 - title: CRAN
@@ -63,18 +52,9 @@ reference:
   contents:
   - get_pkg_downloads
   - get_pkg_cran_check_results
-  - get_pkg_authors
-  - get_pkg_desc
-  - get_pkg_imports
-  - get_pkg_license
-  - get_pkg_maintainer
-  - get_pkg_publish_date
-  - get_pkg_r_dep
-  - get_pkg_suggests
-  - get_pkg_title
-  - get_pkg_urls
-  - get_pkg_version
+  - package_info
   - CranPackage
+  - get_pkg_details
 
 - title: Others
 

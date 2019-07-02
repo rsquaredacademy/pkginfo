@@ -21,19 +21,18 @@ Imports:
     stringr,
     tibble,
     xml2
-Suggest:
+Suggests:
     covr,
     ggplot2,
     kableExtra,
     knitr,
     rmarkdown,
     shinycssloaders,
-    shinydashboard
+    shinydashboard,
+    testthat
 License: MIT + file LICENSE
 URL: https://pkginfo.rsquaredacademy.com, https://github.com/rsquaredacademy/pkginfo
 BugReports: https://github.com/rsquaredacademy/pkginfo/issues
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Suggests: 
-    testthat
