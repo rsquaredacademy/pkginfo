@@ -20,6 +20,11 @@ library(pkginfo)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/pkginfo)](https://cran.r-project.org/package=pkginfo) 
 [![Travis-CI Build Status](https://travis-ci.org/rsquaredacademy/pkginfo.svg?branch=master)](https://travis-ci.org/rsquaredacademy/pkginfo) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rsquaredacademy/pkginfo?branch=master&svg=true)](https://ci.appveyor.com/project/aravindhebbali/pkginfo) ![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)
 
+## Overview
+
+`pkginfo` will allow users to retrieve information about a R package from [CRAN](https://cran.r-project.org/), [GitHub](https://github.com/), [Travis CI](https://travis-ci.org/), [Appveyor](https://ci.appveyor.com/), [Codecov](https://codecov.io/) & [Stack Overflow](https://stackoverflow.com/). While it was not developed keeping any specific end user in mind, package developers might find it more useful as they can monitor their R packages using a shiny app. `pkginfo` uses [cranlogs](https://cranlogs.r-pkg.org/),[crandb](https://github.com/r-hub/crandb) and [cchecksapi](https://github.com/ropenscilabs/cchecksapi) under the hood.
+                                                                                
+
 ## Installation
 
 You can install the development version from [GitHub](https://github.com/) with:
@@ -29,36 +34,102 @@ You can install the development version from [GitHub](https://github.com/) with:
 devtools::install_github("rsquaredacademy/pkginfo")
 ```
 
+## Shiny App
+
+Launch the shiny app with:
+
+```{r app, eval=FALSE}
+pkginfo_dashboard()
+```		
+
+##### Welcome
+
+```{r app_welcome, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_welcome.png")
+```
+
+##### Overview
+
+```{r app_overview, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_overview.png")
+```
+
+##### Indicators
+
+```{r app_indicators, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_indicators.png")
+```
+
+##### Issues
+
+```{r app_issues, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_issues.png")
+```
+
+##### Releases
+
+```{r app_releases, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_releases.png")
+```
+
+##### Branches
+
+```{r app_branches, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_branches.png")
+```
+
+##### Dependencies
+
+```{r app_deps, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_deps.png")
+```
+
+##### Pull Requests
+
+```{r app_prs, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_prs.png")
+```
+
+##### Stack Overflow Questions
+
+```{r app_so, echo=FALSE, fig.align='center'}
+knitr::include_graphics("inst/images/pkginfo_so.png")
+```
+
 ## Usage
 
-#### Download Statistics
+### GitHub Info
 
-```{r downloads}
-get_pkg_downloads("olsrr")
+```{r gh_info}
+myRepo <- GitHubRepo$new("olsrr", "rsquaredacademy")
+myRepo$get_stats()
+myRepo$get_issues()
+myRepo$get_branches()
+myRepo$get_releases()
 ```
 
-#### Travis Build Status
+### CRAN Info
 
-```{r travis}
+```{r cran_info}
+myPackage <- CranPackage$new("olsrr")
+myPackage$get_version()
+myPackage$get_r_dep()
+myPackage$get_cran_check_results()
+myPackage$get_urls()
+```
+
+### Build Status
+
+```{r build_status}
 get_status_travis("olsrr", "rsquaredacademy")
-```
-
-#### Appveyor Build Status
-
-```{r appveyor}
 get_status_appveyor("olsrr", "rsquaredacademy")
-```
-
-#### Code Coverage
-
-```{r coverage}
 get_code_coverage("olsrr", "rsquaredacademy")
 ```
 
-#### GitHub Statistics
+### Stack Overflow Questions
 
-```{r github}
-get_gh_stats("olsrr", "rsquaredacademy")
+```{r so}
+get_so_questions("dplyr")
 ```
 
 ## Community Guidelines

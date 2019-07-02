@@ -145,6 +145,8 @@ ui <- shinydashboard::dashboardPage(skin = "blue",
 			shinydashboard::tabItem(tabName = "branches",
 				shiny::fluidRow(
 					shiny::column(12, align = 'center',
+						shiny::h2("GitHub Branches"),
+						shiny::br(),
 						shiny::tableOutput("gh_branches") %>%
 						shinycssloaders::withSpinner()
 						)
@@ -809,7 +811,7 @@ server <- function(input, output, session) {
 		} else {
 			itable <-
 				pkginfo::get_gh_branches(input$repo_name, input$user_name) %>%
-				dplyr::rename(Branches = branches)
+				dplyr::rename(Branch = branches)
 
 			prep_url <-
 			  paste0("https://github.com/", input$user_name, "/", input$repo_name,
