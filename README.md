@@ -5,7 +5,7 @@
 
 > Tools for retrieving package information
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/pkginfo)](https://cran.r-project.org/package=pkginfo)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/pkginfo)](https://cran.r-project.org/package=pkginfo)
 [![Travis-CI Build
 Status](https://travis-ci.org/rsquaredacademy/pkginfo.svg?branch=master)](https://travis-ci.org/rsquaredacademy/pkginfo)
 [![AppVeyor Build
@@ -31,7 +31,7 @@ get_pkg_downloads("olsrr")
 #> # A tibble: 1 x 4
 #>   latest last_week last_month total
 #>    <dbl>     <dbl>      <dbl> <dbl>
-#> 1    160       998       4401 73309
+#> 1     60       901       4123 73545
 ```
 
 #### Travis Build Status
