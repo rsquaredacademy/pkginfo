@@ -238,23 +238,23 @@ get_pkg_cran_check_results <- function(package_name) {
     stop("Please check the package name.")
   }
 
-  pkg_status <- dplyr::pull(pkg_checks, status)
-  all_ok     <- any(pkg_status != "OK")
-
-  if (all_ok) {
-    pkg_not_ok <- which(pkg_status != "OK")
+  split_flavor <-
     pkg_checks %>%
-      dplyr::slice(pkg_not_ok) %>%
-      dplyr::select(flavor, status)
-  } else {
-    message("Hurray! All CRAN checks are successful.")
-  }
+    dplyr::pull(flavor) %>%
+    stringr::str_split(pattern = "-", n = 3)
+
+  tibble::tibble(
+    os     = purrr::map_chr(split_flavor, 3),
+    r      = purrr::map_chr(split_flavor, 2),
+    status = dplyr::pull(pkg_checks, status),
+    url    = dplyr::pull(pkg_checks, check_url)
+  )
 
 }
 
 #' CRAN package details
 #'
-#' Extracts and formats package details such as title, description, version, 
+#' Extracts and formats package details such as title, description, version,
 #' R version dependency, imports, suggests, published date, license, authors,
 #' maintainer and associated urls from crandb API.
 #'

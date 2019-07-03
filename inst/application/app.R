@@ -9,6 +9,7 @@ ui <- shinydashboard::dashboardPage(skin = "blue",
 			shinydashboard::menuItem("Overview", tabName = "basic_info", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Downloads", tabName = "downloads", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Indicators", tabName = "build_status", icon = shiny::icon("th")),
+			shinydashboard::menuItem("CRAN Check", tabName = "cran_check", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Issues", tabName = "issues", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Releases", tabName = "releases", icon = shiny::icon("th")),
 			shinydashboard::menuItem("Branches", tabName = "branches", icon = shiny::icon("th")),
@@ -120,6 +121,16 @@ ui <- shinydashboard::dashboardPage(skin = "blue",
 					shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("branchesBox")),
 					shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("releasesBox")),
 					shinycssloaders::withSpinner(shinydashboard::valueBoxOutput("versionBox"))
+					)
+				),
+			shinydashboard::tabItem(tabName = "cran_check",
+				shiny::fluidRow(
+					shiny::column(12, align = 'center',
+						shiny::h2("CRAN Check Results"),
+						shiny::br(),
+						shiny::tableOutput("cran_check_results_table") %>%
+						shinycssloaders::withSpinner()
+						)
 					)
 				),
 			shinydashboard::tabItem(tabName = "issues",
@@ -755,6 +766,25 @@ server <- function(input, output, session) {
 			color = "purple"
 			)
 		})
+
+	# cran check results
+	cr_check <- shiny::eventReactive(input$retrieve_info, {
+		itable <-
+				pkginfo::get_pkg_cran_check_results(input$repo_name) %>%
+				dplyr::rename(OS = os, R = r, Status = status, URL = url)
+
+			prep_url <- itable$URL
+
+			itable %>%
+			  dplyr::select(-URL) %>%
+			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
+			  knitr::kable("html", escape = FALSE) %>%
+  			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
+	})
+
+	output$cran_check_results_table <- shiny::renderPrint({
+		cr_check()
+	})
 
 	# issues
 	github_issues_list <- shiny::eventReactive(input$retrieve_info, {

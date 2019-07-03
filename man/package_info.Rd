@@ -41,7 +41,7 @@ get_pkg_urls(pkg_details)
 \item{pkg_details}{An object of class \code{pkg_details}.}
 }
 \description{
-Extracts and formats package details such as title, description, version, 
+Extracts and formats package details such as title, description, version,
 R version dependency, imports, suggests, published date, license, authors,
 maintainer and associated urls from crandb API.
 }
