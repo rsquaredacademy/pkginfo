@@ -13,7 +13,9 @@ get_pkg_cran_check_results(package_name)
 Return latest CRAN check results.
 }
 \examples{
+\dontrun{
 # CRAN check results
 get_pkg_cran_check_results("dplyr")
 
+}
 }

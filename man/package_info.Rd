@@ -46,6 +46,7 @@ R version dependency, imports, suggests, published date, license, authors,
 maintainer and associated urls from crandb API.
 }
 \examples{
+\dontrun{
 # retrieve package details from crandb api
 pkgdetails <- get_pkg_details("dplyr")
 
@@ -82,4 +83,5 @@ get_pkg_maintainer(pkgdetails)
 # urls associated with the package
 get_pkg_urls(pkgdetails)
 
+}
 }

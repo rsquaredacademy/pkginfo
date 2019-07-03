@@ -44,6 +44,7 @@ Returns the GitHub username, stars, forks, branches, issues, labels,
 milestones, code of conduct, license, pull requests and releases.
 }
 \examples{
+\dontrun{
 # get github user/organization name
 get_gh_username("olsrr")
 
@@ -74,4 +75,5 @@ get_gh_pr("dplyr", "tidyverse")
 # get releases
 get_gh_releases("dplyr", "tidyverse")
 
+}
 }

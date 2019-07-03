@@ -57,6 +57,7 @@
 #' \code{myPackage$get_urls()} will return the URLs associated with the package.
 #'
 #' @examples
+#' \dontrun{
 #' # initialize object
 #' myPackage <- CranPackage$new("dplyr")
 #'
@@ -72,6 +73,7 @@
 #' # packages imported
 #' myPackage$get_imports()
 #'
+#' }
 #' @name CranPackage
 #' @docType class
 #' @format An R6 class.
@@ -171,9 +173,11 @@ get_pkg_details <- function(package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' # last day, week, month and total downloads
 #' get_pkg_downloads("dplyr")
 #'
+#' }
 #' @export
 #'
 get_pkg_downloads <- function(package_name) {
@@ -220,9 +224,11 @@ get_pkg_downloads <- function(package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
+#' \dontrun{
 #' # CRAN check results
 #' get_pkg_cran_check_results("dplyr")
 #'
+#' }
 #' @export
 #'
 get_pkg_cran_check_results <- function(package_name) {
@@ -266,6 +272,7 @@ get_pkg_cran_check_results <- function(package_name) {
 #' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
+#' \dontrun{
 #' # retrieve package details from crandb api
 #' pkgdetails <- get_pkg_details("dplyr")
 #'
@@ -302,6 +309,7 @@ get_pkg_cran_check_results <- function(package_name) {
 #' # urls associated with the package
 #' get_pkg_urls(pkgdetails)
 #'
+#' }
 #' @name package_info
 NULL
 

@@ -23,6 +23,7 @@ Returns build status from Travis CI and Appveyor, and code coverage from
 codecov.
 }
 \examples{
+\dontrun{
 # get travis ci build status
 get_status_travis("dplyr", "tidyverse")
 
@@ -31,5 +32,6 @@ get_status_appveyor("dplyr", "tidyverse")
 
 # get codecov code coverage
 get_code_coverage("dplyr", "tidyverse")
+}
 
 }

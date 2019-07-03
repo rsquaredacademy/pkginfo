@@ -52,6 +52,7 @@
 #' \code{myRepo$get_coverage()} will return code coverage of the package from Codecov.
 #'
 #' @examples
+#' \dontrun{
 #' # initialize object
 #' myRepo <- GitHubRepo$new("dplyr", "tidyverse")
 #'
@@ -66,6 +67,7 @@
 #'
 #' # get codecov code coverage
 #' myRepo$get_coverage()
+#' }
 #'
 #' @name GitHubRepo
 #' @docType class
@@ -131,6 +133,7 @@ GitHubRepo <- R6::R6Class("GitHubRepo",
 #' @param user_name GitHub user or organization name.
 #'
 #' @examples
+#' \dontrun{
 #' # get github user/organization name
 #' get_gh_username("olsrr")
 #'
@@ -161,6 +164,7 @@ GitHubRepo <- R6::R6Class("GitHubRepo",
 #' # get releases
 #' get_gh_releases("dplyr", "tidyverse")
 #'
+#' }
 #' @name github_info
 #'
 NULL
@@ -492,6 +496,7 @@ get_gh_releases <- function(repo_name, user_name = NULL) {
 #' @param user_name GitHub user or organization name.
 #'
 #' @examples
+#' \dontrun{
 #' # get travis ci build status
 #' get_status_travis("dplyr", "tidyverse")
 #'
@@ -500,6 +505,7 @@ get_gh_releases <- function(repo_name, user_name = NULL) {
 #'
 #' # get codecov code coverage
 #' get_code_coverage("dplyr", "tidyverse")
+#' }
 #'
 #' @name build_info
 #'

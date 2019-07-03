@@ -16,5 +16,5 @@ if (getRversion() >= "2.15.1") {
                            "Imports", "License", "Maintainer", "R",
                            "Suggests", "Title", "URL", "Version", "author",
                            "author_details", "checks", "data", "flavor",
-                           "role", "status", "website"))
+                           "role", "status", "website", "check_url"))
 }

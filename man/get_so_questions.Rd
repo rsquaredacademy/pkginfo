@@ -13,7 +13,9 @@ get_so_questions(package_name)
 Display package related questions on Stack Overflow.
 }
 \examples{
+\dontrun{
 # get stack overflow questions
 get_so_questions("dplyr")
+}
 
 }

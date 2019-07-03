@@ -71,6 +71,7 @@ the package.
 }
 
 \examples{
+\dontrun{
 # initialize object
 myPackage <- CranPackage$new("dplyr")
 
@@ -86,4 +87,5 @@ myPackage$get_r_dep()
 # packages imported
 myPackage$get_imports()
 
+}
 }
