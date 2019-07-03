@@ -57,13 +57,20 @@
 #' \code{myPackage$get_urls()} will return the URLs associated with the package.
 #'
 #' @examples
-#' \dontrun{
+#' # initialize object
 #' myPackage <- CranPackage$new("dplyr")
+#'
+#' # package title
 #' myPackage$get_title()
+#'
+#' # package version on CRAN
 #' myPackage$get_version()
-#' myPackage$get_r_deps()
+#'
+#' # R dependency version
+#' myPackage$get_r_dep()
+#'
+#' # packages imported
 #' myPackage$get_imports()
-#' }
 #'
 #' @name CranPackage
 #' @docType class
@@ -164,9 +171,8 @@ get_pkg_details <- function(package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
-#' \dontrun{
+#' # last day, week, month and total downloads
 #' get_pkg_downloads("dplyr")
-#' }
 #'
 #' @export
 #'
@@ -214,9 +220,8 @@ get_pkg_downloads <- function(package_name) {
 #' @param package_name Name of the package.
 #'
 #' @examples
-#' \dontrun{
+#' # CRAN check results
 #' get_pkg_cran_check_results("dplyr")
-#' }
 #'
 #' @export
 #'
@@ -261,20 +266,41 @@ get_pkg_cran_check_results <- function(package_name) {
 #' @param pkg_details An object of class \code{pkg_details}.
 #'
 #' @examples
-#' \dontrun{
+#' # retrieve package details from crandb api
 #' pkgdetails <- get_pkg_details("dplyr")
+#'
+#' # package title
 #' get_pkg_title(pkgdetails)
+#'
+#' # package description
 #' get_pkg_desc(pkgdetails)
+#'
+#' # package version
 #' get_pkg_version(pkgdetails)
+#'
+#' # R dependency
 #' get_pkg_r_dep(pkgdetails)
+#'
+#' # packages imported
 #' get_pkg_imports(pkgdetails)
+#'
+#' # packages suggested
 #' get_pkg_suggests(pkgdetails)
+#'
+#' # latest CRAN publish date
 #' get_pkg_publish_date(pkgdetails)
+#'
+#' # package license
 #' get_pkg_license(pkgdetails)
+#'
+#' # package authors
 #' get_pkg_authors(pkgdetails)
+#'
+#' # package maintainer
 #' get_pkg_maintainer(pkgdetails)
+#'
+#' # urls associated with the package
 #' get_pkg_urls(pkgdetails)
-#' }
 #'
 #' @name package_info
 NULL

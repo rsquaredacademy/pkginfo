@@ -66,12 +66,19 @@ To create \code{GitHubRepo} objects, you need to use \code{GitHubRepo$new("repo_
 }
 
 \examples{
-\dontrun{
+# initialize object
 myRepo <- GitHubRepo$new("dplyr", "tidyverse")
+
+# get stats
 myRepo$get_stats()
+
+# get branches
 myRepo$get_branches()
+
+# get travis ci build status
 myRepo$get_travis_status()
+
+# get codecov code coverage
 myRepo$get_coverage()
-}
 
 }

@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="CRAN package details — package_info" />
 
-<meta property="og:description" content="Extracts and formats package details such as title, description, version, 
+<meta property="og:description" content="Extracts and formats package details such as title, description, version,
 R version dependency, imports, suggests, published date, license, authors,
 maintainer and associated urls from crandb API." />
 <meta name="twitter:card" content="summary" />
@@ -117,7 +117,7 @@ maintainer and associated urls from crandb API." />
 
     <div class="ref-description">
     
-    <p>Extracts and formats package details such as title, description, version, 
+    <p>Extracts and formats package details such as title, description, version,
 R version dependency, imports, suggests, published date, license, authors,
 maintainer and associated urls from crandb API.</p>
     
@@ -156,21 +156,54 @@ maintainer and associated urls from crandb API.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>pkgdetails</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_pkg_details.html'>get_pkg_details</a></span>(<span class='st'>"dplyr"</span>)
-<span class='fu'>get_pkg_title</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_desc</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_version</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_r_dep</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_imports</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_suggests</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_publish_date</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_license</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_authors</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_maintainer</span>(<span class='no'>pkgdetails</span>)
-<span class='fu'>get_pkg_urls</span>(<span class='no'>pkgdetails</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># retrieve package details from crandb api</span>
+<span class='no'>pkgdetails</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='get_pkg_details.html'>get_pkg_details</a></span>(<span class='st'>"dplyr"</span>)</div><div class='output co'>#&gt; <span class='message'>No encoding supplied: defaulting to UTF-8.</span></div><div class='input'>
+<span class='co'># package title</span>
+<span class='fu'>get_pkg_title</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; [1] "A Grammar of Data Manipulation"</div><div class='input'>
+<span class='co'># package description</span>
+<span class='fu'>get_pkg_desc</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; [1] "A fast, consistent tool for working with data frame like objects,\nboth in memory and out of memory."</div><div class='input'>
+<span class='co'># package version</span>
+<span class='fu'>get_pkg_version</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; [1] "0.8.2"</div><div class='input'>
+<span class='co'># R dependency</span>
+<span class='fu'>get_pkg_r_dep</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; [1] "&gt;= 3.2.0"</div><div class='input'>
+<span class='co'># packages imported</span>
+<span class='fu'>get_pkg_imports</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt;  [1] "assertthat" "glue"       "magrittr"   "methods"    "pkgconfig" 
+#&gt;  [6] "R6"         "Rcpp"       "rlang"      "tibble"     "tidyselect"
+#&gt; [11] "utils"     </div><div class='input'>
+<span class='co'># packages suggested</span>
+<span class='fu'>get_pkg_suggests</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt;  [1] "bit64"          "callr"          "covr"           "crayon"        
+#&gt;  [5] "DBI"            "dbplyr"         "dtplyr"         "ggplot2"       
+#&gt;  [9] "hms"            "knitr"          "Lahman"         "lubridate"     
+#&gt; [13] "MASS"           "mgcv"           "microbenchmark" "nycflights13"  
+#&gt; [17] "rmarkdown"      "RMySQL"         "RPostgreSQL"    "RSQLite"       
+#&gt; [21] "testthat"       "withr"          "broom"          "purrr"         
+#&gt; [25] "readr"         </div><div class='input'>
+<span class='co'># latest CRAN publish date</span>
+<span class='fu'>get_pkg_publish_date</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; [1] "2019-06-29"</div><div class='input'>
+<span class='co'># package license</span>
+<span class='fu'>get_pkg_license</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; [1] "MIT + file LICENSE"</div><div class='input'>
+<span class='co'># package authors</span>
+<span class='fu'>get_pkg_authors</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 2</span><span>
+#&gt;   author          role    
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Hadley Wickham  aut, cre
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Romain François aut     
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Lionel Henry    aut     
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Kirill Müller   aut     
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> RStudio         cph, fnd</div><div class='input'>
+<span class='co'># package maintainer</span>
+<span class='fu'>get_pkg_maintainer</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
+#&gt;   name              email             
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> </span><span style='color: #949494;'>"</span><span>Hadley Wickham </span><span style='color: #949494;'>"</span><span> hadley@rstudio.com</div><div class='input'>
+<span class='co'># urls associated with the package</span>
+<span class='fu'>get_pkg_urls</span>(<span class='no'>pkgdetails</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 3 x 2</span><span>
+#&gt;   website urls                                     
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                    
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Bugs    https://github.com/tidyverse/dplyr/issues
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Others  http://dplyr.tidyverse.org               
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> GitHub  https://github.com/tidyverse/dplyr       </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

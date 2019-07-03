@@ -132,10 +132,23 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_pkg_cran_check_results</span>(<span class='st'>"dplyr"</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># CRAN check results</span>
+<span class='fu'>get_pkg_cran_check_results</span>(<span class='st'>"dplyr"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 12 x 4</span><span>
+#&gt;    os                r      status url                                          
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                        
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> linux-x86_64-deb~ devel  OK     https://www.R-project.org/nosvn/R.check/r-de~
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> linux-x86_64-deb~ devel  OK     https://www.R-project.org/nosvn/R.check/r-de~
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> linux-x86_64-fed~ devel  NOTE   https://www.R-project.org/nosvn/R.check/r-de~
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> linux-x86_64-fed~ devel  NOTE   https://www.R-project.org/nosvn/R.check/r-de~
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> windows-ix86+x86~ devel  NOTE   https://www.R-project.org/nosvn/R.check/r-de~
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> linux-x86_64      patch~ OK     https://www.R-project.org/nosvn/R.check/r-pa~
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> solaris-x86       patch~ NOTE   https://www.R-project.org/nosvn/R.check/r-pa~
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> linux-x86_64      relea~ OK     https://www.R-project.org/nosvn/R.check/r-re~
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> windows-ix86+x86~ relea~ NOTE   https://www.R-project.org/nosvn/R.check/r-re~
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> osx-x86_64        relea~ NOTE   https://www.R-project.org/nosvn/R.check/r-re~
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> windows-ix86+x86~ oldrel NOTE   https://www.R-project.org/nosvn/R.check/r-ol~
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> osx-x86_64        oldrel NOTE   https://www.R-project.org/nosvn/R.check/r-ol~</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

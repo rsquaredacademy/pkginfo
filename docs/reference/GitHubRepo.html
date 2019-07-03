@@ -170,14 +170,39 @@ myRepo$get_coverage()
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'><span class='co'># initialize object</span>
 <span class='no'>myRepo</span> <span class='kw'>&lt;-</span> <span class='no'>GitHubRepo</span>$<span class='fu'>new</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='no'>myRepo</span>$<span class='fu'>get_stats</span>()
-<span class='no'>myRepo</span>$<span class='fu'>get_branches</span>()
-<span class='no'>myRepo</span>$<span class='fu'>get_travis_status</span>()
-<span class='no'>myRepo</span>$<span class='fu'>get_coverage</span>()
-<span class='co'># }</span><div class='input'>
-</div></pre>
+
+<span class='co'># get stats</span>
+<span class='no'>myRepo</span>$<span class='fu'>get_stats</span>()</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
+#&gt;   stars issues forks
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>977    115  </span><span style='text-decoration: underline;'>1</span><span>087</div><div class='input'>
+<span class='co'># get branches</span>
+<span class='no'>myRepo</span>$<span class='fu'>get_branches</span>()</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 16 x 1</span><span>
+#&gt;    branches                       
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                          
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 3451/filter_size_mismatch_error
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 3772-name_repair               
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 3953_ghost_programming_vignette
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 4004_dollar_gets_grouped       
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 4249/bind_rows_id              
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 4277/quos_vars                 
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 4329-non_ascii                 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> bug-tibble-vignette            
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> dev-ggplot2                    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> f-travis-4                     
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> gh-pages                       
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> master                         
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> r-0.7.6                        
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> r-0.7.8                        
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> r-0.7.9                        
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> rc_0.8.0                       </div><div class='input'>
+<span class='co'># get travis ci build status</span>
+<span class='no'>myRepo</span>$<span class='fu'>get_travis_status</span>()</div><div class='output co'>#&gt; [1] "Failure"</div><div class='input'>
+<span class='co'># get codecov code coverage</span>
+<span class='no'>myRepo</span>$<span class='fu'>get_coverage</span>()</div><div class='output co'>#&gt; [1] "83.94805"</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

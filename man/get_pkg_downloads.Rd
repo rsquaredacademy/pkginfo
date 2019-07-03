@@ -13,8 +13,7 @@ get_pkg_downloads(package_name)
 Package downloads from RStudio CRAN mirror.
 }
 \examples{
-\dontrun{
+# last day, week, month and total downloads
 get_pkg_downloads("dplyr")
-}
 
 }

@@ -46,19 +46,40 @@ R version dependency, imports, suggests, published date, license, authors,
 maintainer and associated urls from crandb API.
 }
 \examples{
-\dontrun{
+# retrieve package details from crandb api
 pkgdetails <- get_pkg_details("dplyr")
+
+# package title
 get_pkg_title(pkgdetails)
+
+# package description
 get_pkg_desc(pkgdetails)
+
+# package version
 get_pkg_version(pkgdetails)
+
+# R dependency
 get_pkg_r_dep(pkgdetails)
+
+# packages imported
 get_pkg_imports(pkgdetails)
+
+# packages suggested
 get_pkg_suggests(pkgdetails)
+
+# latest CRAN publish date
 get_pkg_publish_date(pkgdetails)
+
+# package license
 get_pkg_license(pkgdetails)
+
+# package authors
 get_pkg_authors(pkgdetails)
+
+# package maintainer
 get_pkg_maintainer(pkgdetails)
+
+# urls associated with the package
 get_pkg_urls(pkgdetails)
-}
 
 }

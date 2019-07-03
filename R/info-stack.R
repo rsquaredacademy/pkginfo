@@ -5,9 +5,8 @@
 #' @param package_name Name of the package.
 #'
 #' @examples
-#' \dontrun{
+#' # get stack overflow questions
 #' get_so_questions("dplyr")
-#' }
 #'
 #' @export
 #'

@@ -40,21 +40,38 @@ get_gh_releases(repo_name, user_name = NULL)
 \item{user_name}{GitHub user or organization name.}
 }
 \description{
-Returns the GitHub username, stars, forks, branches, issues, labels, 
+Returns the GitHub username, stars, forks, branches, issues, labels,
 milestones, code of conduct, license, pull requests and releases.
 }
 \examples{
-\dontrun{
+# get github user/organization name
 get_gh_username("olsrr")
+
+# get count of stars, forks & issues
 get_gh_stats("dplyr", "tidyverse")
+
+# get details of github branches
 get_gh_branches("dplyr", "tidyverse")
+
+# get details of open issues
 get_gh_issues("dplyr", "tidyverse")
+
+# get labels
 get_gh_labels("dplyr", "tidyverse")
+
+# get milestones
 get_gh_milestones("dplyr", "tidyverse")
+
+# get code of conduct
 get_gh_coc("dplyr", "tidyverse")
+
+# get license
 get_gh_license("dplyr", "tidyverse")
+
+# get details of open pull requests
 get_gh_pr("dplyr", "tidyverse")
+
+# get releases
 get_gh_releases("dplyr", "tidyverse")
-}
 
 }

@@ -19,14 +19,17 @@ get_code_coverage(repo_name, user_name = NULL)
 \item{user_name}{GitHub user or organization name.}
 }
 \description{
-Returns build status from Travis CI and Appveyor, and code coverage from 
+Returns build status from Travis CI and Appveyor, and code coverage from
 codecov.
 }
 \examples{
-\dontrun{
+# get travis ci build status
 get_status_travis("dplyr", "tidyverse")
+
+# get appveyor build status
 get_status_appveyor("dplyr", "tidyverse")
+
+# get codecov code coverage
 get_code_coverage("dplyr", "tidyverse")
-}
 
 }

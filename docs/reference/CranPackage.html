@@ -174,13 +174,18 @@ the package.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>myPackage</span> <span class='kw'>&lt;-</span> <span class='no'>CranPackage</span>$<span class='fu'>new</span>(<span class='st'>"dplyr"</span>)
-<span class='no'>myPackage</span>$<span class='fu'>get_title</span>()
-<span class='no'>myPackage</span>$<span class='fu'>get_version</span>()
-<span class='no'>myPackage</span>$<span class='fu'>get_r_deps</span>()
-<span class='no'>myPackage</span>$<span class='fu'>get_imports</span>()
-<span class='co'># }</span><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># initialize object</span>
+<span class='no'>myPackage</span> <span class='kw'>&lt;-</span> <span class='no'>CranPackage</span>$<span class='fu'>new</span>(<span class='st'>"dplyr"</span>)</div><div class='output co'>#&gt; <span class='message'>No encoding supplied: defaulting to UTF-8.</span></div><div class='input'>
+<span class='co'># package title</span>
+<span class='no'>myPackage</span>$<span class='fu'>get_title</span>()</div><div class='output co'>#&gt; [1] "A Grammar of Data Manipulation"</div><div class='input'>
+<span class='co'># package version on CRAN</span>
+<span class='no'>myPackage</span>$<span class='fu'>get_version</span>()</div><div class='output co'>#&gt; [1] "0.8.2"</div><div class='input'>
+<span class='co'># R dependency version</span>
+<span class='no'>myPackage</span>$<span class='fu'>get_r_dep</span>()</div><div class='output co'>#&gt; [1] "&gt;= 3.2.0"</div><div class='input'>
+<span class='co'># packages imported</span>
+<span class='no'>myPackage</span>$<span class='fu'>get_imports</span>()</div><div class='output co'>#&gt;  [1] "assertthat" "glue"       "magrittr"   "methods"    "pkgconfig" 
+#&gt;  [6] "R6"         "Rcpp"       "rlang"      "tibble"     "tidyselect"
+#&gt; [11] "utils"     </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

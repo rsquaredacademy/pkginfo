@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Retrieve build information. — build_info" />
 
-<meta property="og:description" content="Returns build status from Travis CI and Appveyor, and code coverage from 
+<meta property="og:description" content="Returns build status from Travis CI and Appveyor, and code coverage from
 codecov." />
 <meta name="twitter:card" content="summary" />
 
@@ -116,7 +116,7 @@ codecov." />
 
     <div class="ref-description">
     
-    <p>Returns build status from Travis CI and Appveyor, and code coverage from 
+    <p>Returns build status from Travis CI and Appveyor, and code coverage from
 codecov.</p>
     
     </div>
@@ -142,11 +142,12 @@ codecov.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_status_travis</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_status_appveyor</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_code_coverage</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='co'># }</span><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># get travis ci build status</span>
+<span class='fu'>get_status_travis</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; [1] "Failure"</div><div class='input'>
+<span class='co'># get appveyor build status</span>
+<span class='fu'>get_status_appveyor</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; [1] "cancelled"</div><div class='input'>
+<span class='co'># get codecov code coverage</span>
+<span class='fu'>get_code_coverage</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; [1] "83.94805"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

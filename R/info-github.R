@@ -52,13 +52,20 @@
 #' \code{myRepo$get_coverage()} will return code coverage of the package from Codecov.
 #'
 #' @examples
-#' \dontrun{
+#' # initialize object
 #' myRepo <- GitHubRepo$new("dplyr", "tidyverse")
+#'
+#' # get stats
 #' myRepo$get_stats()
+#'
+#' # get branches
 #' myRepo$get_branches()
+#'
+#' # get travis ci build status
 #' myRepo$get_travis_status()
+#'
+#' # get codecov code coverage
 #' myRepo$get_coverage()
-#' }
 #'
 #' @name GitHubRepo
 #' @docType class
@@ -117,25 +124,42 @@ GitHubRepo <- R6::R6Class("GitHubRepo",
 
 #' Retrieve GitHub information.
 #'
-#' Returns the GitHub username, stars, forks, branches, issues, labels, 
+#' Returns the GitHub username, stars, forks, branches, issues, labels,
 #' milestones, code of conduct, license, pull requests and releases.
 #'
 #' @param repo_name Name of the package.
 #' @param user_name GitHub user or organization name.
 #'
 #' @examples
-#' \dontrun{
+#' # get github user/organization name
 #' get_gh_username("olsrr")
+#'
+#' # get count of stars, forks & issues
 #' get_gh_stats("dplyr", "tidyverse")
+#'
+#' # get details of github branches
 #' get_gh_branches("dplyr", "tidyverse")
+#'
+#' # get details of open issues
 #' get_gh_issues("dplyr", "tidyverse")
+#'
+#' # get labels
 #' get_gh_labels("dplyr", "tidyverse")
+#'
+#' # get milestones
 #' get_gh_milestones("dplyr", "tidyverse")
+#'
+#' # get code of conduct
 #' get_gh_coc("dplyr", "tidyverse")
+#'
+#' # get license
 #' get_gh_license("dplyr", "tidyverse")
+#'
+#' # get details of open pull requests
 #' get_gh_pr("dplyr", "tidyverse")
+#'
+#' # get releases
 #' get_gh_releases("dplyr", "tidyverse")
-#' }
 #'
 #' @name github_info
 #'
@@ -159,7 +183,7 @@ get_gh_username <- function(repo_name) {
     nrow()
 
   if (check_git > 0) {
-    
+
     urls <-
       all_urls %>%
       dplyr::filter(stringr::str_detect(urls, "github")) %>%
@@ -279,7 +303,7 @@ get_gh_issues <- function(repo_name, user_name = NULL) {
 	    number      = issue_number,
 	    author      = issue_user,
 	    title       = issue_title
-	  )	
+	  )
 	}
 
 }
@@ -305,7 +329,7 @@ get_gh_labels <- function(repo_name, user_name = NULL) {
 	  tibble::tibble(
 	    name  = label_name,
 	    color = label_color
-	  )	
+	  )
 	}
 
 }
@@ -340,7 +364,7 @@ get_gh_milestones <- function(repo_name, user_name = NULL) {
 	    description   = m_body,
 	    open_issues   = m_open,
 	    closed_issues = m_closed
-	  )	
+	  )
 	}
 
 }
@@ -364,7 +388,7 @@ get_gh_coc <- function(repo_name, user_name = NULL) {
 	  resp     <- httr::GET(url, httr::add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
 	  out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
 
-	  cat(out$body)	
+	  cat(out$body)
 	}
 
 }
@@ -393,7 +417,7 @@ get_gh_license <- function(repo_name, user_name = NULL) {
 	    } else {
 	      cat("Please ensure your internet connection is working.")
 	    }
-	  }	
+	  }
 	}
 
 }
@@ -423,7 +447,7 @@ get_gh_pr <- function(repo_name, user_name = NULL) {
 	    date   = pull_start,
 	    title  = pull_title,
 	    status = pull_status
-	  )	
+	  )
 	}
 
 }
@@ -454,25 +478,28 @@ get_gh_releases <- function(repo_name, user_name = NULL) {
 	    date       = release_published,
 	    title      = release_title,
 	    prerelease = pre_release
-	  )	
+	  )
 	}
 
 }
 
 #' Retrieve build information.
 #'
-#' Returns build status from Travis CI and Appveyor, and code coverage from 
+#' Returns build status from Travis CI and Appveyor, and code coverage from
 #' codecov.
 #'
 #' @param repo_name Name of the package.
 #' @param user_name GitHub user or organization name.
 #'
 #' @examples
-#' \dontrun{
+#' # get travis ci build status
 #' get_status_travis("dplyr", "tidyverse")
+#'
+#' # get appveyor build status
 #' get_status_appveyor("dplyr", "tidyverse")
+#'
+#' # get codecov code coverage
 #' get_code_coverage("dplyr", "tidyverse")
-#' }
 #'
 #' @name build_info
 #'

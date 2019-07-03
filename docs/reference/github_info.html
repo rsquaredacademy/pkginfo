@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Retrieve GitHub information. — github_info" />
 
-<meta property="og:description" content="Returns the GitHub username, stars, forks, branches, issues, labels, 
+<meta property="og:description" content="Returns the GitHub username, stars, forks, branches, issues, labels,
 milestones, code of conduct, license, pull requests and releases." />
 <meta name="twitter:card" content="summary" />
 
@@ -116,7 +116,7 @@ milestones, code of conduct, license, pull requests and releases." />
 
     <div class="ref-description">
     
-    <p>Returns the GitHub username, stars, forks, branches, issues, labels, 
+    <p>Returns the GitHub username, stars, forks, branches, issues, labels,
 milestones, code of conduct, license, pull requests and releases.</p>
     
     </div>
@@ -156,19 +156,135 @@ milestones, code of conduct, license, pull requests and releases.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>get_gh_username</span>(<span class='st'>"olsrr"</span>)
-<span class='fu'>get_gh_stats</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_branches</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_issues</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_labels</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_milestones</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_coc</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
+    <pre class="examples"><div class='input'><span class='co'># get github user/organization name</span>
+<span class='fu'>get_gh_username</span>(<span class='st'>"olsrr"</span>)</div><div class='output co'>#&gt; <span class='message'>No encoding supplied: defaulting to UTF-8.</span></div><div class='output co'>#&gt; [1] "rsquaredacademy"</div><div class='input'>
+<span class='co'># get count of stars, forks &amp; issues</span>
+<span class='fu'>get_gh_stats</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
+#&gt;   stars issues forks
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>977    115  </span><span style='text-decoration: underline;'>1</span><span>087</div><div class='input'>
+<span class='co'># get details of github branches</span>
+<span class='fu'>get_gh_branches</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 16 x 1</span><span>
+#&gt;    branches                       
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                          
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 3451/filter_size_mismatch_error
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 3772-name_repair               
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 3953_ghost_programming_vignette
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 4004_dollar_gets_grouped       
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 4249/bind_rows_id              
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 4277/quos_vars                 
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 4329-non_ascii                 
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> bug-tibble-vignette            
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> dev-ggplot2                    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> f-travis-4                     
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> gh-pages                       
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> master                         
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> r-0.7.6                        
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> r-0.7.8                        
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> r-0.7.9                        
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> rc_0.8.0                       </div><div class='input'>
+<span class='co'># get details of open issues</span>
+<span class='fu'>get_gh_issues</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 30 x 4</span><span>
+#&gt;    date       number author      title                                          
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                          
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 2019-07-03   </span><span style='text-decoration: underline;'>4</span><span>460 DavisVaugh~ False positive implicit NA warning with factor~
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 2019-07-02   </span><span style='text-decoration: underline;'>4</span><span>459 bschneidr   No longer able to use case_when() in rename_al~
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 2019-07-01   </span><span style='text-decoration: underline;'>4</span><span>457 dhicks      Gender sex                                     
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 2019-07-01   </span><span style='text-decoration: underline;'>4</span><span>456 dhicks      </span><span style='color: #949494;'>"</span><span>Confusing/offensive use of \"gender\" in `sta~
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 2019-07-01   </span><span style='text-decoration: underline;'>4</span><span>455 dhicks      null vehicles in `starwars` dataset constructi~
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 2019-06-29   </span><span style='text-decoration: underline;'>4</span><span>453 krlmlr      WIP: Fix character encoding problems           
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 2019-06-29   </span><span style='text-decoration: underline;'>4</span><span>452 krlmlr      Review documentation for naming in scoped func~
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 2019-06-29   </span><span style='text-decoration: underline;'>4</span><span>451 ajkroeg     modify() within group_by() in 0.8.2 not workin~
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 2019-06-29   </span><span style='text-decoration: underline;'>4</span><span>450 krlmlr      Move responsibility of an eval_tidy() call     
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 2019-06-27   </span><span style='text-decoration: underline;'>4</span><span>446 rcorty      bind_rows drops names of list columns          
+#&gt; </span><span style='color: #949494;'># ... with 20 more rows</span><span></div><div class='input'>
+<span class='co'># get labels</span>
+<span class='fu'>get_gh_labels</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 16 x 2</span><span>
+#&gt;    name                                   color 
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> architecture                           eeeeee
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> breaking change :skull_and_crossbones: E0B3A2
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> bug                                    E0B3A2
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> data frame                             eeeeee
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> documentation                          CBBAB8
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> feature                                B4C3AE
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> generic                                eeeeee
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> good first issue :heart:               CBBAB8
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> help wanted :heart:                    C5C295
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> hybrid                                 eeeeee
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> join :twisted_rightwards_arrows:       eeeeee
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> performance :rocket:                   eeeeee
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> reprex                                 C5C295
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> tidy-dev-day :nerd_face:               CBBAB8
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> vector                                 eeeeee
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> wip                                    E1B996</div><div class='input'>
+<span class='co'># get milestones</span>
+<span class='fu'>get_gh_milestones</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 4 x 6</span><span>
+#&gt;   title  tart_date  due_date description               open_issues closed_issues
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                           </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> blues~ 2013-11-20 </span><span style='color: #BB0000;'>NA</span><span>       Things that would be awe~           0            16
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> future 2015-10-21 </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #949494;'>""</span><span>                                  2            51
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> 0.9.0  2018-06-01 </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #949494;'>""</span><span>                                 31            10
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> 0.8.3  2019-06-25 </span><span style='color: #BB0000;'>NA</span><span>       </span><span style='color: #949494;'>""</span><span>                                  1             2</div><div class='input'>
+<span class='co'># get code of conduct</span>
+<span class='fu'>get_gh_coc</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; # Contributor Code of Conduct
+#&gt; 
+#&gt; As contributors and maintainers of this project, we pledge to respect all people who 
+#&gt; contribute through reporting issues, posting feature requests, updating documentation,
+#&gt; submitting pull requests or patches, and other activities.
+#&gt; 
+#&gt; We are committed to making participation in this project a harassment-free experience for
+#&gt; everyone, regardless of level of experience, gender, gender identity and expression,
+#&gt; sexual orientation, disability, personal appearance, body size, race, ethnicity, age, or religion.
+#&gt; 
+#&gt; Examples of unacceptable behavior by participants include the use of sexual language or
+#&gt; imagery, derogatory comments or personal attacks, trolling, public or private harassment,
+#&gt; insults, or other unprofessional conduct.
+#&gt; 
+#&gt; Project maintainers have the right and responsibility to remove, edit, or reject comments,
+#&gt; commits, code, wiki edits, issues, and other contributions that are not aligned to this 
+#&gt; Code of Conduct. Project maintainers who do not follow the Code of Conduct may be removed 
+#&gt; from the project team.
+#&gt; 
+#&gt; Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by 
+#&gt; opening an issue or contacting one or more of the project maintainers.
+#&gt; 
+#&gt; This Code of Conduct is adapted from the Contributor Covenant 
+#&gt; (http://contributor-covenant.org), version 1.0.0, available at 
+#&gt; http://contributor-covenant.org/version/1/0/0/</div><div class='input'>
+<span class='co'># get license</span>
 <span class='fu'>get_gh_license</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_pr</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='fu'>get_gh_releases</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)
-<span class='co'># }</span><div class='input'>
-</div></pre>
+
+<span class='co'># get details of open pull requests</span>
+<span class='fu'>get_gh_pr</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 10 x 4</span><span>
+#&gt;    number date       title                                                status
+#&gt;     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                                </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> 
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>   </span><span style='text-decoration: underline;'>4</span><span>457 2019-07-01 Gender sex                                           open  
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>   </span><span style='text-decoration: underline;'>4</span><span>453 2019-06-29 WIP: Fix character encoding problems                 open  
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>   </span><span style='text-decoration: underline;'>4</span><span>452 2019-06-29 Review documentation for naming in scoped functions  open  
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>   </span><span style='text-decoration: underline;'>4</span><span>450 2019-06-29 Move responsibility of an eval_tidy() call           open  
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>   </span><span style='text-decoration: underline;'>4</span><span>416 2019-06-08 filter() gives more information on size mismatch er~ open  
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>   </span><span style='text-decoration: underline;'>4</span><span>405 2019-06-05 Update progress.R                                    open  
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>   </span><span style='text-decoration: underline;'>4</span><span>391 2019-05-28 </span><span style='color: #949494;'>"</span><span>bind_cols() uses as_tibble(.name_repair=\"unique\"~ open  
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>   </span><span style='text-decoration: underline;'>4</span><span>136 2019-01-29 $&lt;-.grouped_df protects grouping variables           open  
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>   </span><span style='text-decoration: underline;'>4</span><span>102 2019-01-11 pull() can also return named vectors                 open  
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>   </span><span style='text-decoration: underline;'>4</span><span>024 2018-12-17 WIP: vignette that loads tibble, reproducing bug #3~ open  </div><div class='input'>
+<span class='co'># get releases</span>
+<span class='fu'>get_gh_releases</span>(<span class='st'>"dplyr"</span>, <span class='st'>"tidyverse"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 24 x 4</span><span>
+#&gt;    tag      date       title         prerelease
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> v0.8.2   2019-07-01 dplyr 0.8.2   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> v0.8.1   2019-05-17 dplyr 0.8.1   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> v0.8.0.1 2019-02-15 dplyr 0.8.0.1 FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> v0.8.0   2019-02-15 dplyr 0.8.0   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> v0.7.6   2018-10-26 dplyr 0.7.6   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> v0.7.5   2018-05-22 dplyr 0.7.5   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> v0.7.4   2017-09-29 dplyr 0.7.4   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> v0.7.3   2017-09-29 dplyr 0.7.3   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> v0.7.2   2017-07-28 dplyr 0.7.2   FALSE     
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> v0.7.1   2017-06-22 dplyr 0.7.1   FALSE     
+#&gt; </span><span style='color: #949494;'># ... with 14 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

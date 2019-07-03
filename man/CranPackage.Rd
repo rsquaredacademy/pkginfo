@@ -71,12 +71,19 @@ the package.
 }
 
 \examples{
-\dontrun{
+# initialize object
 myPackage <- CranPackage$new("dplyr")
+
+# package title
 myPackage$get_title()
+
+# package version on CRAN
 myPackage$get_version()
-myPackage$get_r_deps()
+
+# R dependency version
+myPackage$get_r_dep()
+
+# packages imported
 myPackage$get_imports()
-}
 
 }
