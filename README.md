@@ -24,9 +24,7 @@ more useful as they can monitor their R packages using a shiny app.
 `pkginfo` uses
 [cranlogs](https://cranlogs.r-pkg.org/),[crandb](https://github.com/r-hub/crandb)
 and [cchecksapi](https://github.com/ropenscilabs/cchecksapi) under the
-hood.
-
-## Installation
+hood. \#\# Installation
 
 You can install the development version from
 [GitHub](https://github.com/) with:
@@ -43,42 +41,6 @@ Launch the shiny app with:
 ``` r
 pkginfo_dashboard()
 ```
-
-##### Welcome
-
-<img src="inst/images/pkginfo_welcome.png" width="100%" style="display: block; margin: auto;" />
-
-##### Overview
-
-<img src="inst/images/pkginfo_overview.png" width="100%" style="display: block; margin: auto;" />
-
-##### Indicators
-
-<img src="inst/images/pkginfo_indicators.png" width="100%" style="display: block; margin: auto;" />
-
-##### Issues
-
-<img src="inst/images/pkginfo_issues.png" width="100%" style="display: block; margin: auto;" />
-
-##### Releases
-
-<img src="inst/images/pkginfo_releases.png" width="100%" style="display: block; margin: auto;" />
-
-##### Branches
-
-<img src="inst/images/pkginfo_branches.png" width="100%" style="display: block; margin: auto;" />
-
-##### Dependencies
-
-<img src="inst/images/pkginfo_deps.png" width="100%" style="display: block; margin: auto;" />
-
-##### Pull Requests
-
-<img src="inst/images/pkginfo_prs.png" width="100%" style="display: block; margin: auto;" />
-
-##### Stack Overflow Questions
-
-<img src="inst/images/pkginfo_so.png" width="100%" style="display: block; margin: auto;" />
 
 ## Usage
 
@@ -137,7 +99,21 @@ myPackage$get_version()
 myPackage$get_r_dep()
 #> [1] ">= 3.3"
 myPackage$get_cran_check_results()
-#> Hurray! All CRAN checks are successful.
+#> # A tibble: 12 x 4
+#>    os               r      status url                                      
+#>    <chr>            <chr>  <chr>  <chr>                                    
+#>  1 linux-x86_64-de~ devel  OK     https://www.R-project.org/nosvn/R.check/~
+#>  2 linux-x86_64-de~ devel  OK     https://www.R-project.org/nosvn/R.check/~
+#>  3 linux-x86_64-fe~ devel  OK     https://www.R-project.org/nosvn/R.check/~
+#>  4 linux-x86_64-fe~ devel  OK     https://www.R-project.org/nosvn/R.check/~
+#>  5 windows-ix86+x8~ devel  OK     https://www.R-project.org/nosvn/R.check/~
+#>  6 linux-x86_64     patch~ OK     https://www.R-project.org/nosvn/R.check/~
+#>  7 solaris-x86      patch~ OK     https://www.R-project.org/nosvn/R.check/~
+#>  8 linux-x86_64     relea~ OK     https://www.R-project.org/nosvn/R.check/~
+#>  9 windows-ix86+x8~ relea~ OK     https://www.R-project.org/nosvn/R.check/~
+#> 10 osx-x86_64       relea~ OK     https://www.R-project.org/nosvn/R.check/~
+#> 11 windows-ix86+x8~ oldrel OK     https://www.R-project.org/nosvn/R.check/~
+#> 12 osx-x86_64       oldrel OK     https://www.R-project.org/nosvn/R.check/~
 myPackage$get_urls()
 #> # A tibble: 3 x 2
 #>   website urls                                           
@@ -165,16 +141,16 @@ get_so_questions("dplyr")
 #> # A tibble: 30 x 6
 #>    date       title               owner   answered views link              
 #>    <date>     <chr>               <chr>   <lgl>    <int> <chr>             
-#>  1 2019-07-02 How to fix the err~ zqin    FALSE        2 https://stackover~
-#>  2 2019-07-02 Median number of o~ aelhak  TRUE        26 https://stackover~
-#>  3 2019-07-02 Linking groups in R Viitama FALSE       53 https://stackover~
-#>  4 2019-07-02 How to extract an ~ user11~ FALSE       27 https://stackover~
-#>  5 2019-07-02 Weird grouping err~ massis~ FALSE       31 https://stackover~
-#>  6 2019-07-01 Convert from row v~ Elr Ma~ TRUE        23 https://stackover~
-#>  7 2019-07-01 Rolling count of d~ Amleto  TRUE        55 https://stackover~
-#>  8 2019-07-02 If value exists in~ Zcela ~ TRUE        43 https://stackover~
-#>  9 2019-07-02 R tibble: Group by~ Miha    TRUE        32 https://stackover~
-#> 10 2019-07-02 Stepwise sampling ~ Steen ~ TRUE        32 https://stackover~
+#>  1 2019-07-04 Randomly assign tr~ Thomas  TRUE        21 https://stackover~
+#>  2 2019-07-03 dplyr::n() returns~ davide~ FALSE       49 https://stackover~
+#>  3 2019-07-04 Add the mean of al~ user11~ FALSE       24 https://stackover~
+#>  4 2019-07-04 Using two datafram~ Moon    FALSE       18 https://stackover~
+#>  5 2019-07-03 R - tbl/collect is~ Zcela ~ FALSE       18 https://stackover~
+#>  6 2019-07-04 wide to [tidy] lon~ delcast FALSE       28 https://stackover~
+#>  7 2019-07-04 R: how to use user~ Sangwo~ FALSE       23 https://stackover~
+#>  8 2019-07-04 Extract records fr~ Davide~ TRUE        22 https://stackover~
+#>  9 2019-07-04 Replace a subset o~ hizjam~ FALSE       23 https://stackover~
+#> 10 2019-07-04 dplyr coerces char~ d8anin~ TRUE        32 https://stackover~
 #> # ... with 20 more rows
 ```
 

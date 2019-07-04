@@ -23,9 +23,7 @@ library(pkginfo)
 ## Overview
 
 `pkginfo` will allow users to retrieve information about a R package from [CRAN](https://cran.r-project.org/), [GitHub](https://github.com/), [Travis CI](https://travis-ci.org/), [Appveyor](https://ci.appveyor.com/), [Codecov](https://codecov.io/) & [Stack Overflow](https://stackoverflow.com/). While it was not developed keeping any specific end user in mind, package developers might find it more useful as they can monitor their R packages using a shiny app. `pkginfo` uses [cranlogs](https://cranlogs.r-pkg.org/),[crandb](https://github.com/r-hub/crandb) and [cchecksapi](https://github.com/ropenscilabs/cchecksapi) under the hood.
-                                                                                
-
-## Installation
+                                                                          ## Installation
 
 You can install the development version from [GitHub](https://github.com/) with:
 
@@ -41,60 +39,6 @@ Launch the shiny app with:
 ```{r app, eval=FALSE}
 pkginfo_dashboard()
 ```		
-
-##### Welcome
-
-```{r app_welcome, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_welcome.png")
-```
-
-##### Overview
-
-```{r app_overview, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_overview.png")
-```
-
-##### Indicators
-
-```{r app_indicators, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_indicators.png")
-```
-
-##### Issues
-
-```{r app_issues, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_issues.png")
-```
-
-##### Releases
-
-```{r app_releases, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_releases.png")
-```
-
-##### Branches
-
-```{r app_branches, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_branches.png")
-```
-
-##### Dependencies
-
-```{r app_deps, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_deps.png")
-```
-
-##### Pull Requests
-
-```{r app_prs, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_prs.png")
-```
-
-##### Stack Overflow Questions
-
-```{r app_so, echo=FALSE, fig.align='center'}
-knitr::include_graphics("inst/images/pkginfo_so.png")
-```
 
 ## Usage
 
