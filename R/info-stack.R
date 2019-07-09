@@ -9,7 +9,7 @@
 #' # get stack overflow questions
 #' get_so_questions("dplyr")
 #' }
-#' 
+#'
 #' @export
 #'
 get_so_questions <- function(package_name) {
@@ -18,7 +18,8 @@ get_so_questions <- function(package_name) {
 		package_name, "&site=stackoverflow")
 
 	resp <- httr::GET(url)
-	out  <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+	out  <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"),
+	                           simplifyVector = FALSE)
 
 	date_creation <-
 	  purrr::map_int(out$items, "creation_date") %>%

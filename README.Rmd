@@ -23,7 +23,8 @@ library(pkginfo)
 ## Overview
 
 `pkginfo` will allow users to retrieve information about a R package from [CRAN](https://cran.r-project.org/), [GitHub](https://github.com/), [Travis CI](https://travis-ci.org/), [Appveyor](https://ci.appveyor.com/), [Codecov](https://codecov.io/) & [Stack Overflow](https://stackoverflow.com/). While it was not developed keeping any specific end user in mind, package developers might find it more useful as they can monitor their R packages using a shiny app. `pkginfo` uses [cranlogs](https://cranlogs.r-pkg.org/),[crandb](https://github.com/r-hub/crandb) and [cchecksapi](https://github.com/ropenscilabs/cchecksapi) under the hood.
-                                                                          ## Installation
+
+## Installation
 
 You can install the development version from [GitHub](https://github.com/) with:
 

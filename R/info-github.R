@@ -248,7 +248,8 @@ pkg_github <- function(user_name, repo_name) {
   pkg_name <- paste0("/repos/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
   resp     <- httr::GET(url)
-  jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+  jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"),
+                     simplifyVector = FALSE)
 
 }
 
@@ -390,7 +391,8 @@ get_gh_coc <- function(repo_name, user_name = NULL) {
 	  pkg_name <- paste0("/repos/", user_name, "/", repo_name, "/community/code_of_conduct")
 	  url      <- httr::modify_url("https://api.github.com", path = pkg_name)
 	  resp     <- httr::GET(url, httr::add_headers(Accept = "application/vnd.github.scarlet-witch-preview+json"))
-	  out      <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+	  out      <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"),
+	                                 simplifyVector = FALSE)
 
 	  cat(out$body)
 	}
@@ -530,7 +532,7 @@ get_status_travis <- function(repo_name, user_name = NULL) {
 	  url      <- httr::modify_url("https://api.travis-ci.org", path = pkg_name)
 	  resp     <- httr::GET(url)
 
-	  httr::content(resp, "parsed") %>%
+	  httr::content(resp, "parsed", encoding = "UTF-8") %>%
 	    xml2::as_list() %>%
 	    magrittr::use_series('Projects') %>%
 	    magrittr::use_series('Project') %>%
@@ -555,7 +557,8 @@ get_status_appveyor <- function(repo_name, user_name = NULL) {
   pkg_name <- paste0("/api/projects/", user_name, "/", repo_name)
   url      <- httr::modify_url("https://ci.appveyor.com", path = pkg_name)
   resp     <- httr::GET(url)
-  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+  result   <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"),
+                                 simplifyVector = FALSE)
   result$build$status
 
 }
@@ -577,7 +580,8 @@ get_code_coverage <- function(repo_name, user_name = NULL) {
 	  pkg_name <- paste0("/api/gh/", user_name, "/", repo_name)
 	  url      <- httr::modify_url("https://codecov.io", path = pkg_name)
 	  resp     <- httr::GET(url)
-	  result   <- jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+	  result   <- jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"),
+	                                 simplifyVector = FALSE)
 	  result$commit$totals$c
 	}
 
@@ -588,7 +592,8 @@ connect_api <- function(user_name, repo_name, node) {
 	pkg_name <- paste0("/repos/", user_name, "/", repo_name, "/", node)
   url      <- httr::modify_url("https://api.github.com", path = pkg_name)
   resp     <- httr::GET(url)
-  jsonlite::fromJSON(httr::content(resp, "text"), simplifyVector = FALSE)
+  jsonlite::fromJSON(httr::content(resp, "text", encoding = "UTF-8"),
+                     simplifyVector = FALSE)
 
 }
 

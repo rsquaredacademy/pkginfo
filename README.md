@@ -24,7 +24,9 @@ more useful as they can monitor their R packages using a shiny app.
 `pkginfo` uses
 [cranlogs](https://cranlogs.r-pkg.org/),[crandb](https://github.com/r-hub/crandb)
 and [cchecksapi](https://github.com/ropenscilabs/cchecksapi) under the
-hood. \#\# Installation
+hood.
+
+## Installation
 
 You can install the development version from
 [GitHub](https://github.com/) with:
@@ -93,7 +95,6 @@ myRepo$get_releases()
 
 ``` r
 myPackage <- CranPackage$new("olsrr")
-#> No encoding supplied: defaulting to UTF-8.
 myPackage$get_version()
 #> [1] "0.5.2"
 myPackage$get_r_dep()
@@ -141,16 +142,16 @@ get_so_questions("dplyr")
 #> # A tibble: 30 x 6
 #>    date       title               owner   answered views link              
 #>    <date>     <chr>               <chr>   <lgl>    <int> <chr>             
-#>  1 2019-07-04 Randomly assign tr~ Thomas  TRUE        21 https://stackover~
-#>  2 2019-07-03 dplyr::n() returns~ davide~ FALSE       49 https://stackover~
-#>  3 2019-07-04 Add the mean of al~ user11~ FALSE       24 https://stackover~
-#>  4 2019-07-04 Using two datafram~ Moon    FALSE       18 https://stackover~
-#>  5 2019-07-03 R - tbl/collect is~ Zcela ~ FALSE       18 https://stackover~
-#>  6 2019-07-04 wide to [tidy] lon~ delcast FALSE       28 https://stackover~
-#>  7 2019-07-04 R: how to use user~ Sangwo~ FALSE       23 https://stackover~
-#>  8 2019-07-04 Extract records fr~ Davide~ TRUE        22 https://stackover~
-#>  9 2019-07-04 Replace a subset o~ hizjam~ FALSE       23 https://stackover~
-#> 10 2019-07-04 dplyr coerces char~ d8anin~ TRUE        32 https://stackover~
+#>  1 2019-07-09 Adding multiple co~ Moohan  FALSE        5 https://stackover~
+#>  2 2017-12-27 dplyr Summarise im~ stacki~ TRUE        63 https://stackover~
+#>  3 2019-07-09 Transform table pe~ "thoma~ FALSE       24 https://stackover~
+#>  4 2019-07-09 Plotting graphs li~ Moon    FALSE       16 https://stackover~
+#>  5 2019-07-09 dplyr: change vari~ MCS     FALSE       22 https://stackover~
+#>  6 2019-07-09 Extracting part of~ Nart R~ FALSE       42 https://stackover~
+#>  7 2019-07-09 Filtering on a Col~ Jonath~ TRUE        33 https://stackover~
+#>  8 2019-07-02 Weird grouping err~ massis~ FALSE       43 https://stackover~
+#>  9 2019-07-07 List of data frame~ Emman   TRUE        53 https://stackover~
+#> 10 2019-07-09 Is there a functio~ Hanif ~ TRUE        30 https://stackover~
 #> # ... with 20 more rows
 ```
 

@@ -158,7 +158,7 @@ get_pkg_details <- function(package_name) {
 
   if (resp_status == 200) {
     resp %>%
-      httr::content(as = "text") %>%
+      httr::content(as = "text", encoding = "UTF-8") %>%
       jsonlite::fromJSON(simplifyVector = TRUE)
   } else {
     stop("Please check the package name.")
@@ -241,7 +241,7 @@ get_pkg_cran_check_results <- function(package_name) {
   if (resp_status == 200) {
     pkg_checks <-
       resp %>%
-      httr::content(as = "text") %>%
+      httr::content(as = "text", encoding = "UTF-8") %>%
       jsonlite::fromJSON(simplifyVector = TRUE) %>%
       magrittr::use_series(data) %>%
       magrittr::use_series(checks)
