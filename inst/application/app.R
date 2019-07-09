@@ -558,12 +558,10 @@ server <- function(input, output, session) {
 		compute_downloads()
 		})
 
-	output$cran_downloads <- shiny::renderPrint({
-		pkginfo::get_pkg_downloads(pkg_details()) %>%
+	output$cran_downloads <- shiny::renderTable({
+		pkginfo::get_pkg_downloads(input$repo_name) %>%
 		dplyr::rename(Latest = latest, `Last Week` = last_week,
-		              `Last Month` = last_month, Total = total) %>%
-		knitr::kable(format = "html") %>%
-		kableExtra::kable_styling(full_width = FALSE)
+		              `Last Month` = last_month, Total = total) 
 		})
 
 	# indicators: travis status
