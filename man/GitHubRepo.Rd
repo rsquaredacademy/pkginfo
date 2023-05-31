@@ -4,7 +4,9 @@
 \name{GitHubRepo}
 \alias{GitHubRepo}
 \title{Retrieve GitHub information}
-\format{An R6 class.}
+\format{
+An R6 class.
+}
 \description{
 Retrieve GitHub information
 }

@@ -4,7 +4,9 @@
 \name{CranPackage}
 \alias{CranPackage}
 \title{Retrieve package information}
-\format{An R6 class.}
+\format{
+An R6 class.
+}
 \description{
 Retrieve package information
 }

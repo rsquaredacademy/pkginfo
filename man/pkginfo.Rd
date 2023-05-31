@@ -3,7 +3,6 @@
 \docType{package}
 \name{pkginfo}
 \alias{pkginfo}
-\alias{pkginfo-package}
 \title{\code{pkginfo} package}
 \description{
 Retrieve pakcage information.
