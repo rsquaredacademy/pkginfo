@@ -290,7 +290,6 @@ get_gh_issues <- function(repo_name, user_name = NULL) {
 	  out            <- connect_api(user_name, repo_name, "issues")
 	  issue_number   <- purrr::map_int(out, "number")
 	  issue_title    <- purrr::map_chr(out, "title")
-	  issue_body     <- purrr::map_chr(out, "body")
 
 	  issue_date <-
 	    out %>%
