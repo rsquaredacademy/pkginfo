@@ -7,6 +7,8 @@
 #' @export
 #'
 pkginfo_dashboard <- function() {
+  kview <- options(kableExtra_view_html = FALSE)
+  on.exit(options(kview))
   shiny::runApp(appDir = system.file("application", package = "pkginfo"))
 }
 
