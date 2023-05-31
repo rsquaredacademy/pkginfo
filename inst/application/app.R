@@ -102,8 +102,6 @@ ui <- shinydashboard::dashboardPage(skin = "blue",
 						)
 					),
 				shiny::fluidRow(
-					shinycssloaders::withSpinner(shinydashboard::infoBoxOutput("travisBox")),
-					shinycssloaders::withSpinner(shinydashboard::infoBoxOutput("appveyorBox")),
 					shinycssloaders::withSpinner(shinydashboard::infoBoxOutput("coverageBox"))
 					),
 				shiny::fluidRow(
@@ -564,41 +562,41 @@ server <- function(input, output, session) {
 		              `Last Month` = last_month, Total = total) 
 		})
 
-	# indicators: travis status
-	travis_status <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "NA") {
-			out <- NA
-		} else {
-			out <- pkginfo::get_status_travis(input$repo_name, input$user_name)
-		}
-		return(out)
-	})
+	# # indicators: travis status
+	# travis_status <- shiny::eventReactive(input$retrieve_info, {
+	# 	if (input$user_name == "NA") {
+	# 		out <- NA
+	# 	} else {
+	# 		out <- pkginfo::get_status_travis(input$repo_name, input$user_name)
+	# 	}
+	# 	return(out)
+	# })
 
-	output$travisBox <- shinydashboard::renderInfoBox({
-		shinydashboard::infoBox(
-			"Travis", travis_status(),
-			icon = shiny::icon("list"),
-			color = "purple"
-			)
-		})
+	# output$travisBox <- shinydashboard::renderInfoBox({
+	# 	shinydashboard::infoBox(
+	# 		"Travis", travis_status(),
+	# 		icon = shiny::icon("list"),
+	# 		color = "purple"
+	# 		)
+	# 	})
 
-	# indicators: appveyor status
-	appveyor_status <- shiny::eventReactive(input$retrieve_info, {
-		if (input$user_name == "NA") {
-			out <- NA
-		} else {
-			out <- pkginfo::get_status_appveyor(input$repo_name, input$user_name)
-		}
-		return(out)
-	})
+	# # indicators: appveyor status
+	# appveyor_status <- shiny::eventReactive(input$retrieve_info, {
+	# 	if (input$user_name == "NA") {
+	# 		out <- NA
+	# 	} else {
+	# 		out <- pkginfo::get_status_appveyor(input$repo_name, input$user_name)
+	# 	}
+	# 	return(out)
+	# })
 
-	output$appveyorBox <- shinydashboard::renderInfoBox({
-		shinydashboard::infoBox(
-			"Appveyor", appveyor_status(),
-			icon = shiny::icon("list"),
-			color = "purple"
-			)
-		})
+	# output$appveyorBox <- shinydashboard::renderInfoBox({
+	# 	shinydashboard::infoBox(
+	# 		"Appveyor", appveyor_status(),
+	# 		icon = shiny::icon("list"),
+	# 		color = "purple"
+	# 		)
+	# 	})
 
 	# indicators: code coverage
 	code_status <- shiny::eventReactive(input$retrieve_info, {
@@ -769,13 +767,11 @@ server <- function(input, output, session) {
 	cr_check <- shiny::eventReactive(input$retrieve_info, {
 		itable <-
 				pkginfo::get_pkg_cran_check_results(input$repo_name) %>%
-				dplyr::rename(OS = os, R = r, Status = status, URL = url)
+				dplyr::rename(OS = os, R = r, Status = status)
 
 			prep_url <- itable$URL
 
 			itable %>%
-			  dplyr::select(-URL) %>%
-			  dplyr::mutate(Link = kableExtra::cell_spec("Link", "html", link = prep_url)) %>%
 			  knitr::kable("html", escape = FALSE) %>%
   			kableExtra::kable_styling(bootstrap_options = c("hover", "condensed"), full_width = FALSE)
 	})
