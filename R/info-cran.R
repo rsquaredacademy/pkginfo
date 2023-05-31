@@ -82,53 +82,53 @@
 NULL
 
 CranPackage <- R6::R6Class("CranPackage",
-  public = list(
-    package_name = NULL,
-    pkg_details  = NULL,
-    initialize = function(package_name = NA) {
-      self$package_name <- package_name
-      self$pkg_details  <- get_pkg_details(self$package_name)
-    },
-    get_downloads = function() {
-      get_pkg_downloads(self$package_name)
-    },
-    get_title = function() {
-      get_pkg_title(self$pkg_details)
-    },
-    get_description = function() {
-      get_pkg_desc(self$pkg_details)
-    },
-    get_version = function() {
-      get_pkg_version(self$pkg_details)
-    },
-    get_r_dep = function() {
-      get_pkg_r_dep(self$pkg_details)
-    },
-    get_imports = function() {
-      get_pkg_imports(self$pkg_details)
-    },
-    get_suggests = function() {
-      get_pkg_suggests(self$pkg_details)
-    },
-    get_publish_date = function() {
-      get_pkg_publish_date(self$pkg_details)
-    },
-    get_license = function() {
-      get_pkg_license(self$pkg_details)
-    },
-    get_authors = function() {
-      get_pkg_authors(self$pkg_details)
-    },
-    get_maintainer = function() {
-      get_pkg_maintainer(self$pkg_details)
-    },
-    get_urls = function() {
-      get_pkg_urls(self$pkg_details)
-    },
-    get_cran_check_results = function() {
-      get_pkg_cran_check_results(self$package_name)
-    }
-  )
+                           public = list(
+                             package_name = NULL,
+                             pkg_details  = NULL,
+                             initialize = function(package_name = NA) {
+                               self$package_name <- package_name
+                               self$pkg_details  <- get_pkg_details(self$package_name)
+                             },
+                             get_downloads = function() {
+                               get_pkg_downloads(self$package_name)
+                             },
+                             get_title = function() {
+                               get_pkg_title(self$pkg_details)
+                             },
+                             get_description = function() {
+                               get_pkg_desc(self$pkg_details)
+                             },
+                             get_version = function() {
+                               get_pkg_version(self$pkg_details)
+                             },
+                             get_r_dep = function() {
+                               get_pkg_r_dep(self$pkg_details)
+                             },
+                             get_imports = function() {
+                               get_pkg_imports(self$pkg_details)
+                             },
+                             get_suggests = function() {
+                               get_pkg_suggests(self$pkg_details)
+                             },
+                             get_publish_date = function() {
+                               get_pkg_publish_date(self$pkg_details)
+                             },
+                             get_license = function() {
+                               get_pkg_license(self$pkg_details)
+                             },
+                             get_authors = function() {
+                               get_pkg_authors(self$pkg_details)
+                             },
+                             get_maintainer = function() {
+                               get_pkg_maintainer(self$pkg_details)
+                             },
+                             get_urls = function() {
+                               get_pkg_urls(self$pkg_details)
+                             },
+                             get_cran_check_results = function() {
+                               get_pkg_cran_check_results(self$package_name)
+                             }
+                           )
 )
 
 
@@ -233,33 +233,28 @@ get_pkg_downloads <- function(package_name) {
 #'
 get_pkg_cran_check_results <- function(package_name) {
 
-  base_url    <- "https://cranchecks.info/"
-  pkg_url     <- httr::modify_url(base_url, path = paste0("pkgs/", package_name))
-  resp        <- httr::GET(pkg_url)
-  resp_status <- httr::status_code(resp)
+  check_cran(package_name)
 
-  if (resp_status == 200) {
-    pkg_checks <-
-      resp %>%
-      httr::content(as = "text", encoding = "UTF-8") %>%
-      jsonlite::fromJSON(simplifyVector = TRUE) %>%
-      magrittr::use_series(data) %>%
-      magrittr::use_series(checks)
-  } else {
-    stop("Please check the package name.")
-  }
+  base_url <- 'https://cloud.r-project.org/web/checks/'
+  url <- paste0(base_url, 'check_results_', package_name, '.html')
+  html <- rvest::read_html(url)
+
+  pkg_checks <-
+    html %>%
+    rvest::html_element("table") %>%
+    rvest::html_table()
 
   split_flavor <-
     pkg_checks %>%
-    dplyr::pull(flavor) %>%
+    dplyr::pull(Flavor) %>%
     stringr::str_split(pattern = "-", n = 3)
 
   tibble::tibble(
     os     = purrr::map_chr(split_flavor, 3),
     r      = purrr::map_chr(split_flavor, 2),
-    status = dplyr::pull(pkg_checks, status),
-    url    = dplyr::pull(pkg_checks, check_url)
-  )
+    status = dplyr::pull(pkg_checks, Status)
+  ) %>%
+    dplyr::arrange(os)
 
 }
 
@@ -317,7 +312,7 @@ NULL
 #' @export
 #'
 get_pkg_title <- function(pkg_details) {
-    magrittr::use_series(pkg_details, Title)
+  magrittr::use_series(pkg_details, Title)
 }
 
 #' @rdname package_info
