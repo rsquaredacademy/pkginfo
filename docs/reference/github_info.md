@@ -1,0 +1,75 @@
+# Retrieve GitHub information.
+
+Returns the GitHub username, stars, forks, branches, issues, labels,
+milestones, code of conduct, license, pull requests and releases.
+
+## Usage
+
+``` r
+get_gh_username(repo_name)
+
+get_gh_stats(repo_name, user_name = NULL)
+
+get_gh_branches(repo_name, user_name = NULL)
+
+get_gh_issues(repo_name, user_name = NULL)
+
+get_gh_labels(repo_name, user_name = NULL)
+
+get_gh_milestones(repo_name, user_name = NULL)
+
+get_gh_coc(repo_name, user_name = NULL)
+
+get_gh_license(repo_name, user_name = NULL)
+
+get_gh_pr(repo_name, user_name = NULL)
+
+get_gh_releases(repo_name, user_name = NULL)
+```
+
+## Arguments
+
+- repo_name:
+
+  Name of the package.
+
+- user_name:
+
+  GitHub user or organization name.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+# get github user/organization name
+get_gh_username("olsrr")
+
+# get count of stars, forks & issues
+get_gh_stats("dplyr", "tidyverse")
+
+# get details of github branches
+get_gh_branches("dplyr", "tidyverse")
+
+# get details of open issues
+get_gh_issues("dplyr", "tidyverse")
+
+# get labels
+get_gh_labels("dplyr", "tidyverse")
+
+# get milestones
+get_gh_milestones("dplyr", "tidyverse")
+
+# get code of conduct
+get_gh_coc("dplyr", "tidyverse")
+
+# get license
+get_gh_license("dplyr", "tidyverse")
+
+# get details of open pull requests
+get_gh_pr("dplyr", "tidyverse")
+
+# get releases
+get_gh_releases("dplyr", "tidyverse")
+
+} # }
+```
