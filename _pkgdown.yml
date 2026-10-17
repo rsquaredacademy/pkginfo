@@ -4,12 +4,9 @@ authors:
   Aravind Hebbali:
     href: https://www.aravindhebbali.com
 
-templates:
-  params:
-    bootswatch: cosmo
-    docsearch:
-      api_key:
-      index_name: pkginfo
+template:
+  bootstrap: 5
+  bootswatch: cosmo
 
 navbar:
   title: "pkginfo"
@@ -24,6 +21,8 @@ navbar:
         - text: "News"
           href: news/index.html
   right:
+    - text: 'Rsquared Academy'
+      href: https://www.rsquaredacademy.com
     - icon: fa-github
       href: https://github.com/rsquaredacademy/pkginfo
 
@@ -61,4 +60,11 @@ reference:
   contents:
   - get_so_questions
   - pkginfo
+
+footer:
+  structure:
+    left: developed_by
+    right: [built_with, privacy]
+  components:
+    privacy: '[Privacy](https://www.rsquaredacademy.com/privacy-policy.html) · <a href="#" data-rsa-analytics-optout>Turn off analytics</a>'
 

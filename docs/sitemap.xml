@@ -1,39 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/build_info.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/CranPackage.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_cran_check_results.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_details.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_downloads.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/get_so_questions.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/GitHubRepo.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/github_info.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/package_info.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/pkginfo.html</loc>
-  </url>
-  <url>
-    <loc>https://pkginfo.rsquaredacademy.com/reference/pkginfo_dashboard.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://pkginfo.rsquaredacademy.com/404.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/authors.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/google02e424888b5e2def.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/index.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/LICENSE-text.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/LICENSE.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/news/index.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/build_info.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/CranPackage.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_cran_check_results.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_details.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/get_pkg_downloads.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/get_so_questions.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/GitHubRepo.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/github_info.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/index.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/package_info.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/pkginfo.html</loc></url>
+<url><loc>https://pkginfo.rsquaredacademy.com/reference/pkginfo_dashboard.html</loc></url>
 </urlset>
+

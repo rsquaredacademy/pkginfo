@@ -11,4 +11,5 @@
 ^olsrr\.jpg$
 ^_pkgdown\.yml$
 ^docs$
+^pkgdown$
 
